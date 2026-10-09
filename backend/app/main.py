@@ -1,13 +1,15 @@
 """
 FastAPI application entrypoint for ProcessLens.
-Provides health check and CSV ingestion endpoints.
+Provides health check, CSV ingestion, and process reconstruction endpoints.
 """
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.schemas.ingestion import DataQualityReport
+from app.schemas.reconstruction import ProcessReconstructionResult
 from app.services.validator import validate_csv_content
+from app.services.reconstructor import reconstruct_process
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -74,4 +76,46 @@ async def upload_csv_file(file: UploadFile = File(...)):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An error occurred while processing the file: {str(e)}"
+        )
+
+
+@app.post(f"{settings.API_V1_STR}/process/reconstruct", response_model=ProcessReconstructionResult, status_code=status.HTTP_200_OK)
+async def reconstruct_csv_file(file: UploadFile = File(...)):
+    """
+    Accepts a CSV event log file, reconstructs process traces by grouping
+    events into cases, ordering them chronologically, and identifying
+    process variants. Returns a structured ProcessReconstructionResult.
+    """
+    if not file.filename:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Filename cannot be empty."
+        )
+
+    if not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
+        )
+
+    content = await file.read()
+
+    if len(content) > settings.MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
+        )
+
+    try:
+        result = reconstruct_process(content, file.filename)
+        return result
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred during process reconstruction: {str(e)}"
         )
