@@ -68,3 +68,30 @@ Phase 2 requires converting raw event logs into chronologically ordered case tra
 - 21/21 backend tests passing (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`).
 - 100% deterministic outputs across repeated runs on identical inputs.
 
+---
+
+## Decision Record 004: Deterministic Process Analytics Engine (Phase 3)
+* **Date:** 2026-10-09
+* **Status:** Implemented & Verified
+* **Owner:** Process Analytics Engineer
+
+### Context
+Phase 3 requires computing operational process metrics (activity frequency, case cycle time, repeated-activity indicators, and step-to-step transition durations) strictly from reconstructed traces.
+
+### Decision
+1. Implemented typed Pydantic schemas in `backend/app/schemas/analytics.py` (`DurationStats`, `ReconstructionSummary`, `ActivityFrequency`, `ActivityRework`, `ActivityTransition`, `CycleTimeSummary`, `ProcessAnalyticsResult`).
+2. Implemented deterministic analytics engine in `backend/app/services/analytics.py`:
+   - **Population Consistency:** All analytics (frequency, rework, transitions, cycle times) operate strictly on complete cases (`is_complete = True`).
+   - **Cycle Time Semantics:** Calculated as `end_time - start_time` for complete cases. Single-event cases evaluate to `0.0` seconds and are included in `evaluated_cases_count`.
+   - **Transition Duration vs. Waiting/Processing Time:** Labeled elapsed duration between consecutive milestones strictly as `transition_duration`. Internal waiting time and processing time are explicitly not inferred without explicit start/end lifecycle event pairs.
+   - **Repeated-Activity Indicators vs. Recording Duplicates:**
+     - Duplicate events sharing identical `(case_id, activity, timestamp)` keys are tracked in `duplicate_events_count` and do NOT count as rework.
+     - Distinct-timestamp occurrences within a case are tracked as `rework_case_count` and `rework_occurrences`. Documented neutrally as repeated-activity indicators, not proof of process failure.
+   - **Deterministic p90 Percentile:** Calculated using linear interpolation between closest sorted ranks ($r = 0.90 \times (N - 1)$).
+3. Exposed dedicated endpoint `POST /api/v1/analytics/process` in FastAPI while maintaining existing `/health`, `/ingestion/upload`, and `/process/reconstruct` endpoints.
+4. Comprehensive test coverage in `backend/tests/test_analytics.py` including hand-calculated fixtures, zero-division safeguards, single-event cases, duplicate vs rework separation, and sample dataset integration tests.
+
+### Consequences & Verification
+- 32/32 backend tests passing across all suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`).
+- Zero division-by-zero vulnerabilities on empty input files or datasets containing only incomplete cases.
+
