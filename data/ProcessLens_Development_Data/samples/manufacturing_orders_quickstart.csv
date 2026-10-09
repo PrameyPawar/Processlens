@@ -1,0 +1,801 @@
+case_id,activity,timestamp,resource,department,order_value,quantity,product_type,priority,event_type
+ORD-00001,Order Received,2026-02-20 07:13:00.000000000,Sales-02,Sales,91257.49,237,Motor Housing,Urgent,complete
+ORD-00001,Order Verification,2026-02-20 09:03:50.651268903,Sales-03,Sales,91257.49,237,Motor Housing,Urgent,complete
+ORD-00001,Inventory Check,2026-02-22 00:27:54.099501169,Warehouse-01,Warehouse,91257.49,237,Motor Housing,Urgent,complete
+ORD-00001,Production Planning,2026-02-22 03:48:59.144865877,Planner-01,Planning,91257.49,237,Motor Housing,Urgent,complete
+ORD-00001,Production,2026-02-22 07:46:24.690823881,Prod-01,Production,91257.49,237,Motor Housing,Urgent,complete
+ORD-00001,Quality Inspection,2026-02-22 18:29:03.399351255,QC-02,Quality,91257.49,237,Motor Housing,Urgent,complete
+ORD-00001,Dispatch,2026-02-22 20:47:23.472887540,Warehouse-01,Warehouse,91257.49,237,Motor Housing,Urgent,complete
+ORD-00001,Invoice,2026-02-22 22:54:08.701549102,Finance-01,Finance,91257.49,237,Motor Housing,Urgent,complete
+ORD-00002,Order Received,2026-02-16 06:55:00.000000000,Sales-02,Sales,31198.99,241,Industrial Pump,Normal,complete
+ORD-00002,Order Verification,2026-02-16 07:31:37.829163098,Sales-01,Sales,31198.99,241,Industrial Pump,Normal,complete
+ORD-00002,Inventory Check,2026-02-16 15:33:23.030769283,Warehouse-01,Warehouse,31198.99,241,Industrial Pump,Normal,complete
+ORD-00002,Production Planning,2026-02-16 19:13:16.040572525,Planner-01,Planning,31198.99,241,Industrial Pump,Normal,complete
+ORD-00002,Production,2026-02-16 21:33:48.887553264,Prod-04,Production,31198.99,241,Industrial Pump,Normal,complete
+ORD-00002,Quality Inspection,2026-02-17 10:50:30.330077185,QC-01,Quality,31198.99,241,Industrial Pump,Normal,complete
+ORD-00002,Dispatch,2026-02-17 13:42:46.459164315,Warehouse-01,Warehouse,31198.99,241,Industrial Pump,Normal,complete
+ORD-00002,Invoice,2026-02-17 15:35:32.238891221,Finance-01,Finance,31198.99,241,Industrial Pump,Normal,complete
+ORD-00003,Order Received,2026-03-18 06:12:00.000000000,Sales-02,Sales,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00003,Order Verification,2026-03-18 06:50:52.250711730,Sales-01,Sales,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00003,Inventory Check,2026-03-18 19:30:55.783178539,Warehouse-01,Warehouse,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00003,Production Planning,2026-03-18 22:58:14.574606607,Planner-01,Planning,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00003,Production,2026-03-19 02:21:36.133571101,Prod-02,Production,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00003,Quality Inspection,2026-03-19 18:03:39.515067678,QC-02,Quality,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00003,Dispatch,2026-03-19 19:33:56.060858060,Warehouse-02,Warehouse,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00003,Invoice,2026-03-19 21:37:35.009747115,Finance-01,Finance,44608.8,231,Gear Assembly,Urgent,complete
+ORD-00004,Order Received,2026-03-11 03:01:00.000000000,Sales-02,Sales,32606.19,85,Gear Assembly,Normal,complete
+ORD-00004,Order Verification,2026-03-11 03:41:33.723363892,Sales-03,Sales,32606.19,85,Gear Assembly,Normal,complete
+ORD-00004,Inventory Check,2026-03-12 20:51:48.742170666,Warehouse-01,Warehouse,32606.19,85,Gear Assembly,Normal,complete
+ORD-00004,Production Planning,2026-03-13 01:13:41.237341038,Planner-01,Planning,32606.19,85,Gear Assembly,Normal,complete
+ORD-00004,Production,2026-03-13 05:24:18.175275538,Prod-02,Production,32606.19,85,Gear Assembly,Normal,complete
+ORD-00004,Quality Inspection,2026-03-13 21:36:34.461151478,QC-02,Quality,32606.19,85,Gear Assembly,Normal,complete
+ORD-00004,Dispatch,2026-03-14 01:21:22.472866219,Warehouse-01,Warehouse,32606.19,85,Gear Assembly,Normal,complete
+ORD-00004,Invoice,2026-03-14 02:45:23.664569487,Finance-01,Finance,32606.19,85,Gear Assembly,Normal,complete
+ORD-00005,Order Received,2026-02-14 00:43:00.000000000,Sales-01,Sales,24140.22,114,Gear Assembly,Normal,complete
+ORD-00005,Order Verification,2026-02-14 02:29:24.770694118,Sales-02,Sales,24140.22,114,Gear Assembly,Normal,complete
+ORD-00005,Inventory Check,2026-02-14 07:06:33.911904502,Warehouse-02,Warehouse,24140.22,114,Gear Assembly,Normal,complete
+ORD-00005,Production Planning,2026-02-14 10:15:38.194385211,Planner-02,Planning,24140.22,114,Gear Assembly,Normal,complete
+ORD-00005,Production,2026-02-14 12:09:10.485472756,Prod-04,Production,24140.22,114,Gear Assembly,Normal,complete
+ORD-00005,Quality Inspection,2026-02-15 03:08:00.177721387,QC-02,Quality,24140.22,114,Gear Assembly,Normal,complete
+ORD-00005,Dispatch,2026-02-15 06:41:53.564991938,Warehouse-02,Warehouse,24140.22,114,Gear Assembly,Normal,complete
+ORD-00005,Invoice,2026-02-15 07:42:46.027731213,Finance-02,Finance,24140.22,114,Gear Assembly,Normal,complete
+ORD-00006,Order Received,2026-03-03 07:42:00.000000000,Sales-01,Sales,12303.01,34,Valve Assembly,High,complete
+ORD-00006,Order Verification,2026-03-03 09:13:28.422957369,Sales-01,Sales,12303.01,34,Valve Assembly,High,complete
+ORD-00006,Inventory Check,2026-03-03 20:11:06.796729306,Warehouse-02,Warehouse,12303.01,34,Valve Assembly,High,complete
+ORD-00006,Production Planning,2026-03-04 19:58:00.347873449,Planner-02,Planning,12303.01,34,Valve Assembly,High,complete
+ORD-00006,Production,2026-03-04 23:22:01.839703637,Prod-03,Production,12303.01,34,Valve Assembly,High,complete
+ORD-00006,Quality Inspection,2026-03-05 11:57:33.598629687,QC-02,Quality,12303.01,34,Valve Assembly,High,complete
+ORD-00006,Dispatch,2026-03-05 14:38:49.154378789,Warehouse-02,Warehouse,12303.01,34,Valve Assembly,High,complete
+ORD-00006,Invoice,2026-03-05 16:15:51.147526653,Finance-01,Finance,12303.01,34,Valve Assembly,High,complete
+ORD-00007,Order Received,2026-02-02 08:26:00.000000000,Sales-01,Sales,74175.99,202,Industrial Pump,Normal,complete
+ORD-00007,Order Verification,2026-02-02 08:47:14.778898584,Sales-02,Sales,74175.99,202,Industrial Pump,Normal,complete
+ORD-00007,Inventory Check,2026-02-02 16:20:58.630586195,Warehouse-01,Warehouse,74175.99,202,Industrial Pump,Normal,complete
+ORD-00007,Production Planning,2026-02-02 19:36:23.485589238,Planner-02,Planning,74175.99,202,Industrial Pump,Normal,complete
+ORD-00007,Production,2026-02-02 22:17:30.372122959,Prod-04,Production,74175.99,202,Industrial Pump,Normal,complete
+ORD-00007,Quality Inspection,2026-02-03 10:04:22.857336076,QC-01,Quality,74175.99,202,Industrial Pump,Normal,complete
+ORD-00007,Dispatch,2026-02-03 12:05:50.270770289,Warehouse-01,Warehouse,74175.99,202,Industrial Pump,Normal,complete
+ORD-00007,Invoice,2026-02-03 13:32:31.599789575,Finance-02,Finance,74175.99,202,Industrial Pump,Normal,complete
+ORD-00008,Order Received,2026-02-20 00:20:00.000000000,Sales-02,Sales,52175.29,153,Motor Housing,Normal,complete
+ORD-00008,Order Verification,2026-02-20 01:23:39.337865681,Sales-03,Sales,52175.29,153,Motor Housing,Normal,complete
+ORD-00008,Inventory Check,2026-02-20 07:23:47.465591819,Warehouse-02,Warehouse,52175.29,153,Motor Housing,Normal,complete
+ORD-00008,Production Planning,2026-02-20 11:58:53.289175086,Planner-01,Planning,52175.29,153,Motor Housing,Normal,complete
+ORD-00008,Production,2026-02-20 13:26:59.174462076,Prod-01,Production,52175.29,153,Motor Housing,Normal,complete
+ORD-00008,Quality Inspection,2026-02-21 03:46:35.739793699,QC-02,Quality,52175.29,153,Motor Housing,Normal,complete
+ORD-00008,Dispatch,2026-02-21 05:33:35.983310574,Warehouse-02,Warehouse,52175.29,153,Motor Housing,Normal,complete
+ORD-00008,Invoice,2026-02-21 06:46:16.049400154,Finance-01,Finance,52175.29,153,Motor Housing,Normal,complete
+ORD-00009,Order Received,2026-02-25 06:56:00.000000000,Sales-02,Sales,3196.64,21,Industrial Pump,High,complete
+ORD-00009,Order Verification,2026-02-25 08:28:16.870785987,Sales-03,Sales,3196.64,21,Industrial Pump,High,complete
+ORD-00009,Inventory Check,2026-02-25 20:46:12.912405257,Warehouse-02,Warehouse,3196.64,21,Industrial Pump,High,complete
+ORD-00009,Production Planning,2026-02-25 23:36:07.013722932,Planner-02,Planning,3196.64,21,Industrial Pump,High,complete
+ORD-00009,Production,2026-02-26 00:57:41.330627332,Prod-04,Production,3196.64,21,Industrial Pump,High,complete
+ORD-00009,Quality Inspection,2026-02-26 12:51:34.141151092,QC-02,Quality,3196.64,21,Industrial Pump,High,complete
+ORD-00009,Dispatch,2026-02-26 15:08:46.407273540,Warehouse-01,Warehouse,3196.64,21,Industrial Pump,High,complete
+ORD-00009,Invoice,2026-02-26 16:01:16.309099550,Finance-02,Finance,3196.64,21,Industrial Pump,High,complete
+ORD-00010,Order Received,2026-03-17 07:19:00.000000000,Sales-01,Sales,18281.91,66,Motor Housing,Normal,complete
+ORD-00010,Order Verification,2026-03-17 08:57:25.212876940,Sales-02,Sales,18281.91,66,Motor Housing,Normal,complete
+ORD-00010,Inventory Check,2026-03-17 20:21:46.395200668,Warehouse-01,Warehouse,18281.91,66,Motor Housing,Normal,complete
+ORD-00010,Production Planning,2026-03-17 22:42:31.134107089,Planner-01,Planning,18281.91,66,Motor Housing,Normal,complete
+ORD-00010,Production,2026-03-18 01:38:53.402645657,Prod-03,Production,18281.91,66,Motor Housing,Normal,complete
+ORD-00010,Quality Inspection,2026-03-18 13:02:25.101366141,QC-01,Quality,18281.91,66,Motor Housing,Normal,complete
+ORD-00010,Dispatch,2026-03-18 15:27:18.898413884,Warehouse-01,Warehouse,18281.91,66,Motor Housing,Normal,complete
+ORD-00010,Invoice,2026-03-18 17:41:29.936110836,Finance-02,Finance,18281.91,66,Motor Housing,Normal,complete
+ORD-00011,Order Received,2026-03-01 08:26:00.000000000,Sales-02,Sales,3985.43,24,Control Panel,High,complete
+ORD-00011,Order Verification,2026-03-01 10:24:17.999844840,Sales-01,Sales,3985.43,24,Control Panel,High,complete
+ORD-00011,Inventory Check,2026-03-01 18:32:18.867502036,Warehouse-01,Warehouse,3985.43,24,Control Panel,High,complete
+ORD-00011,Production Planning,2026-03-01 20:30:02.991930546,Planner-02,Planning,3985.43,24,Control Panel,High,complete
+ORD-00011,Production,2026-03-01 23:01:55.721833265,Prod-04,Production,3985.43,24,Control Panel,High,complete
+ORD-00011,Quality Inspection,2026-03-02 12:55:19.824705637,QC-02,Quality,3985.43,24,Control Panel,High,complete
+ORD-00011,Dispatch,2026-03-02 15:50:29.322587424,Warehouse-01,Warehouse,3985.43,24,Control Panel,High,complete
+ORD-00011,Invoice,2026-03-02 16:48:38.669958115,Finance-02,Finance,3985.43,24,Control Panel,High,complete
+ORD-00012,Order Received,2026-03-18 06:12:00.000000000,Sales-02,Sales,21427.64,144,Gear Assembly,Normal,complete
+ORD-00012,Order Verification,2026-03-18 07:01:10.859928544,Sales-02,Sales,21427.64,144,Gear Assembly,Normal,complete
+ORD-00012,Inventory Check,2026-03-18 10:43:51.688894395,Warehouse-02,Warehouse,21427.64,144,Gear Assembly,Normal,complete
+ORD-00012,Production Planning,2026-03-18 12:58:00.574869239,Planner-01,Planning,21427.64,144,Gear Assembly,Normal,complete
+ORD-00012,Production,2026-03-18 14:23:36.080334887,Prod-02,Production,21427.64,144,Gear Assembly,Normal,complete
+ORD-00012,Quality Inspection,2026-03-19 04:52:12.961545122,QC-01,Quality,21427.64,144,Gear Assembly,Normal,complete
+ORD-00012,Dispatch,2026-03-19 07:04:10.027066416,Warehouse-01,Warehouse,21427.64,144,Gear Assembly,Normal,complete
+ORD-00012,Invoice,2026-03-19 08:37:34.747080513,Finance-01,Finance,21427.64,144,Gear Assembly,Normal,complete
+ORD-00013,Order Received,2026-02-11 08:19:00.000000000,Sales-01,Sales,66822.96,178,Valve Assembly,Normal,complete
+ORD-00013,Order Verification,2026-02-11 10:16:52.622457526,Sales-02,Sales,66822.96,178,Valve Assembly,Normal,complete
+ORD-00013,Inventory Check,2026-02-12 03:42:23.051740205,Warehouse-01,Warehouse,66822.96,178,Valve Assembly,Normal,complete
+ORD-00013,Production Planning,2026-02-12 17:52:25.990185106,Planner-02,Planning,66822.96,178,Valve Assembly,Normal,complete
+ORD-00013,Production,2026-02-12 19:47:20.036588858,Prod-03,Production,66822.96,178,Valve Assembly,Normal,complete
+ORD-00013,Quality Inspection,2026-02-13 10:07:00.213228334,QC-01,Quality,66822.96,178,Valve Assembly,Normal,complete
+ORD-00013,Dispatch,2026-02-13 11:43:33.316610306,Warehouse-01,Warehouse,66822.96,178,Valve Assembly,Normal,complete
+ORD-00013,Invoice,2026-02-13 13:38:47.924487646,Finance-02,Finance,66822.96,178,Valve Assembly,Normal,complete
+ORD-00014,Order Received,2026-02-12 03:07:00.000000000,Sales-02,Sales,3755.03,21,Gear Assembly,Normal,complete
+ORD-00014,Order Verification,2026-02-12 05:04:22.349546994,Sales-01,Sales,3755.03,21,Gear Assembly,Normal,complete
+ORD-00014,Inventory Check,2026-02-12 12:35:09.921927834,Warehouse-01,Warehouse,3755.03,21,Gear Assembly,Normal,complete
+ORD-00014,Production Planning,2026-02-12 14:15:51.476578344,Planner-02,Planning,3755.03,21,Gear Assembly,Normal,complete
+ORD-00014,Production,2026-02-12 16:18:24.355945456,Prod-04,Production,3755.03,21,Gear Assembly,Normal,complete
+ORD-00014,Quality Inspection,2026-02-13 05:43:51.053329173,QC-02,Quality,3755.03,21,Gear Assembly,Normal,complete
+ORD-00014,Dispatch,2026-02-13 08:29:19.624169940,Warehouse-02,Warehouse,3755.03,21,Gear Assembly,Normal,complete
+ORD-00014,Invoice,2026-02-13 10:57:45.427454195,Finance-02,Finance,3755.03,21,Gear Assembly,Normal,complete
+ORD-00015,Order Received,2026-03-20 08:29:00.000000000,Sales-02,Sales,9141.7,32,Industrial Pump,Normal,complete
+ORD-00015,Order Verification,2026-03-20 09:44:09.252717766,Sales-01,Sales,9141.7,32,Industrial Pump,Normal,complete
+ORD-00015,Inventory Check,2026-03-21 17:26:20.132847917,Warehouse-01,Warehouse,9141.7,32,Industrial Pump,Normal,complete
+ORD-00015,Production Planning,2026-03-21 20:49:48.589683072,Planner-01,Planning,9141.7,32,Industrial Pump,Normal,complete
+ORD-00015,Production,2026-03-21 23:51:26.273074286,Prod-02,Production,9141.7,32,Industrial Pump,Normal,complete
+ORD-00015,Quality Inspection,2026-03-22 14:13:25.617045378,QC-02,Quality,9141.7,32,Industrial Pump,Normal,complete
+ORD-00015,Dispatch,2026-03-22 17:41:34.491421548,Warehouse-01,Warehouse,9141.7,32,Industrial Pump,Normal,complete
+ORD-00015,Invoice,2026-03-22 19:58:03.922300790,Finance-01,Finance,9141.7,32,Industrial Pump,Normal,complete
+ORD-00016,Order Received,2026-03-07 04:16:00.000000000,Sales-01,Sales,42875.71,175,Motor Housing,Normal,complete
+ORD-00016,Order Verification,2026-03-07 06:01:45.100111266,Sales-01,Sales,42875.71,175,Motor Housing,Normal,complete
+ORD-00016,Inventory Check,2026-03-07 11:11:05.583978398,Warehouse-01,Warehouse,42875.71,175,Motor Housing,Normal,complete
+ORD-00016,Production Planning,2026-03-07 14:29:51.849293193,Planner-01,Planning,42875.71,175,Motor Housing,Normal,complete
+ORD-00016,Production,2026-03-07 15:44:46.703086024,Prod-03,Production,42875.71,175,Motor Housing,Normal,complete
+ORD-00016,Quality Inspection,2026-03-08 01:09:11.476848726,QC-01,Quality,42875.71,175,Motor Housing,Normal,complete
+ORD-00016,Dispatch,2026-03-08 05:01:43.144294960,Warehouse-01,Warehouse,42875.71,175,Motor Housing,Normal,complete
+ORD-00016,Invoice,2026-03-08 06:08:03.730337344,Finance-01,Finance,42875.71,175,Motor Housing,Normal,complete
+ORD-00017,Order Received,2026-02-18 00:02:00.000000000,Sales-02,Sales,4318.0,14,Gear Assembly,Normal,complete
+ORD-00017,Order Verification,2026-02-18 01:11:57.721394417,Sales-02,Sales,4318.0,14,Gear Assembly,Normal,complete
+ORD-00017,Inventory Check,2026-02-18 05:06:44.695008569,Warehouse-02,Warehouse,4318.0,14,Gear Assembly,Normal,complete
+ORD-00017,Production Planning,2026-02-18 06:25:00.409475288,Planner-02,Planning,4318.0,14,Gear Assembly,Normal,complete
+ORD-00017,Production,2026-02-18 08:40:10.788681058,Prod-01,Production,4318.0,14,Gear Assembly,Normal,complete
+ORD-00017,Quality Inspection,2026-02-18 23:18:09.082301643,QC-01,Quality,4318.0,14,Gear Assembly,Normal,complete
+ORD-00017,Dispatch,2026-02-19 01:32:25.921608620,Warehouse-02,Warehouse,4318.0,14,Gear Assembly,Normal,complete
+ORD-00017,Invoice,2026-02-19 03:24:37.145337435,Finance-02,Finance,4318.0,14,Gear Assembly,Normal,complete
+ORD-00018,Order Received,2026-02-17 04:13:00.000000000,Sales-01,Sales,58549.59,202,Control Panel,Normal,complete
+ORD-00018,Order Verification,2026-02-17 05:20:41.445970165,Sales-01,Sales,58549.59,202,Control Panel,Normal,complete
+ORD-00018,Inventory Check,2026-02-17 19:01:48.020950011,Warehouse-01,Warehouse,58549.59,202,Control Panel,Normal,complete
+ORD-00018,Production Planning,2026-02-17 22:11:41.059479819,Planner-02,Planning,58549.59,202,Control Panel,Normal,complete
+ORD-00018,Production,2026-02-17 23:44:15.888204624,Prod-03,Production,58549.59,202,Control Panel,Normal,complete
+ORD-00018,Quality Inspection,2026-02-18 13:49:04.764185708,QC-02,Quality,58549.59,202,Control Panel,Normal,complete
+ORD-00018,Dispatch,2026-02-18 17:22:04.362116712,Warehouse-01,Warehouse,58549.59,202,Control Panel,Normal,complete
+ORD-00018,Invoice,2026-02-18 19:20:34.822773090,Finance-01,Finance,58549.59,202,Control Panel,Normal,complete
+ORD-00019,Order Received,2026-01-22 02:27:00.000000000,Sales-02,Sales,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00019,Order Verification,2026-01-22 03:26:44.077038089,Sales-01,Sales,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00019,Inventory Check,2026-01-22 09:29:07.195792748,Warehouse-01,Warehouse,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00019,Production Planning,2026-01-22 12:43:37.740187347,Planner-02,Planning,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00019,Production,2026-01-22 14:01:47.441868530,Prod-01,Production,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00019,Quality Inspection,2026-01-23 05:27:17.416848103,QC-02,Quality,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00019,Dispatch,2026-01-23 07:45:08.525776867,Warehouse-02,Warehouse,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00019,Invoice,2026-01-23 09:02:11.238158084,Finance-01,Finance,10954.07,36,Valve Assembly,Urgent,complete
+ORD-00020,Order Received,2026-02-22 00:42:00.000000000,Sales-02,Sales,44279.86,187,Motor Housing,High,complete
+ORD-00020,Order Verification,2026-02-22 02:22:41.517671103,Sales-03,Sales,44279.86,187,Motor Housing,High,complete
+ORD-00020,Inventory Check,2026-02-22 08:28:45.340340727,Warehouse-01,Warehouse,44279.86,187,Motor Housing,High,complete
+ORD-00020,Production Planning,2026-02-22 10:03:03.909687333,Planner-01,Planning,44279.86,187,Motor Housing,High,complete
+ORD-00020,Production,2026-02-22 13:23:39.236390456,Prod-02,Production,44279.86,187,Motor Housing,High,complete
+ORD-00020,Quality Inspection,2026-02-23 00:00:43.887081611,QC-02,Quality,44279.86,187,Motor Housing,High,complete
+ORD-00020,Dispatch,2026-02-23 03:02:24.940936140,Warehouse-01,Warehouse,44279.86,187,Motor Housing,High,complete
+ORD-00020,Invoice,2026-02-23 03:57:54.870785886,Finance-01,Finance,44279.86,187,Motor Housing,High,complete
+ORD-00021,Order Received,2026-01-29 03:01:00.000000000,Sales-01,Sales,27034.65,133,Gear Assembly,Normal,complete
+ORD-00021,Order Verification,2026-01-29 04:44:15.072839057,Sales-01,Sales,27034.65,133,Gear Assembly,Normal,complete
+ORD-00021,Inventory Check,2026-01-29 12:22:12.169700717,Warehouse-02,Warehouse,27034.65,133,Gear Assembly,Normal,complete
+ORD-00021,Production Planning,2026-01-29 16:59:38.499058196,Planner-02,Planning,27034.65,133,Gear Assembly,Normal,complete
+ORD-00021,Production,2026-01-29 18:03:39.088610436,Prod-03,Production,27034.65,133,Gear Assembly,Normal,complete
+ORD-00021,Quality Inspection,2026-01-30 09:01:41.927829235,QC-01,Quality,27034.65,133,Gear Assembly,Normal,complete
+ORD-00021,Dispatch,2026-01-30 11:24:17.842396251,Warehouse-02,Warehouse,27034.65,133,Gear Assembly,Normal,complete
+ORD-00021,Invoice,2026-01-30 13:19:57.844892601,Finance-02,Finance,27034.65,133,Gear Assembly,Normal,complete
+ORD-00022,Order Received,2026-03-06 07:09:00.000000000,Sales-02,Sales,65797.55,214,Motor Housing,Urgent,complete
+ORD-00022,Order Verification,2026-03-06 07:53:58.774628183,Sales-01,Sales,65797.55,214,Motor Housing,Urgent,complete
+ORD-00022,Inventory Check,2026-03-06 11:39:11.926360720,Warehouse-01,Warehouse,65797.55,214,Motor Housing,Urgent,complete
+ORD-00022,Production Planning,2026-03-06 15:55:11.292075349,Planner-01,Planning,65797.55,214,Motor Housing,Urgent,complete
+ORD-00022,Production,2026-03-06 19:39:26.937511646,Prod-02,Production,65797.55,214,Motor Housing,Urgent,complete
+ORD-00022,Quality Inspection,2026-03-07 13:24:57.026425750,QC-02,Quality,65797.55,214,Motor Housing,Urgent,complete
+ORD-00022,Dispatch,2026-03-07 15:49:39.179559039,Warehouse-01,Warehouse,65797.55,214,Motor Housing,Urgent,complete
+ORD-00022,Invoice,2026-03-07 17:14:07.171302090,Finance-02,Finance,65797.55,214,Motor Housing,Urgent,complete
+ORD-00023,Order Received,2026-03-08 07:09:00.000000000,Sales-01,Sales,24367.99,166,Valve Assembly,Normal,complete
+ORD-00023,Order Verification,2026-03-08 07:48:41.815240731,Sales-02,Sales,24367.99,166,Valve Assembly,Normal,complete
+ORD-00023,Inventory Check,2026-03-08 18:19:00.804479059,Warehouse-02,Warehouse,24367.99,166,Valve Assembly,Normal,complete
+ORD-00023,Production Planning,2026-03-08 20:32:00.075658564,Planner-01,Planning,24367.99,166,Valve Assembly,Normal,complete
+ORD-00023,Production,2026-03-08 22:13:46.553565379,Prod-01,Production,24367.99,166,Valve Assembly,Normal,complete
+ORD-00023,Quality Inspection,2026-03-09 14:09:03.140944911,QC-02,Quality,24367.99,166,Valve Assembly,Normal,complete
+ORD-00023,Dispatch,2026-03-09 15:15:34.362249871,Warehouse-01,Warehouse,24367.99,166,Valve Assembly,Normal,complete
+ORD-00023,Invoice,2026-03-09 17:09:22.786455012,Finance-02,Finance,24367.99,166,Valve Assembly,Normal,complete
+ORD-00024,Order Received,2026-03-16 01:52:00.000000000,Sales-02,Sales,36842.23,186,Valve Assembly,Normal,complete
+ORD-00024,Order Verification,2026-03-16 02:34:28.064907165,Sales-01,Sales,36842.23,186,Valve Assembly,Normal,complete
+ORD-00024,Inventory Check,2026-03-16 20:19:40.424713461,Warehouse-02,Warehouse,36842.23,186,Valve Assembly,Normal,complete
+ORD-00024,Production Planning,2026-03-16 23:10:22.220163115,Planner-02,Planning,36842.23,186,Valve Assembly,Normal,complete
+ORD-00024,Production,2026-03-17 01:21:55.882526233,Prod-04,Production,36842.23,186,Valve Assembly,Normal,complete
+ORD-00024,Quality Inspection,2026-03-17 18:27:53.595236675,QC-01,Quality,36842.23,186,Valve Assembly,Normal,complete
+ORD-00024,Dispatch,2026-03-17 21:46:22.867188258,Warehouse-01,Warehouse,36842.23,186,Valve Assembly,Normal,complete
+ORD-00024,Invoice,2026-03-17 23:05:33.303697616,Finance-01,Finance,36842.23,186,Valve Assembly,Normal,complete
+ORD-00025,Order Received,2026-01-29 05:32:00.000000000,Sales-02,Sales,49292.44,189,Valve Assembly,Normal,complete
+ORD-00025,Order Verification,2026-01-29 07:35:06.207691753,Sales-03,Sales,49292.44,189,Valve Assembly,Normal,complete
+ORD-00025,Inventory Check,2026-01-29 11:33:45.933910538,Warehouse-01,Warehouse,49292.44,189,Valve Assembly,Normal,complete
+ORD-00025,Production Planning,2026-01-29 14:09:50.410499101,Planner-02,Planning,49292.44,189,Valve Assembly,Normal,complete
+ORD-00025,Production,2026-01-29 18:17:49.961043771,Prod-03,Production,49292.44,189,Valve Assembly,Normal,complete
+ORD-00025,Quality Inspection,2026-01-30 09:57:18.579654024,QC-01,Quality,49292.44,189,Valve Assembly,Normal,complete
+ORD-00025,Dispatch,2026-01-30 13:06:04.292223724,Warehouse-01,Warehouse,49292.44,189,Valve Assembly,Normal,complete
+ORD-00025,Invoice,2026-01-30 14:43:20.103623915,Finance-01,Finance,49292.44,189,Valve Assembly,Normal,complete
+ORD-00026,Order Received,2026-03-07 06:33:00.000000000,Sales-01,Sales,38665.39,237,Industrial Pump,High,complete
+ORD-00026,Order Verification,2026-03-07 08:25:25.939340343,Sales-03,Sales,38665.39,237,Industrial Pump,High,complete
+ORD-00026,Inventory Check,2026-03-07 14:09:30.034401740,Warehouse-01,Warehouse,38665.39,237,Industrial Pump,High,complete
+ORD-00026,Production Planning,2026-03-07 18:54:09.608856034,Planner-02,Planning,38665.39,237,Industrial Pump,High,complete
+ORD-00026,Production,2026-03-07 22:09:09.891480823,Prod-02,Production,38665.39,237,Industrial Pump,High,complete
+ORD-00026,Quality Inspection,2026-03-08 12:43:48.006570466,QC-01,Quality,38665.39,237,Industrial Pump,High,complete
+ORD-00026,Dispatch,2026-03-08 15:38:22.457807361,Warehouse-01,Warehouse,38665.39,237,Industrial Pump,High,complete
+ORD-00026,Invoice,2026-03-08 17:15:46.670066018,Finance-02,Finance,38665.39,237,Industrial Pump,High,complete
+ORD-00027,Order Received,2026-02-20 05:12:00.000000000,Sales-01,Sales,24098.89,124,Valve Assembly,Normal,complete
+ORD-00027,Order Verification,2026-02-20 06:38:13.663466517,Sales-03,Sales,24098.89,124,Valve Assembly,Normal,complete
+ORD-00027,Inventory Check,2026-02-20 12:12:49.296941231,Warehouse-02,Warehouse,24098.89,124,Valve Assembly,Normal,complete
+ORD-00027,Production Planning,2026-02-20 15:28:47.732815035,Planner-02,Planning,24098.89,124,Valve Assembly,Normal,complete
+ORD-00027,Production,2026-02-20 17:37:35.008974123,Prod-04,Production,24098.89,124,Valve Assembly,Normal,complete
+ORD-00027,Quality Inspection,2026-02-21 03:04:51.941186243,QC-01,Quality,24098.89,124,Valve Assembly,Normal,complete
+ORD-00027,Dispatch,2026-02-21 05:57:25.694941336,Warehouse-01,Warehouse,24098.89,124,Valve Assembly,Normal,complete
+ORD-00027,Invoice,2026-02-21 07:33:33.059483024,Finance-02,Finance,24098.89,124,Valve Assembly,Normal,complete
+ORD-00028,Order Received,2026-01-08 03:20:00.000000000,Sales-02,Sales,6612.43,17,Control Panel,Normal,complete
+ORD-00028,Order Verification,2026-01-08 05:06:38.864507261,Sales-03,Sales,6612.43,17,Control Panel,Normal,complete
+ORD-00028,Inventory Check,2026-01-08 19:31:32.931146269,Warehouse-01,Warehouse,6612.43,17,Control Panel,Normal,complete
+ORD-00028,Production Planning,2026-01-09 00:13:45.096417599,Planner-01,Planning,6612.43,17,Control Panel,Normal,complete
+ORD-00028,Production,2026-01-09 01:18:58.067723070,Prod-01,Production,6612.43,17,Control Panel,Normal,complete
+ORD-00028,Quality Inspection,2026-01-09 15:01:05.521840624,QC-02,Quality,6612.43,17,Control Panel,Normal,complete
+ORD-00028,Dispatch,2026-01-09 17:08:51.666795441,Warehouse-01,Warehouse,6612.43,17,Control Panel,Normal,complete
+ORD-00028,Invoice,2026-01-09 19:23:25.760220379,Finance-01,Finance,6612.43,17,Control Panel,Normal,complete
+ORD-00029,Order Received,2026-01-14 01:08:00.000000000,Sales-02,Sales,54095.48,130,Valve Assembly,Normal,complete
+ORD-00029,Order Verification,2026-01-14 02:26:27.211181283,Sales-03,Sales,54095.48,130,Valve Assembly,Normal,complete
+ORD-00029,Inventory Check,2026-01-14 15:02:32.423856174,Warehouse-01,Warehouse,54095.48,130,Valve Assembly,Normal,complete
+ORD-00029,Production Planning,2026-01-14 19:45:29.190916379,Planner-01,Planning,54095.48,130,Valve Assembly,Normal,complete
+ORD-00029,Production,2026-01-14 21:40:52.255428618,Prod-03,Production,54095.48,130,Valve Assembly,Normal,complete
+ORD-00029,Quality Inspection,2026-01-15 13:44:03.827004931,QC-02,Quality,54095.48,130,Valve Assembly,Normal,complete
+ORD-00029,Dispatch,2026-01-15 17:19:35.765854680,Warehouse-01,Warehouse,54095.48,130,Valve Assembly,Normal,complete
+ORD-00029,Invoice,2026-01-15 19:45:03.026225408,Finance-01,Finance,54095.48,130,Valve Assembly,Normal,complete
+ORD-00030,Order Received,2026-03-05 00:13:00.000000000,Sales-01,Sales,20672.13,95,Valve Assembly,Normal,complete
+ORD-00030,Order Verification,2026-03-05 01:46:51.917690379,Sales-01,Sales,20672.13,95,Valve Assembly,Normal,complete
+ORD-00030,Inventory Check,2026-03-05 09:19:29.888862879,Warehouse-02,Warehouse,20672.13,95,Valve Assembly,Normal,complete
+ORD-00030,Production Planning,2026-03-05 11:55:30.090121536,Planner-01,Planning,20672.13,95,Valve Assembly,Normal,complete
+ORD-00030,Production,2026-03-05 15:41:30.751788611,Prod-01,Production,20672.13,95,Valve Assembly,Normal,complete
+ORD-00030,Quality Inspection,2026-03-06 03:35:43.974520011,QC-02,Quality,20672.13,95,Valve Assembly,Normal,complete
+ORD-00030,Dispatch,2026-03-06 05:04:12.015143379,Warehouse-02,Warehouse,20672.13,95,Valve Assembly,Normal,complete
+ORD-00030,Invoice,2026-03-06 06:18:31.426394218,Finance-01,Finance,20672.13,95,Valve Assembly,Normal,complete
+ORD-00031,Order Received,2026-02-12 02:49:00.000000000,Sales-02,Sales,45475.14,151,Motor Housing,Normal,complete
+ORD-00031,Order Verification,2026-02-12 03:13:53.776764044,Sales-03,Sales,45475.14,151,Motor Housing,Normal,complete
+ORD-00031,Inventory Check,2026-02-12 21:10:08.337144232,Warehouse-01,Warehouse,45475.14,151,Motor Housing,Normal,complete
+ORD-00031,Production Planning,2026-02-12 23:46:29.048254604,Planner-02,Planning,45475.14,151,Motor Housing,Normal,complete
+ORD-00031,Production,2026-02-13 01:45:23.921808823,Prod-02,Production,45475.14,151,Motor Housing,Normal,complete
+ORD-00031,Quality Inspection,2026-02-13 11:28:20.509796709,QC-02,Quality,45475.14,151,Motor Housing,Normal,complete
+ORD-00031,Dispatch,2026-02-13 14:57:02.844433032,Warehouse-01,Warehouse,45475.14,151,Motor Housing,Normal,complete
+ORD-00031,Invoice,2026-02-13 17:30:25.977210179,Finance-02,Finance,45475.14,151,Motor Housing,Normal,complete
+ORD-00032,Order Received,2026-02-03 05:16:00.000000000,Sales-02,Sales,29289.8,123,Industrial Pump,Normal,complete
+ORD-00032,Order Verification,2026-02-03 06:54:34.983960109,Sales-01,Sales,29289.8,123,Industrial Pump,Normal,complete
+ORD-00032,Inventory Check,2026-02-03 23:08:25.150750025,Warehouse-01,Warehouse,29289.8,123,Industrial Pump,Normal,complete
+ORD-00032,Production Planning,2026-02-04 01:52:12.077947339,Planner-02,Planning,29289.8,123,Industrial Pump,Normal,complete
+ORD-00032,Production,2026-02-04 03:25:18.598848732,Prod-01,Production,29289.8,123,Industrial Pump,Normal,complete
+ORD-00032,Quality Inspection,2026-02-04 17:07:04.229864877,QC-01,Quality,29289.8,123,Industrial Pump,Normal,complete
+ORD-00032,Dispatch,2026-02-04 19:29:35.003139946,Warehouse-02,Warehouse,29289.8,123,Industrial Pump,Normal,complete
+ORD-00032,Invoice,2026-02-04 21:30:15.149467538,Finance-01,Finance,29289.8,123,Industrial Pump,Normal,complete
+ORD-00033,Order Received,2026-02-09 01:46:00.000000000,Sales-02,Sales,35847.87,209,Valve Assembly,High,complete
+ORD-00033,Order Verification,2026-02-09 02:58:03.109651371,Sales-01,Sales,35847.87,209,Valve Assembly,High,complete
+ORD-00033,Inventory Check,2026-02-09 15:51:29.012991401,Warehouse-02,Warehouse,35847.87,209,Valve Assembly,High,complete
+ORD-00033,Production Planning,2026-02-09 18:17:49.305162290,Planner-01,Planning,35847.87,209,Valve Assembly,High,complete
+ORD-00033,Production,2026-02-09 22:44:53.489083005,Prod-04,Production,35847.87,209,Valve Assembly,High,complete
+ORD-00033,Quality Inspection,2026-02-10 09:18:45.966372291,QC-01,Quality,35847.87,209,Valve Assembly,High,complete
+ORD-00033,Dispatch,2026-02-10 12:53:38.906479105,Warehouse-01,Warehouse,35847.87,209,Valve Assembly,High,complete
+ORD-00033,Invoice,2026-02-10 14:07:10.587734616,Finance-02,Finance,35847.87,209,Valve Assembly,High,complete
+ORD-00034,Order Received,2026-03-08 02:14:00.000000000,Sales-01,Sales,10195.61,67,Control Panel,Normal,complete
+ORD-00034,Order Verification,2026-03-08 03:34:21.929915119,Sales-01,Sales,10195.61,67,Control Panel,Normal,complete
+ORD-00034,Inventory Check,2026-03-08 19:02:14.439891722,Warehouse-02,Warehouse,10195.61,67,Control Panel,Normal,complete
+ORD-00034,Production Planning,2026-03-09 00:22:46.201164729,Planner-02,Planning,10195.61,67,Control Panel,Normal,complete
+ORD-00034,Production,2026-03-09 04:29:48.017220033,Prod-03,Production,10195.61,67,Control Panel,Normal,complete
+ORD-00034,Quality Inspection,2026-03-09 14:46:16.068360195,QC-02,Quality,10195.61,67,Control Panel,Normal,complete
+ORD-00034,Dispatch,2026-03-09 16:57:55.102267085,Warehouse-01,Warehouse,10195.61,67,Control Panel,Normal,complete
+ORD-00034,Invoice,2026-03-09 19:31:06.314707963,Finance-02,Finance,10195.61,67,Control Panel,Normal,complete
+ORD-00035,Order Received,2026-01-22 06:53:00.000000000,Sales-02,Sales,60480.33,236,Motor Housing,Normal,complete
+ORD-00035,Order Verification,2026-01-22 07:13:37.583637410,Sales-01,Sales,60480.33,236,Motor Housing,Normal,complete
+ORD-00035,Inventory Check,2026-01-23 00:40:34.635258843,Warehouse-02,Warehouse,60480.33,236,Motor Housing,Normal,complete
+ORD-00035,Production Planning,2026-01-23 05:49:13.749384788,Planner-02,Planning,60480.33,236,Motor Housing,Normal,complete
+ORD-00035,Production,2026-01-23 10:00:30.199780703,Prod-04,Production,60480.33,236,Motor Housing,Normal,complete
+ORD-00035,Quality Inspection,2026-01-23 21:20:02.526119017,QC-01,Quality,60480.33,236,Motor Housing,Normal,complete
+ORD-00035,Dispatch,2026-01-23 23:20:48.661812607,Warehouse-02,Warehouse,60480.33,236,Motor Housing,Normal,complete
+ORD-00035,Invoice,2026-01-24 00:12:25.870499067,Finance-02,Finance,60480.33,236,Motor Housing,Normal,complete
+ORD-00036,Order Received,2026-02-27 03:33:00.000000000,Sales-01,Sales,57173.13,176,Gear Assembly,Normal,complete
+ORD-00036,Order Verification,2026-02-27 03:59:24.504708214,Sales-01,Sales,57173.13,176,Gear Assembly,Normal,complete
+ORD-00036,Inventory Check,2026-02-27 19:15:35.767148565,Warehouse-01,Warehouse,57173.13,176,Gear Assembly,Normal,complete
+ORD-00036,Production Planning,2026-02-27 22:29:17.983136509,Planner-01,Planning,57173.13,176,Gear Assembly,Normal,complete
+ORD-00036,Production,2026-02-28 00:46:24.440375091,Prod-01,Production,57173.13,176,Gear Assembly,Normal,complete
+ORD-00036,Quality Inspection,2026-02-28 13:33:26.715481374,QC-02,Quality,57173.13,176,Gear Assembly,Normal,complete
+ORD-00036,Dispatch,2026-02-28 16:27:06.735103315,Warehouse-02,Warehouse,57173.13,176,Gear Assembly,Normal,complete
+ORD-00036,Invoice,2026-02-28 18:00:07.408264721,Finance-01,Finance,57173.13,176,Gear Assembly,Normal,complete
+ORD-00037,Order Received,2026-01-29 04:50:00.000000000,Sales-01,Sales,79521.82,211,Valve Assembly,Normal,complete
+ORD-00037,Order Verification,2026-01-29 06:10:34.169143227,Sales-02,Sales,79521.82,211,Valve Assembly,Normal,complete
+ORD-00037,Inventory Check,2026-01-29 21:34:36.063320231,Warehouse-02,Warehouse,79521.82,211,Valve Assembly,Normal,complete
+ORD-00037,Production Planning,2026-01-30 01:16:03.570502883,Planner-02,Planning,79521.82,211,Valve Assembly,Normal,complete
+ORD-00037,Production,2026-01-30 04:41:51.081216060,Prod-02,Production,79521.82,211,Valve Assembly,Normal,complete
+ORD-00037,Quality Inspection,2026-01-30 16:15:55.295763617,QC-02,Quality,79521.82,211,Valve Assembly,Normal,complete
+ORD-00037,Dispatch,2026-01-30 19:36:48.951767653,Warehouse-02,Warehouse,79521.82,211,Valve Assembly,Normal,complete
+ORD-00037,Invoice,2026-01-30 21:07:46.406992153,Finance-01,Finance,79521.82,211,Valve Assembly,Normal,complete
+ORD-00038,Order Received,2026-02-19 04:24:00.000000000,Sales-01,Sales,7507.43,76,Motor Housing,Normal,complete
+ORD-00038,Order Verification,2026-02-19 05:25:45.171014465,Sales-02,Sales,7507.43,76,Motor Housing,Normal,complete
+ORD-00038,Inventory Check,2026-02-19 12:21:53.957530322,Warehouse-01,Warehouse,7507.43,76,Motor Housing,Normal,complete
+ORD-00038,Production Planning,2026-02-19 14:29:59.991390232,Planner-02,Planning,7507.43,76,Motor Housing,Normal,complete
+ORD-00038,Production,2026-02-19 17:13:06.245966220,Prod-01,Production,7507.43,76,Motor Housing,Normal,complete
+ORD-00038,Quality Inspection,2026-02-20 07:25:08.288284386,QC-01,Quality,7507.43,76,Motor Housing,Normal,complete
+ORD-00038,Dispatch,2026-02-20 10:48:37.904923836,Warehouse-02,Warehouse,7507.43,76,Motor Housing,Normal,complete
+ORD-00038,Invoice,2026-02-20 12:14:50.725846117,Finance-01,Finance,7507.43,76,Motor Housing,Normal,complete
+ORD-00039,Order Received,2026-02-01 07:09:00.000000000,Sales-01,Sales,80315.01,235,Gear Assembly,High,complete
+ORD-00039,Order Verification,2026-02-01 07:31:15.813747206,Sales-02,Sales,80315.01,235,Gear Assembly,High,complete
+ORD-00039,Inventory Check,2026-02-01 18:44:59.071914097,Warehouse-01,Warehouse,80315.01,235,Gear Assembly,High,complete
+ORD-00039,Production Planning,2026-02-01 22:01:51.166682977,Planner-02,Planning,80315.01,235,Gear Assembly,High,complete
+ORD-00039,Production,2026-02-02 02:09:19.221796754,Prod-01,Production,80315.01,235,Gear Assembly,High,complete
+ORD-00039,Quality Inspection,2026-02-02 15:22:58.010936661,QC-02,Quality,80315.01,235,Gear Assembly,High,complete
+ORD-00039,Dispatch,2026-02-02 17:25:53.344893459,Warehouse-02,Warehouse,80315.01,235,Gear Assembly,High,complete
+ORD-00039,Invoice,2026-02-02 18:33:05.580305257,Finance-02,Finance,80315.01,235,Gear Assembly,High,complete
+ORD-00040,Order Received,2026-02-24 03:34:00.000000000,Sales-01,Sales,87260.71,216,Gear Assembly,Normal,complete
+ORD-00040,Order Verification,2026-02-24 04:54:21.923648059,Sales-01,Sales,87260.71,216,Gear Assembly,Normal,complete
+ORD-00040,Inventory Check,2026-02-24 22:26:26.167512037,Warehouse-01,Warehouse,87260.71,216,Gear Assembly,Normal,complete
+ORD-00040,Production Planning,2026-02-25 01:28:48.299004257,Planner-02,Planning,87260.71,216,Gear Assembly,Normal,complete
+ORD-00040,Production,2026-02-25 04:22:39.250003301,Prod-01,Production,87260.71,216,Gear Assembly,Normal,complete
+ORD-00040,Quality Inspection,2026-02-25 17:52:01.849215948,QC-01,Quality,87260.71,216,Gear Assembly,Normal,complete
+ORD-00040,Dispatch,2026-02-25 21:24:48.154743473,Warehouse-01,Warehouse,87260.71,216,Gear Assembly,Normal,complete
+ORD-00040,Invoice,2026-02-25 23:43:43.672132748,Finance-02,Finance,87260.71,216,Gear Assembly,Normal,complete
+ORD-00041,Order Received,2026-03-19 00:14:00.000000000,Sales-01,Sales,7994.61,40,Motor Housing,Normal,complete
+ORD-00041,Order Verification,2026-03-19 01:52:46.695305087,Sales-02,Sales,7994.61,40,Motor Housing,Normal,complete
+ORD-00041,Inventory Check,2026-03-19 05:55:51.019051317,Warehouse-02,Warehouse,7994.61,40,Motor Housing,Normal,complete
+ORD-00041,Production Planning,2026-03-19 09:36:37.251598412,Planner-01,Planning,7994.61,40,Motor Housing,Normal,complete
+ORD-00041,Production,2026-03-19 13:57:04.586793478,Prod-03,Production,7994.61,40,Motor Housing,Normal,complete
+ORD-00041,Quality Inspection,2026-03-20 05:38:23.110436926,QC-02,Quality,7994.61,40,Motor Housing,Normal,complete
+ORD-00041,Dispatch,2026-03-20 08:15:24.774206070,Warehouse-01,Warehouse,7994.61,40,Motor Housing,Normal,complete
+ORD-00041,Invoice,2026-03-20 09:37:36.997339195,Finance-02,Finance,7994.61,40,Motor Housing,Normal,complete
+ORD-00042,Order Received,2026-01-23 05:19:00.000000000,Sales-01,Sales,61419.68,161,Industrial Pump,Normal,complete
+ORD-00042,Order Verification,2026-01-23 06:11:38.236598129,Sales-03,Sales,61419.68,161,Industrial Pump,Normal,complete
+ORD-00042,Inventory Check,2026-01-23 11:25:43.398166904,Warehouse-02,Warehouse,61419.68,161,Industrial Pump,Normal,complete
+ORD-00042,Production Planning,2026-01-23 15:27:35.744976716,Planner-01,Planning,61419.68,161,Industrial Pump,Normal,complete
+ORD-00042,Production,2026-01-23 18:56:06.821427801,Prod-04,Production,61419.68,161,Industrial Pump,Normal,complete
+ORD-00042,Quality Inspection,2026-01-24 07:55:54.197829919,QC-01,Quality,61419.68,161,Industrial Pump,Normal,complete
+ORD-00042,Dispatch,2026-01-24 11:16:19.192514482,Warehouse-02,Warehouse,61419.68,161,Industrial Pump,Normal,complete
+ORD-00042,Invoice,2026-01-24 13:42:50.685007657,Finance-02,Finance,61419.68,161,Industrial Pump,Normal,complete
+ORD-00043,Order Received,2026-03-03 04:00:00.000000000,Sales-02,Sales,71334.18,231,Gear Assembly,High,complete
+ORD-00043,Order Verification,2026-03-03 04:35:20.476493999,Sales-03,Sales,71334.18,231,Gear Assembly,High,complete
+ORD-00043,Inventory Check,2026-03-03 07:58:06.150819014,Warehouse-02,Warehouse,71334.18,231,Gear Assembly,High,complete
+ORD-00043,Production Planning,2026-03-03 10:45:17.001625143,Planner-01,Planning,71334.18,231,Gear Assembly,High,complete
+ORD-00043,Production,2026-03-03 13:07:01.512641754,Prod-02,Production,71334.18,231,Gear Assembly,High,complete
+ORD-00043,Quality Inspection,2026-03-03 22:20:39.989262506,QC-02,Quality,71334.18,231,Gear Assembly,High,complete
+ORD-00043,Dispatch,2026-03-03 23:56:21.706463808,Warehouse-01,Warehouse,71334.18,231,Gear Assembly,High,complete
+ORD-00043,Invoice,2026-03-04 01:02:26.114761890,Finance-01,Finance,71334.18,231,Gear Assembly,High,complete
+ORD-00044,Order Received,2026-01-21 05:05:00.000000000,Sales-01,Sales,9129.89,82,Control Panel,Urgent,complete
+ORD-00044,Order Verification,2026-01-21 06:40:40.331483100,Sales-01,Sales,9129.89,82,Control Panel,Urgent,complete
+ORD-00044,Inventory Check,2026-01-21 11:55:35.542253704,Warehouse-01,Warehouse,9129.89,82,Control Panel,Urgent,complete
+ORD-00044,Production Planning,2026-01-21 15:41:12.462770432,Planner-01,Planning,9129.89,82,Control Panel,Urgent,complete
+ORD-00044,Production,2026-01-21 17:23:05.752128138,Prod-03,Production,9129.89,82,Control Panel,Urgent,complete
+ORD-00044,Quality Inspection,2026-01-22 09:32:33.791011886,QC-02,Quality,9129.89,82,Control Panel,Urgent,complete
+ORD-00044,Dispatch,2026-01-22 12:51:41.574823649,Warehouse-01,Warehouse,9129.89,82,Control Panel,Urgent,complete
+ORD-00044,Invoice,2026-01-22 14:29:33.788735946,Finance-01,Finance,9129.89,82,Control Panel,Urgent,complete
+ORD-00045,Order Received,2026-02-02 08:05:00.000000000,Sales-02,Sales,63191.88,247,Industrial Pump,Normal,complete
+ORD-00045,Order Verification,2026-02-02 09:17:18.566602197,Sales-03,Sales,63191.88,247,Industrial Pump,Normal,complete
+ORD-00045,Inventory Check,2026-02-03 03:04:58.840790752,Warehouse-02,Warehouse,63191.88,247,Industrial Pump,Normal,complete
+ORD-00045,Production Planning,2026-02-03 06:27:40.859873731,Planner-01,Planning,63191.88,247,Industrial Pump,Normal,complete
+ORD-00045,Production,2026-02-03 09:08:23.860166104,Prod-03,Production,63191.88,247,Industrial Pump,Normal,complete
+ORD-00045,Quality Inspection,2026-02-04 00:50:17.498566816,QC-01,Quality,63191.88,247,Industrial Pump,Normal,complete
+ORD-00045,Dispatch,2026-02-04 04:17:05.420598067,Warehouse-02,Warehouse,63191.88,247,Industrial Pump,Normal,complete
+ORD-00045,Invoice,2026-02-04 06:44:32.901752420,Finance-01,Finance,63191.88,247,Industrial Pump,Normal,complete
+ORD-00046,Order Received,2026-01-31 01:35:00.000000000,Sales-01,Sales,26113.7,72,Valve Assembly,Normal,complete
+ORD-00046,Order Verification,2026-01-31 03:15:15.498286981,Sales-02,Sales,26113.7,72,Valve Assembly,Normal,complete
+ORD-00046,Inventory Check,2026-01-31 14:30:32.142954506,Warehouse-02,Warehouse,26113.7,72,Valve Assembly,Normal,complete
+ORD-00046,Production Planning,2026-01-31 19:17:30.174699951,Planner-02,Planning,26113.7,72,Valve Assembly,Normal,complete
+ORD-00046,Production,2026-01-31 22:40:51.016833764,Prod-03,Production,26113.7,72,Valve Assembly,Normal,complete
+ORD-00046,Quality Inspection,2026-02-01 11:17:44.047573098,QC-01,Quality,26113.7,72,Valve Assembly,Normal,complete
+ORD-00046,Dispatch,2026-02-01 13:08:11.557139719,Warehouse-01,Warehouse,26113.7,72,Valve Assembly,Normal,complete
+ORD-00046,Invoice,2026-02-01 15:08:47.300508336,Finance-02,Finance,26113.7,72,Valve Assembly,Normal,complete
+ORD-00047,Order Received,2026-02-10 05:05:00.000000000,Sales-01,Sales,28214.62,163,Valve Assembly,Normal,complete
+ORD-00047,Order Verification,2026-02-10 06:07:00.726500942,Sales-02,Sales,28214.62,163,Valve Assembly,Normal,complete
+ORD-00047,Inventory Check,2026-02-10 11:54:03.889869586,Warehouse-02,Warehouse,28214.62,163,Valve Assembly,Normal,complete
+ORD-00047,Production Planning,2026-02-10 17:00:59.861202932,Planner-01,Planning,28214.62,163,Valve Assembly,Normal,complete
+ORD-00047,Production,2026-02-10 19:42:06.292637560,Prod-04,Production,28214.62,163,Valve Assembly,Normal,complete
+ORD-00047,Quality Inspection,2026-02-11 06:19:43.653181160,QC-02,Quality,28214.62,163,Valve Assembly,Normal,complete
+ORD-00047,Dispatch,2026-02-11 09:15:55.502845207,Warehouse-01,Warehouse,28214.62,163,Valve Assembly,Normal,complete
+ORD-00047,Invoice,2026-02-11 10:51:32.389913889,Finance-01,Finance,28214.62,163,Valve Assembly,Normal,complete
+ORD-00048,Order Received,2026-03-06 08:23:00.000000000,Sales-01,Sales,13265.88,36,Gear Assembly,High,complete
+ORD-00048,Order Verification,2026-03-06 10:26:15.048555828,Sales-02,Sales,13265.88,36,Gear Assembly,High,complete
+ORD-00048,Inventory Check,2026-03-07 17:28:38.089751842,Warehouse-01,Warehouse,13265.88,36,Gear Assembly,High,complete
+ORD-00048,Production Planning,2026-03-07 20:04:15.108337209,Planner-01,Planning,13265.88,36,Gear Assembly,High,complete
+ORD-00048,Production,2026-03-07 22:47:44.975327057,Prod-04,Production,13265.88,36,Gear Assembly,High,complete
+ORD-00048,Quality Inspection,2026-03-08 11:02:35.321919363,QC-01,Quality,13265.88,36,Gear Assembly,High,complete
+ORD-00048,Dispatch,2026-03-08 13:52:18.598240203,Warehouse-02,Warehouse,13265.88,36,Gear Assembly,High,complete
+ORD-00048,Invoice,2026-03-08 14:57:40.788661919,Finance-01,Finance,13265.88,36,Gear Assembly,High,complete
+ORD-00049,Order Received,2026-02-06 00:35:00.000000000,Sales-01,Sales,73761.89,203,Motor Housing,Normal,complete
+ORD-00049,Order Verification,2026-02-06 00:58:01.290537094,Sales-01,Sales,73761.89,203,Motor Housing,Normal,complete
+ORD-00049,Inventory Check,2026-02-07 14:33:13.695377855,Warehouse-01,Warehouse,73761.89,203,Motor Housing,Normal,complete
+ORD-00049,Production Planning,2026-02-07 16:04:24.136440225,Planner-02,Planning,73761.89,203,Motor Housing,Normal,complete
+ORD-00049,Production,2026-02-07 20:16:24.572673653,Prod-03,Production,73761.89,203,Motor Housing,Normal,complete
+ORD-00049,Quality Inspection,2026-02-08 09:30:46.100000852,QC-02,Quality,73761.89,203,Motor Housing,Normal,complete
+ORD-00049,Dispatch,2026-02-08 12:02:30.099418586,Warehouse-01,Warehouse,73761.89,203,Motor Housing,Normal,complete
+ORD-00049,Invoice,2026-02-08 14:20:58.274389101,Finance-02,Finance,73761.89,203,Motor Housing,Normal,complete
+ORD-00050,Order Received,2026-03-12 06:57:00.000000000,Sales-01,Sales,27960.08,87,Gear Assembly,Normal,complete
+ORD-00050,Order Verification,2026-03-12 08:27:02.382342434,Sales-03,Sales,27960.08,87,Gear Assembly,Normal,complete
+ORD-00050,Inventory Check,2026-03-12 14:40:23.485908864,Warehouse-02,Warehouse,27960.08,87,Gear Assembly,Normal,complete
+ORD-00050,Production Planning,2026-03-12 17:22:30.763059715,Planner-01,Planning,27960.08,87,Gear Assembly,Normal,complete
+ORD-00050,Production,2026-03-12 18:50:41.558844086,Prod-01,Production,27960.08,87,Gear Assembly,Normal,complete
+ORD-00050,Quality Inspection,2026-03-13 05:37:17.564243357,QC-01,Quality,27960.08,87,Gear Assembly,Normal,complete
+ORD-00050,Dispatch,2026-03-13 07:52:17.575831425,Warehouse-01,Warehouse,27960.08,87,Gear Assembly,Normal,complete
+ORD-00050,Invoice,2026-03-13 08:32:04.421518405,Finance-01,Finance,27960.08,87,Gear Assembly,Normal,complete
+ORD-00051,Order Received,2026-02-15 06:21:00.000000000,Sales-02,Sales,24344.18,202,Industrial Pump,Normal,complete
+ORD-00051,Order Verification,2026-02-15 07:06:16.637450902,Sales-01,Sales,24344.18,202,Industrial Pump,Normal,complete
+ORD-00051,Inventory Check,2026-02-15 20:57:22.653518736,Warehouse-02,Warehouse,24344.18,202,Industrial Pump,Normal,complete
+ORD-00051,Production Planning,2026-02-16 19:36:30.382213394,Planner-02,Planning,24344.18,202,Industrial Pump,Normal,complete
+ORD-00051,Production,2026-02-16 22:21:16.518979703,Prod-01,Production,24344.18,202,Industrial Pump,Normal,complete
+ORD-00051,Quality Inspection,2026-02-17 12:59:40.856219383,QC-01,Quality,24344.18,202,Industrial Pump,Normal,complete
+ORD-00051,Dispatch,2026-02-17 14:06:54.479899485,Warehouse-01,Warehouse,24344.18,202,Industrial Pump,Normal,complete
+ORD-00051,Invoice,2026-02-17 15:04:47.970263067,Finance-02,Finance,24344.18,202,Industrial Pump,Normal,complete
+ORD-00052,Order Received,2026-03-19 08:36:00.000000000,Sales-01,Sales,26023.22,177,Motor Housing,Normal,complete
+ORD-00052,Order Verification,2026-03-19 08:53:35.368887208,Sales-03,Sales,26023.22,177,Motor Housing,Normal,complete
+ORD-00052,Inventory Check,2026-03-19 21:36:12.677012830,Warehouse-01,Warehouse,26023.22,177,Motor Housing,Normal,complete
+ORD-00052,Production Planning,2026-03-20 02:36:48.701595586,Planner-01,Planning,26023.22,177,Motor Housing,Normal,complete
+ORD-00052,Production,2026-03-20 05:30:58.193818873,Prod-04,Production,26023.22,177,Motor Housing,Normal,complete
+ORD-00052,Quality Inspection,2026-03-20 18:29:50.539376807,QC-02,Quality,26023.22,177,Motor Housing,Normal,complete
+ORD-00052,Dispatch,2026-03-20 20:49:40.525294246,Warehouse-01,Warehouse,26023.22,177,Motor Housing,Normal,complete
+ORD-00052,Invoice,2026-03-20 22:18:49.623767542,Finance-02,Finance,26023.22,177,Motor Housing,Normal,complete
+ORD-00053,Order Received,2026-01-16 05:51:00.000000000,Sales-01,Sales,15852.36,48,Valve Assembly,High,complete
+ORD-00053,Order Verification,2026-01-16 06:33:16.774166030,Sales-01,Sales,15852.36,48,Valve Assembly,High,complete
+ORD-00053,Inventory Check,2026-01-17 00:25:11.240796733,Warehouse-02,Warehouse,15852.36,48,Valve Assembly,High,complete
+ORD-00053,Production Planning,2026-01-17 04:06:44.698523034,Planner-02,Planning,15852.36,48,Valve Assembly,High,complete
+ORD-00053,Production,2026-01-17 05:10:07.967408103,Prod-04,Production,15852.36,48,Valve Assembly,High,complete
+ORD-00053,Quality Inspection,2026-01-17 18:55:22.949752659,QC-01,Quality,15852.36,48,Valve Assembly,High,complete
+ORD-00053,Dispatch,2026-01-17 20:44:13.006643444,Warehouse-02,Warehouse,15852.36,48,Valve Assembly,High,complete
+ORD-00053,Invoice,2026-01-17 21:43:14.488560696,Finance-02,Finance,15852.36,48,Valve Assembly,High,complete
+ORD-00054,Order Received,2026-01-25 08:44:00.000000000,Sales-01,Sales,15532.56,161,Industrial Pump,Normal,complete
+ORD-00054,Order Verification,2026-01-25 09:45:50.440959390,Sales-01,Sales,15532.56,161,Industrial Pump,Normal,complete
+ORD-00054,Inventory Check,2026-01-25 16:39:44.847570401,Warehouse-01,Warehouse,15532.56,161,Industrial Pump,Normal,complete
+ORD-00054,Production Planning,2026-01-25 18:25:36.302559695,Planner-02,Planning,15532.56,161,Industrial Pump,Normal,complete
+ORD-00054,Production,2026-01-25 22:11:27.698897912,Prod-03,Production,15532.56,161,Industrial Pump,Normal,complete
+ORD-00054,Quality Inspection,2026-01-26 12:55:06.412375974,QC-02,Quality,15532.56,161,Industrial Pump,Normal,complete
+ORD-00054,Dispatch,2026-01-26 16:19:19.967767237,Warehouse-01,Warehouse,15532.56,161,Industrial Pump,Normal,complete
+ORD-00054,Invoice,2026-01-26 17:30:38.411773858,Finance-01,Finance,15532.56,161,Industrial Pump,Normal,complete
+ORD-00055,Order Received,2026-01-27 05:43:00.000000000,Sales-02,Sales,16182.01,44,Control Panel,Normal,complete
+ORD-00055,Order Verification,2026-01-27 07:28:27.372431169,Sales-03,Sales,16182.01,44,Control Panel,Normal,complete
+ORD-00055,Inventory Check,2026-01-27 11:23:29.130032936,Warehouse-01,Warehouse,16182.01,44,Control Panel,Normal,complete
+ORD-00055,Production Planning,2026-01-27 12:56:31.123986860,Planner-01,Planning,16182.01,44,Control Panel,Normal,complete
+ORD-00055,Production,2026-01-27 15:12:23.362892016,Prod-04,Production,16182.01,44,Control Panel,Normal,complete
+ORD-00055,Quality Inspection,2026-01-28 04:37:09.702254530,QC-02,Quality,16182.01,44,Control Panel,Normal,complete
+ORD-00055,Dispatch,2026-01-28 05:45:02.410023623,Warehouse-02,Warehouse,16182.01,44,Control Panel,Normal,complete
+ORD-00055,Invoice,2026-01-28 07:13:26.780261435,Finance-02,Finance,16182.01,44,Control Panel,Normal,complete
+ORD-00056,Order Received,2026-01-09 03:00:00.000000000,Sales-01,Sales,36668.6,181,Control Panel,Normal,complete
+ORD-00056,Order Verification,2026-01-09 04:53:33.354696992,Sales-03,Sales,36668.6,181,Control Panel,Normal,complete
+ORD-00056,Inventory Check,2026-01-09 11:17:15.730244421,Warehouse-01,Warehouse,36668.6,181,Control Panel,Normal,complete
+ORD-00056,Production Planning,2026-01-09 13:31:10.048018879,Planner-02,Planning,36668.6,181,Control Panel,Normal,complete
+ORD-00056,Production,2026-01-09 15:21:35.849959523,Prod-01,Production,36668.6,181,Control Panel,Normal,complete
+ORD-00056,Quality Inspection,2026-01-10 03:39:17.246686806,QC-02,Quality,36668.6,181,Control Panel,Normal,complete
+ORD-00056,Dispatch,2026-01-10 06:55:23.048375467,Warehouse-01,Warehouse,36668.6,181,Control Panel,Normal,complete
+ORD-00056,Invoice,2026-01-10 08:19:08.395223458,Finance-02,Finance,36668.6,181,Control Panel,Normal,complete
+ORD-00057,Order Received,2026-03-14 05:30:00.000000000,Sales-02,Sales,29210.18,185,Control Panel,Normal,complete
+ORD-00057,Order Verification,2026-03-14 06:31:11.781850871,Sales-02,Sales,29210.18,185,Control Panel,Normal,complete
+ORD-00057,Inventory Check,2026-03-14 20:45:20.313482977,Warehouse-02,Warehouse,29210.18,185,Control Panel,Normal,complete
+ORD-00057,Production Planning,2026-03-14 23:01:39.940966144,Planner-01,Planning,29210.18,185,Control Panel,Normal,complete
+ORD-00057,Production,2026-03-15 00:31:58.573733773,Prod-02,Production,29210.18,185,Control Panel,Normal,complete
+ORD-00057,Quality Inspection,2026-03-15 12:41:22.099437145,QC-01,Quality,29210.18,185,Control Panel,Normal,complete
+ORD-00057,Dispatch,2026-03-15 15:58:07.289946424,Warehouse-01,Warehouse,29210.18,185,Control Panel,Normal,complete
+ORD-00057,Invoice,2026-03-15 18:01:43.120823025,Finance-01,Finance,29210.18,185,Control Panel,Normal,complete
+ORD-00058,Order Received,2026-02-02 01:17:00.000000000,Sales-02,Sales,21450.53,225,Gear Assembly,Normal,complete
+ORD-00058,Order Verification,2026-02-02 01:36:46.479745160,Sales-01,Sales,21450.53,225,Gear Assembly,Normal,complete
+ORD-00058,Inventory Check,2026-02-02 08:31:50.774862630,Warehouse-02,Warehouse,21450.53,225,Gear Assembly,Normal,complete
+ORD-00058,Production Planning,2026-02-02 10:06:42.345068390,Planner-01,Planning,21450.53,225,Gear Assembly,Normal,complete
+ORD-00058,Production,2026-02-02 12:47:20.749312459,Prod-03,Production,21450.53,225,Gear Assembly,Normal,complete
+ORD-00058,Quality Inspection,2026-02-03 02:06:10.960165459,QC-01,Quality,21450.53,225,Gear Assembly,Normal,complete
+ORD-00058,Dispatch,2026-02-03 04:04:23.069872266,Warehouse-02,Warehouse,21450.53,225,Gear Assembly,Normal,complete
+ORD-00058,Invoice,2026-02-03 05:01:40.804515423,Finance-02,Finance,21450.53,225,Gear Assembly,Normal,complete
+ORD-00059,Order Received,2026-01-10 08:11:00.000000000,Sales-01,Sales,19976.85,78,Control Panel,Normal,complete
+ORD-00059,Order Verification,2026-01-10 09:34:03.303147799,Sales-02,Sales,19976.85,78,Control Panel,Normal,complete
+ORD-00059,Inventory Check,2026-01-11 23:22:24.317064575,Warehouse-02,Warehouse,19976.85,78,Control Panel,Normal,complete
+ORD-00059,Production Planning,2026-01-12 02:21:57.197314773,Planner-02,Planning,19976.85,78,Control Panel,Normal,complete
+ORD-00059,Production,2026-01-12 03:29:32.874227683,Prod-03,Production,19976.85,78,Control Panel,Normal,complete
+ORD-00059,Quality Inspection,2026-01-12 14:27:22.522761700,QC-01,Quality,19976.85,78,Control Panel,Normal,complete
+ORD-00059,Dispatch,2026-01-12 16:30:10.641712139,Warehouse-02,Warehouse,19976.85,78,Control Panel,Normal,complete
+ORD-00059,Invoice,2026-01-12 18:25:21.951915135,Finance-02,Finance,19976.85,78,Control Panel,Normal,complete
+ORD-00060,Order Received,2026-02-13 04:35:00.000000000,Sales-02,Sales,66068.87,211,Control Panel,Normal,complete
+ORD-00060,Order Verification,2026-02-13 05:33:11.234352735,Sales-01,Sales,66068.87,211,Control Panel,Normal,complete
+ORD-00060,Inventory Check,2026-02-13 21:32:01.988777994,Warehouse-02,Warehouse,66068.87,211,Control Panel,Normal,complete
+ORD-00060,Production Planning,2026-02-14 19:56:35.076967420,Planner-02,Planning,66068.87,211,Control Panel,Normal,complete
+ORD-00060,Production,2026-02-14 21:45:44.923630683,Prod-04,Production,66068.87,211,Control Panel,Normal,complete
+ORD-00060,Quality Inspection,2026-02-15 09:58:43.240922472,QC-01,Quality,66068.87,211,Control Panel,Normal,complete
+ORD-00060,Dispatch,2026-02-15 11:33:55.610406789,Warehouse-01,Warehouse,66068.87,211,Control Panel,Normal,complete
+ORD-00060,Invoice,2026-02-15 13:42:39.103537672,Finance-01,Finance,66068.87,211,Control Panel,Normal,complete
+ORD-00061,Order Received,2026-02-24 02:52:00.000000000,Sales-01,Sales,50588.64,138,Motor Housing,Normal,complete
+ORD-00061,Order Verification,2026-02-24 03:46:49.793160072,Sales-02,Sales,50588.64,138,Motor Housing,Normal,complete
+ORD-00061,Inventory Check,2026-02-24 07:18:18.420528081,Warehouse-02,Warehouse,50588.64,138,Motor Housing,Normal,complete
+ORD-00061,Production Planning,2026-02-24 10:12:57.725453400,Planner-01,Planning,50588.64,138,Motor Housing,Normal,complete
+ORD-00061,Production,2026-02-24 13:07:47.453459923,Prod-03,Production,50588.64,138,Motor Housing,Normal,complete
+ORD-00061,Quality Inspection,2026-02-25 00:07:52.647178418,QC-02,Quality,50588.64,138,Motor Housing,Normal,complete
+ORD-00061,Dispatch,2026-02-25 01:46:12.513010174,Warehouse-02,Warehouse,50588.64,138,Motor Housing,Normal,complete
+ORD-00061,Invoice,2026-02-25 02:37:22.159513008,Finance-01,Finance,50588.64,138,Motor Housing,Normal,complete
+ORD-00062,Order Received,2026-02-19 01:13:00.000000000,Sales-02,Sales,10098.86,52,Motor Housing,Normal,complete
+ORD-00062,Order Verification,2026-02-19 01:59:42.453893729,Sales-03,Sales,10098.86,52,Motor Housing,Normal,complete
+ORD-00062,Inventory Check,2026-02-20 02:35:48.225845541,Warehouse-01,Warehouse,10098.86,52,Motor Housing,Normal,complete
+ORD-00062,Production Planning,2026-02-20 04:47:53.000643301,Planner-01,Planning,10098.86,52,Motor Housing,Normal,complete
+ORD-00062,Production,2026-02-20 07:53:19.207883807,Prod-03,Production,10098.86,52,Motor Housing,Normal,complete
+ORD-00062,Quality Inspection,2026-02-20 23:26:34.322846051,QC-02,Quality,10098.86,52,Motor Housing,Normal,complete
+ORD-00062,Dispatch,2026-02-21 02:21:23.232834784,Warehouse-02,Warehouse,10098.86,52,Motor Housing,Normal,complete
+ORD-00062,Invoice,2026-02-21 03:20:59.594454311,Finance-01,Finance,10098.86,52,Motor Housing,Normal,complete
+ORD-00063,Order Received,2026-02-19 05:14:00.000000000,Sales-02,Sales,7819.34,47,Motor Housing,High,complete
+ORD-00063,Order Verification,2026-02-19 06:40:49.473030464,Sales-01,Sales,7819.34,47,Motor Housing,High,complete
+ORD-00063,Inventory Check,2026-02-19 10:06:16.793093785,Warehouse-02,Warehouse,7819.34,47,Motor Housing,High,complete
+ORD-00063,Production Planning,2026-02-19 12:53:17.109950491,Planner-01,Planning,7819.34,47,Motor Housing,High,complete
+ORD-00063,Production,2026-02-19 17:00:02.129532400,Prod-01,Production,7819.34,47,Motor Housing,High,complete
+ORD-00063,Quality Inspection,2026-02-20 09:15:49.566866894,QC-01,Quality,7819.34,47,Motor Housing,High,complete
+ORD-00063,Dispatch,2026-02-20 11:26:53.331032870,Warehouse-02,Warehouse,7819.34,47,Motor Housing,High,complete
+ORD-00063,Invoice,2026-02-20 13:01:43.817660929,Finance-02,Finance,7819.34,47,Motor Housing,High,complete
+ORD-00064,Order Received,2026-03-14 02:56:00.000000000,Sales-02,Sales,21935.45,160,Gear Assembly,High,complete
+ORD-00064,Order Verification,2026-03-14 04:35:18.631468143,Sales-02,Sales,21935.45,160,Gear Assembly,High,complete
+ORD-00064,Inventory Check,2026-03-14 12:16:04.415321737,Warehouse-01,Warehouse,21935.45,160,Gear Assembly,High,complete
+ORD-00064,Production Planning,2026-03-14 15:20:14.393625226,Planner-01,Planning,21935.45,160,Gear Assembly,High,complete
+ORD-00064,Production,2026-03-14 18:42:41.493509993,Prod-02,Production,21935.45,160,Gear Assembly,High,complete
+ORD-00064,Quality Inspection,2026-03-15 05:25:52.232180993,QC-02,Quality,21935.45,160,Gear Assembly,High,complete
+ORD-00064,Dispatch,2026-03-15 08:39:54.112227750,Warehouse-02,Warehouse,21935.45,160,Gear Assembly,High,complete
+ORD-00064,Invoice,2026-03-15 09:40:48.419923176,Finance-02,Finance,21935.45,160,Gear Assembly,High,complete
+ORD-00065,Order Received,2026-03-03 01:17:00.000000000,Sales-02,Sales,5579.34,15,Motor Housing,Normal,complete
+ORD-00065,Order Verification,2026-03-03 01:54:46.732495761,Sales-02,Sales,5579.34,15,Motor Housing,Normal,complete
+ORD-00065,Inventory Check,2026-03-03 13:50:44.466357392,Warehouse-01,Warehouse,5579.34,15,Motor Housing,Normal,complete
+ORD-00065,Production Planning,2026-03-04 07:07:47.420272172,Planner-02,Planning,5579.34,15,Motor Housing,Normal,complete
+ORD-00065,Production,2026-03-04 10:23:35.626505896,Prod-04,Production,5579.34,15,Motor Housing,Normal,complete
+ORD-00065,Quality Inspection,2026-03-04 21:46:39.692823090,QC-02,Quality,5579.34,15,Motor Housing,Normal,complete
+ORD-00065,Dispatch,2026-03-04 23:57:59.664124334,Warehouse-01,Warehouse,5579.34,15,Motor Housing,Normal,complete
+ORD-00065,Invoice,2026-03-05 00:52:38.129340085,Finance-01,Finance,5579.34,15,Motor Housing,Normal,complete
+ORD-00066,Order Received,2026-02-25 01:55:00.000000000,Sales-02,Sales,14030.55,65,Valve Assembly,Normal,complete
+ORD-00066,Order Verification,2026-02-25 03:58:14.063587868,Sales-03,Sales,14030.55,65,Valve Assembly,Normal,complete
+ORD-00066,Inventory Check,2026-02-26 16:13:57.152130395,Warehouse-01,Warehouse,14030.55,65,Valve Assembly,Normal,complete
+ORD-00066,Production Planning,2026-02-26 17:46:38.467395114,Planner-02,Planning,14030.55,65,Valve Assembly,Normal,complete
+ORD-00066,Production,2026-02-26 19:53:05.698720696,Prod-03,Production,14030.55,65,Valve Assembly,Normal,complete
+ORD-00066,Quality Inspection,2026-02-27 10:53:46.170800276,QC-02,Quality,14030.55,65,Valve Assembly,Normal,complete
+ORD-00066,Dispatch,2026-02-27 12:27:56.073391237,Warehouse-02,Warehouse,14030.55,65,Valve Assembly,Normal,complete
+ORD-00066,Invoice,2026-02-27 13:40:55.200520482,Finance-01,Finance,14030.55,65,Valve Assembly,Normal,complete
+ORD-00067,Order Received,2026-02-16 01:56:00.000000000,Sales-01,Sales,19290.26,91,Gear Assembly,Normal,complete
+ORD-00067,Order Verification,2026-02-16 03:23:52.981079019,Sales-01,Sales,19290.26,91,Gear Assembly,Normal,complete
+ORD-00067,Inventory Check,2026-02-17 16:47:06.112147873,Warehouse-02,Warehouse,19290.26,91,Gear Assembly,Normal,complete
+ORD-00067,Production Planning,2026-02-18 05:56:53.762378657,Planner-01,Planning,19290.26,91,Gear Assembly,Normal,complete
+ORD-00067,Production,2026-02-18 09:48:15.165881863,Prod-03,Production,19290.26,91,Gear Assembly,Normal,complete
+ORD-00067,Quality Inspection,2026-02-18 19:48:37.816501076,QC-01,Quality,19290.26,91,Gear Assembly,Normal,complete
+ORD-00067,Dispatch,2026-02-18 21:23:20.162763499,Warehouse-02,Warehouse,19290.26,91,Gear Assembly,Normal,complete
+ORD-00067,Invoice,2026-02-18 22:35:54.810676761,Finance-02,Finance,19290.26,91,Gear Assembly,Normal,complete
+ORD-00068,Order Received,2026-01-11 06:21:00.000000000,Sales-01,Sales,1718.7,21,Gear Assembly,Normal,complete
+ORD-00068,Order Verification,2026-01-11 07:24:43.304311002,Sales-03,Sales,1718.7,21,Gear Assembly,Normal,complete
+ORD-00068,Inventory Check,2026-01-11 21:14:48.472645543,Warehouse-02,Warehouse,1718.7,21,Gear Assembly,Normal,complete
+ORD-00068,Production Planning,2026-01-12 02:11:34.532415632,Planner-02,Planning,1718.7,21,Gear Assembly,Normal,complete
+ORD-00068,Production,2026-01-12 04:35:20.621162402,Prod-04,Production,1718.7,21,Gear Assembly,Normal,complete
+ORD-00068,Quality Inspection,2026-01-12 18:27:40.941114369,QC-01,Quality,1718.7,21,Gear Assembly,Normal,complete
+ORD-00068,Dispatch,2026-01-12 21:00:43.241015993,Warehouse-02,Warehouse,1718.7,21,Gear Assembly,Normal,complete
+ORD-00068,Invoice,2026-01-12 23:33:45.263821326,Finance-02,Finance,1718.7,21,Gear Assembly,Normal,complete
+ORD-00069,Order Received,2026-01-09 00:59:00.000000000,Sales-02,Sales,28466.27,151,Motor Housing,High,complete
+ORD-00069,Order Verification,2026-01-09 02:47:03.095853299,Sales-02,Sales,28466.27,151,Motor Housing,High,complete
+ORD-00069,Inventory Check,2026-01-09 19:36:34.799095893,Warehouse-02,Warehouse,28466.27,151,Motor Housing,High,complete
+ORD-00069,Production Planning,2026-01-09 21:18:23.895753812,Planner-01,Planning,28466.27,151,Motor Housing,High,complete
+ORD-00069,Production,2026-01-10 00:39:40.055700662,Prod-02,Production,28466.27,151,Motor Housing,High,complete
+ORD-00069,Quality Inspection,2026-01-10 16:32:07.918981190,QC-01,Quality,28466.27,151,Motor Housing,High,complete
+ORD-00069,Dispatch,2026-01-10 19:36:32.746764468,Warehouse-02,Warehouse,28466.27,151,Motor Housing,High,complete
+ORD-00069,Invoice,2026-01-10 20:55:53.155279957,Finance-01,Finance,28466.27,151,Motor Housing,High,complete
+ORD-00070,Order Received,2026-03-15 03:24:00.000000000,Sales-02,Sales,7745.72,20,Control Panel,Normal,complete
+ORD-00070,Order Verification,2026-03-15 05:25:24.688793263,Sales-02,Sales,7745.72,20,Control Panel,Normal,complete
+ORD-00070,Inventory Check,2026-03-15 16:13:06.883822544,Warehouse-02,Warehouse,7745.72,20,Control Panel,Normal,complete
+ORD-00070,Production Planning,2026-03-15 20:55:29.241851264,Planner-01,Planning,7745.72,20,Control Panel,Normal,complete
+ORD-00070,Production,2026-03-15 23:42:00.725516505,Prod-02,Production,7745.72,20,Control Panel,Normal,complete
+ORD-00070,Quality Inspection,2026-03-16 13:27:40.098784978,QC-01,Quality,7745.72,20,Control Panel,Normal,complete
+ORD-00070,Dispatch,2026-03-16 15:38:01.756305684,Warehouse-02,Warehouse,7745.72,20,Control Panel,Normal,complete
+ORD-00070,Invoice,2026-03-16 17:46:56.500631832,Finance-02,Finance,7745.72,20,Control Panel,Normal,complete
+ORD-00071,Order Received,2026-02-06 01:09:00.000000000,Sales-01,Sales,23110.56,142,Gear Assembly,Normal,complete
+ORD-00071,Order Verification,2026-02-06 03:07:50.030185652,Sales-02,Sales,23110.56,142,Gear Assembly,Normal,complete
+ORD-00071,Inventory Check,2026-02-06 19:04:52.798755277,Warehouse-02,Warehouse,23110.56,142,Gear Assembly,Normal,complete
+ORD-00071,Production Planning,2026-02-06 21:03:42.390107636,Planner-02,Planning,23110.56,142,Gear Assembly,Normal,complete
+ORD-00071,Production,2026-02-07 00:24:20.897417716,Prod-02,Production,23110.56,142,Gear Assembly,Normal,complete
+ORD-00071,Quality Inspection,2026-02-07 12:43:37.775648829,QC-01,Quality,23110.56,142,Gear Assembly,Normal,complete
+ORD-00071,Dispatch,2026-02-07 14:05:22.826723367,Warehouse-01,Warehouse,23110.56,142,Gear Assembly,Normal,complete
+ORD-00071,Invoice,2026-02-07 15:48:52.046647288,Finance-01,Finance,23110.56,142,Gear Assembly,Normal,complete
+ORD-00072,Order Received,2026-02-15 05:17:00.000000000,Sales-01,Sales,15821.68,104,Valve Assembly,Normal,complete
+ORD-00072,Order Verification,2026-02-15 06:07:49.572845593,Sales-03,Sales,15821.68,104,Valve Assembly,Normal,complete
+ORD-00072,Inventory Check,2026-02-16 18:57:44.455583674,Warehouse-02,Warehouse,15821.68,104,Valve Assembly,Normal,complete
+ORD-00072,Production Planning,2026-02-17 06:21:33.814570269,Planner-01,Planning,15821.68,104,Valve Assembly,Normal,complete
+ORD-00072,Production,2026-02-17 08:34:48.349902341,Prod-01,Production,15821.68,104,Valve Assembly,Normal,complete
+ORD-00072,Quality Inspection,2026-02-17 20:21:21.711505022,QC-01,Quality,15821.68,104,Valve Assembly,Normal,complete
+ORD-00072,Dispatch,2026-02-17 22:04:40.115584393,Warehouse-01,Warehouse,15821.68,104,Valve Assembly,Normal,complete
+ORD-00072,Invoice,2026-02-17 22:54:07.819287759,Finance-01,Finance,15821.68,104,Valve Assembly,Normal,complete
+ORD-00073,Order Received,2026-02-08 07:18:00.000000000,Sales-02,Sales,16879.41,95,Gear Assembly,High,complete
+ORD-00073,Order Verification,2026-02-08 07:51:34.382578601,Sales-01,Sales,16879.41,95,Gear Assembly,High,complete
+ORD-00073,Inventory Check,2026-02-08 21:12:42.381196444,Warehouse-02,Warehouse,16879.41,95,Gear Assembly,High,complete
+ORD-00073,Production Planning,2026-02-08 23:21:25.096422724,Planner-02,Planning,16879.41,95,Gear Assembly,High,complete
+ORD-00073,Production,2026-02-09 03:04:55.832167973,Prod-01,Production,16879.41,95,Gear Assembly,High,complete
+ORD-00073,Quality Inspection,2026-02-09 13:40:11.327799072,QC-01,Quality,16879.41,95,Gear Assembly,High,complete
+ORD-00073,Dispatch,2026-02-09 16:13:55.399952199,Warehouse-01,Warehouse,16879.41,95,Gear Assembly,High,complete
+ORD-00073,Invoice,2026-02-09 17:49:47.214536098,Finance-02,Finance,16879.41,95,Gear Assembly,High,complete
+ORD-00074,Order Received,2026-01-26 04:15:00.000000000,Sales-01,Sales,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00074,Order Verification,2026-01-26 04:34:45.444503135,Sales-02,Sales,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00074,Inventory Check,2026-01-26 09:40:04.399198474,Warehouse-02,Warehouse,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00074,Production Planning,2026-01-26 15:02:08.010431006,Planner-01,Planning,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00074,Production,2026-01-26 18:54:37.930930721,Prod-01,Production,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00074,Quality Inspection,2026-01-27 10:47:42.436388670,QC-01,Quality,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00074,Dispatch,2026-01-27 14:10:43.352456819,Warehouse-02,Warehouse,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00074,Invoice,2026-01-27 16:12:51.114920331,Finance-02,Finance,64238.16,164,Gear Assembly,Urgent,complete
+ORD-00075,Order Received,2026-03-17 01:44:00.000000000,Sales-01,Sales,20314.01,70,Motor Housing,Urgent,complete
+ORD-00075,Order Verification,2026-03-17 03:34:26.646314821,Sales-02,Sales,20314.01,70,Motor Housing,Urgent,complete
+ORD-00075,Inventory Check,2026-03-17 09:06:45.261012938,Warehouse-01,Warehouse,20314.01,70,Motor Housing,Urgent,complete
+ORD-00075,Production Planning,2026-03-18 00:06:27.699911990,Planner-01,Planning,20314.01,70,Motor Housing,Urgent,complete
+ORD-00075,Production,2026-03-18 02:40:44.238335534,Prod-01,Production,20314.01,70,Motor Housing,Urgent,complete
+ORD-00075,Quality Inspection,2026-03-18 19:52:56.000946833,QC-02,Quality,20314.01,70,Motor Housing,Urgent,complete
+ORD-00075,Dispatch,2026-03-18 22:33:05.595163888,Warehouse-02,Warehouse,20314.01,70,Motor Housing,Urgent,complete
+ORD-00075,Invoice,2026-03-18 23:50:12.538946147,Finance-01,Finance,20314.01,70,Motor Housing,Urgent,complete
+ORD-00076,Order Received,2026-01-10 07:00:00.000000000,Sales-02,Sales,13490.95,126,Industrial Pump,Normal,complete
+ORD-00076,Order Verification,2026-01-10 07:55:41.763722862,Sales-01,Sales,13490.95,126,Industrial Pump,Normal,complete
+ORD-00076,Inventory Check,2026-01-11 05:59:57.711768305,Warehouse-02,Warehouse,13490.95,126,Industrial Pump,Normal,complete
+ORD-00076,Production Planning,2026-01-11 07:53:51.317351501,Planner-01,Planning,13490.95,126,Industrial Pump,Normal,complete
+ORD-00076,Production,2026-01-11 11:13:07.666529480,Prod-04,Production,13490.95,126,Industrial Pump,Normal,complete
+ORD-00076,Quality Inspection,2026-01-12 00:50:38.354603142,QC-02,Quality,13490.95,126,Industrial Pump,Normal,complete
+ORD-00076,Dispatch,2026-01-12 02:35:26.748693837,Warehouse-01,Warehouse,13490.95,126,Industrial Pump,Normal,complete
+ORD-00076,Invoice,2026-01-12 04:17:18.640811938,Finance-02,Finance,13490.95,126,Industrial Pump,Normal,complete
+ORD-00077,Order Received,2026-02-03 07:53:00.000000000,Sales-02,Sales,76242.82,219,Industrial Pump,Normal,complete
+ORD-00077,Order Verification,2026-02-03 09:00:53.289815287,Sales-02,Sales,76242.82,219,Industrial Pump,Normal,complete
+ORD-00077,Inventory Check,2026-02-03 22:05:32.731431174,Warehouse-02,Warehouse,76242.82,219,Industrial Pump,Normal,complete
+ORD-00077,Production Planning,2026-02-04 02:07:40.056571402,Planner-01,Planning,76242.82,219,Industrial Pump,Normal,complete
+ORD-00077,Production,2026-02-04 03:15:30.713738900,Prod-01,Production,76242.82,219,Industrial Pump,Normal,complete
+ORD-00077,Quality Inspection,2026-02-04 18:36:49.252778241,QC-02,Quality,76242.82,219,Industrial Pump,Normal,complete
+ORD-00077,Dispatch,2026-02-04 20:10:08.989204302,Warehouse-01,Warehouse,76242.82,219,Industrial Pump,Normal,complete
+ORD-00077,Invoice,2026-02-04 20:48:41.056356724,Finance-01,Finance,76242.82,219,Industrial Pump,Normal,complete
+ORD-00078,Order Received,2026-01-24 08:20:00.000000000,Sales-02,Sales,44094.31,208,Control Panel,Urgent,complete
+ORD-00078,Order Verification,2026-01-24 10:09:12.355482530,Sales-01,Sales,44094.31,208,Control Panel,Urgent,complete
+ORD-00078,Inventory Check,2026-01-24 15:01:26.873436579,Warehouse-01,Warehouse,44094.31,208,Control Panel,Urgent,complete
+ORD-00078,Production Planning,2026-01-24 17:45:16.921215307,Planner-02,Planning,44094.31,208,Control Panel,Urgent,complete
+ORD-00078,Production,2026-01-24 20:19:09.218422393,Prod-02,Production,44094.31,208,Control Panel,Urgent,complete
+ORD-00078,Quality Inspection,2026-01-25 06:25:53.423431865,QC-02,Quality,44094.31,208,Control Panel,Urgent,complete
+ORD-00078,Dispatch,2026-01-25 09:23:09.889595195,Warehouse-02,Warehouse,44094.31,208,Control Panel,Urgent,complete
+ORD-00078,Invoice,2026-01-25 10:56:47.738825592,Finance-01,Finance,44094.31,208,Control Panel,Urgent,complete
+ORD-00079,Order Received,2026-03-02 04:31:00.000000000,Sales-01,Sales,8529.52,73,Gear Assembly,Normal,complete
+ORD-00079,Order Verification,2026-03-02 05:56:35.141927081,Sales-01,Sales,8529.52,73,Gear Assembly,Normal,complete
+ORD-00079,Inventory Check,2026-03-02 20:31:14.937107888,Warehouse-02,Warehouse,8529.52,73,Gear Assembly,Normal,complete
+ORD-00079,Production Planning,2026-03-03 00:51:55.149585919,Planner-02,Planning,8529.52,73,Gear Assembly,Normal,complete
+ORD-00079,Production,2026-03-03 04:37:31.683929349,Prod-01,Production,8529.52,73,Gear Assembly,Normal,complete
+ORD-00079,Quality Inspection,2026-03-03 18:20:57.692493531,QC-01,Quality,8529.52,73,Gear Assembly,Normal,complete
+ORD-00079,Dispatch,2026-03-03 21:23:50.829872626,Warehouse-02,Warehouse,8529.52,73,Gear Assembly,Normal,complete
+ORD-00079,Invoice,2026-03-03 22:16:02.376852158,Finance-01,Finance,8529.52,73,Gear Assembly,Normal,complete
+ORD-00080,Order Received,2026-02-07 06:33:00.000000000,Sales-01,Sales,30183.17,81,Valve Assembly,Normal,complete
+ORD-00080,Order Verification,2026-02-07 07:22:06.960975995,Sales-02,Sales,30183.17,81,Valve Assembly,Normal,complete
+ORD-00080,Inventory Check,2026-02-07 15:10:34.856219035,Warehouse-01,Warehouse,30183.17,81,Valve Assembly,Normal,complete
+ORD-00080,Production Planning,2026-02-07 16:35:39.211986451,Planner-01,Planning,30183.17,81,Valve Assembly,Normal,complete
+ORD-00080,Production,2026-02-07 19:06:30.672365315,Prod-02,Production,30183.17,81,Valve Assembly,Normal,complete
+ORD-00080,Quality Inspection,2026-02-08 05:30:49.636008975,QC-02,Quality,30183.17,81,Valve Assembly,Normal,complete
+ORD-00080,Dispatch,2026-02-08 06:56:46.999718389,Warehouse-02,Warehouse,30183.17,81,Valve Assembly,Normal,complete
+ORD-00080,Invoice,2026-02-08 08:50:09.922192843,Finance-02,Finance,30183.17,81,Valve Assembly,Normal,complete
+ORD-00081,Order Received,2026-01-12 01:59:00.000000000,Sales-01,Sales,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00081,Order Verification,2026-01-12 02:50:19.310054626,Sales-02,Sales,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00081,Inventory Check,2026-01-12 12:31:08.832002273,Warehouse-01,Warehouse,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00081,Production Planning,2026-01-12 14:09:23.643254332,Planner-01,Planning,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00081,Production,2026-01-12 15:53:56.724596644,Prod-04,Production,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00081,Quality Inspection,2026-01-13 07:06:02.885106839,QC-01,Quality,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00081,Dispatch,2026-01-13 09:31:54.707261241,Warehouse-02,Warehouse,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00081,Invoice,2026-01-13 11:47:02.942263342,Finance-02,Finance,51337.37,132,Industrial Pump,Urgent,complete
+ORD-00082,Order Received,2026-01-23 01:10:00.000000000,Sales-02,Sales,75044.6,236,Motor Housing,Urgent,complete
+ORD-00082,Order Verification,2026-01-23 01:40:32.805243342,Sales-01,Sales,75044.6,236,Motor Housing,Urgent,complete
+ORD-00082,Inventory Check,2026-01-23 10:03:11.213594797,Warehouse-01,Warehouse,75044.6,236,Motor Housing,Urgent,complete
+ORD-00082,Production Planning,2026-01-23 15:06:02.402737798,Planner-01,Planning,75044.6,236,Motor Housing,Urgent,complete
+ORD-00082,Production,2026-01-23 19:35:25.134952100,Prod-01,Production,75044.6,236,Motor Housing,Urgent,complete
+ORD-00082,Quality Inspection,2026-01-24 11:21:13.816942904,QC-02,Quality,75044.6,236,Motor Housing,Urgent,complete
+ORD-00082,Dispatch,2026-01-24 13:48:44.936715873,Warehouse-01,Warehouse,75044.6,236,Motor Housing,Urgent,complete
+ORD-00082,Invoice,2026-01-24 15:30:17.639307525,Finance-02,Finance,75044.6,236,Motor Housing,Urgent,complete
+ORD-00083,Order Received,2026-02-22 01:49:00.000000000,Sales-01,Sales,4802.52,38,Control Panel,Urgent,complete
+ORD-00083,Order Verification,2026-02-22 02:29:35.811743091,Sales-03,Sales,4802.52,38,Control Panel,Urgent,complete
+ORD-00083,Inventory Check,2026-02-22 14:33:45.768151758,Warehouse-01,Warehouse,4802.52,38,Control Panel,Urgent,complete
+ORD-00083,Production Planning,2026-02-22 16:45:58.915885129,Planner-02,Planning,4802.52,38,Control Panel,Urgent,complete
+ORD-00083,Production,2026-02-22 19:29:38.387485757,Prod-03,Production,4802.52,38,Control Panel,Urgent,complete
+ORD-00083,Quality Inspection,2026-02-23 11:00:44.196334779,QC-02,Quality,4802.52,38,Control Panel,Urgent,complete
+ORD-00083,Dispatch,2026-02-23 12:44:25.456108348,Warehouse-02,Warehouse,4802.52,38,Control Panel,Urgent,complete
+ORD-00083,Invoice,2026-02-23 14:21:06.556047920,Finance-01,Finance,4802.52,38,Control Panel,Urgent,complete
+ORD-00084,Order Received,2026-01-07 02:41:00.000000000,Sales-01,Sales,1592.08,13,Industrial Pump,Normal,complete
+ORD-00084,Order Verification,2026-01-07 04:11:57.161210526,Sales-02,Sales,1592.08,13,Industrial Pump,Normal,complete
+ORD-00084,Inventory Check,2026-01-07 21:40:46.538369982,Warehouse-02,Warehouse,1592.08,13,Industrial Pump,Normal,complete
+ORD-00084,Production Planning,2026-01-07 23:28:10.496398046,Planner-01,Planning,1592.08,13,Industrial Pump,Normal,complete
+ORD-00084,Production,2026-01-08 01:06:22.356734007,Prod-03,Production,1592.08,13,Industrial Pump,Normal,complete
+ORD-00084,Quality Inspection,2026-01-08 13:15:22.576264376,QC-02,Quality,1592.08,13,Industrial Pump,Normal,complete
+ORD-00084,Dispatch,2026-01-08 16:28:50.614184543,Warehouse-02,Warehouse,1592.08,13,Industrial Pump,Normal,complete
+ORD-00084,Invoice,2026-01-08 17:33:09.848784392,Finance-01,Finance,1592.08,13,Industrial Pump,Normal,complete
+ORD-00085,Order Received,2026-03-05 04:37:00.000000000,Sales-02,Sales,2612.6,15,Control Panel,Normal,complete
+ORD-00085,Order Verification,2026-03-05 06:38:20.185039464,Sales-01,Sales,2612.6,15,Control Panel,Normal,complete
+ORD-00085,Inventory Check,2026-03-05 12:46:46.048644646,Warehouse-02,Warehouse,2612.6,15,Control Panel,Normal,complete
+ORD-00085,Production Planning,2026-03-05 16:16:17.338512673,Planner-01,Planning,2612.6,15,Control Panel,Normal,complete
+ORD-00085,Production,2026-03-05 18:34:11.942333137,Prod-04,Production,2612.6,15,Control Panel,Normal,complete
+ORD-00085,Quality Inspection,2026-03-06 11:46:51.077033238,QC-01,Quality,2612.6,15,Control Panel,Normal,complete
+ORD-00085,Dispatch,2026-03-06 13:33:08.329954869,Warehouse-01,Warehouse,2612.6,15,Control Panel,Normal,complete
+ORD-00085,Invoice,2026-03-06 15:13:22.435099595,Finance-02,Finance,2612.6,15,Control Panel,Normal,complete
+ORD-00086,Order Received,2026-02-25 03:35:00.000000000,Sales-02,Sales,9232.5,25,Valve Assembly,High,complete
+ORD-00086,Order Verification,2026-02-25 05:29:26.019009458,Sales-02,Sales,9232.5,25,Valve Assembly,High,complete
+ORD-00086,Inventory Check,2026-02-25 12:41:32.252130728,Warehouse-02,Warehouse,9232.5,25,Valve Assembly,High,complete
+ORD-00086,Production Planning,2026-02-25 16:39:12.477506173,Planner-02,Planning,9232.5,25,Valve Assembly,High,complete
+ORD-00086,Production,2026-02-25 19:31:00.975363259,Prod-01,Production,9232.5,25,Valve Assembly,High,complete
+ORD-00086,Quality Inspection,2026-02-26 10:14:30.448469846,QC-02,Quality,9232.5,25,Valve Assembly,High,complete
+ORD-00086,Dispatch,2026-02-26 11:34:43.787338724,Warehouse-02,Warehouse,9232.5,25,Valve Assembly,High,complete
+ORD-00086,Invoice,2026-02-26 12:23:38.526004723,Finance-02,Finance,9232.5,25,Valve Assembly,High,complete
+ORD-00087,Order Received,2026-01-15 04:18:00.000000000,Sales-01,Sales,24741.41,65,Motor Housing,Normal,complete
+ORD-00087,Order Verification,2026-01-15 05:17:39.592780458,Sales-01,Sales,24741.41,65,Motor Housing,Normal,complete
+ORD-00087,Inventory Check,2026-01-15 23:01:59.601427303,Warehouse-01,Warehouse,24741.41,65,Motor Housing,Normal,complete
+ORD-00087,Production Planning,2026-01-16 03:26:07.082351479,Planner-01,Planning,24741.41,65,Motor Housing,Normal,complete
+ORD-00087,Production,2026-01-16 07:40:58.084115909,Prod-04,Production,24741.41,65,Motor Housing,Normal,complete
+ORD-00087,Quality Inspection,2026-01-16 20:10:27.588495752,QC-02,Quality,24741.41,65,Motor Housing,Normal,complete
+ORD-00087,Dispatch,2026-01-16 23:31:45.500656969,Warehouse-02,Warehouse,24741.41,65,Motor Housing,Normal,complete
+ORD-00087,Invoice,2026-01-17 01:10:13.062286387,Finance-02,Finance,24741.41,65,Motor Housing,Normal,complete
+ORD-00088,Order Received,2026-01-21 04:33:00.000000000,Sales-01,Sales,86987.31,217,Control Panel,High,complete
+ORD-00088,Order Verification,2026-01-21 06:05:10.056685125,Sales-02,Sales,86987.31,217,Control Panel,High,complete
+ORD-00088,Inventory Check,2026-01-21 15:45:22.131565728,Warehouse-01,Warehouse,86987.31,217,Control Panel,High,complete
+ORD-00088,Production Planning,2026-01-22 07:33:31.117932748,Planner-01,Planning,86987.31,217,Control Panel,High,complete
+ORD-00088,Production,2026-01-22 11:04:49.805203962,Prod-03,Production,86987.31,217,Control Panel,High,complete
+ORD-00088,Quality Inspection,2026-01-22 22:52:07.841730320,QC-01,Quality,86987.31,217,Control Panel,High,complete
+ORD-00088,Dispatch,2026-01-23 00:27:15.613529005,Warehouse-01,Warehouse,86987.31,217,Control Panel,High,complete
+ORD-00088,Invoice,2026-01-23 02:31:08.895878175,Finance-02,Finance,86987.31,217,Control Panel,High,complete
+ORD-00089,Order Received,2026-02-17 02:23:00.000000000,Sales-01,Sales,6317.49,30,Motor Housing,Normal,complete
+ORD-00089,Order Verification,2026-02-17 03:39:38.816522034,Sales-03,Sales,6317.49,30,Motor Housing,Normal,complete
+ORD-00089,Inventory Check,2026-02-17 16:36:40.054557034,Warehouse-01,Warehouse,6317.49,30,Motor Housing,Normal,complete
+ORD-00089,Production Planning,2026-02-17 21:28:10.087245398,Planner-02,Planning,6317.49,30,Motor Housing,Normal,complete
+ORD-00089,Production,2026-02-18 01:53:34.420379969,Prod-02,Production,6317.49,30,Motor Housing,Normal,complete
+ORD-00089,Quality Inspection,2026-02-18 14:17:38.302903520,QC-01,Quality,6317.49,30,Motor Housing,Normal,complete
+ORD-00089,Dispatch,2026-02-18 16:58:40.039654407,Warehouse-02,Warehouse,6317.49,30,Motor Housing,Normal,complete
+ORD-00089,Invoice,2026-02-18 18:07:39.725317992,Finance-01,Finance,6317.49,30,Motor Housing,Normal,complete
+ORD-00090,Order Received,2026-03-09 08:38:00.000000000,Sales-02,Sales,33114.97,208,Industrial Pump,Normal,complete
+ORD-00090,Order Verification,2026-03-09 09:21:48.255468819,Sales-01,Sales,33114.97,208,Industrial Pump,Normal,complete
+ORD-00090,Inventory Check,2026-03-09 16:58:37.510549984,Warehouse-02,Warehouse,33114.97,208,Industrial Pump,Normal,complete
+ORD-00090,Production Planning,2026-03-09 21:54:13.009063120,Planner-01,Planning,33114.97,208,Industrial Pump,Normal,complete
+ORD-00090,Production,2026-03-09 23:54:34.608032998,Prod-01,Production,33114.97,208,Industrial Pump,Normal,complete
+ORD-00090,Quality Inspection,2026-03-10 11:56:14.341825344,QC-02,Quality,33114.97,208,Industrial Pump,Normal,complete
+ORD-00090,Dispatch,2026-03-10 15:05:52.817707265,Warehouse-01,Warehouse,33114.97,208,Industrial Pump,Normal,complete
+ORD-00090,Invoice,2026-03-10 16:00:24.428209056,Finance-01,Finance,33114.97,208,Industrial Pump,Normal,complete
+ORD-00091,Order Received,2026-03-04 05:28:00.000000000,Sales-02,Sales,45377.27,176,Industrial Pump,Normal,complete
+ORD-00091,Order Verification,2026-03-04 07:07:33.823150038,Sales-01,Sales,45377.27,176,Industrial Pump,Normal,complete
+ORD-00091,Inventory Check,2026-03-04 18:42:36.815770254,Warehouse-01,Warehouse,45377.27,176,Industrial Pump,Normal,complete
+ORD-00091,Production Planning,2026-03-04 22:41:22.165552962,Planner-01,Planning,45377.27,176,Industrial Pump,Normal,complete
+ORD-00091,Production,2026-03-05 02:31:31.557302410,Prod-04,Production,45377.27,176,Industrial Pump,Normal,complete
+ORD-00091,Quality Inspection,2026-03-05 14:50:38.880864579,QC-02,Quality,45377.27,176,Industrial Pump,Normal,complete
+ORD-00091,Dispatch,2026-03-05 17:46:11.989418948,Warehouse-01,Warehouse,45377.27,176,Industrial Pump,Normal,complete
+ORD-00091,Invoice,2026-03-05 19:47:53.166381846,Finance-01,Finance,45377.27,176,Industrial Pump,Normal,complete
+ORD-00092,Order Received,2026-01-29 03:20:00.000000000,Sales-02,Sales,34309.35,100,Motor Housing,Normal,complete
+ORD-00092,Order Verification,2026-01-29 05:22:23.928934169,Sales-02,Sales,34309.35,100,Motor Housing,Normal,complete
+ORD-00092,Inventory Check,2026-01-29 12:44:40.997643396,Warehouse-02,Warehouse,34309.35,100,Motor Housing,Normal,complete
+ORD-00092,Production Planning,2026-01-29 15:08:50.638250223,Planner-02,Planning,34309.35,100,Motor Housing,Normal,complete
+ORD-00092,Production,2026-01-29 17:28:38.187008638,Prod-02,Production,34309.35,100,Motor Housing,Normal,complete
+ORD-00092,Quality Inspection,2026-01-30 08:16:33.006368558,QC-02,Quality,34309.35,100,Motor Housing,Normal,complete
+ORD-00092,Dispatch,2026-01-30 10:22:29.361435428,Warehouse-01,Warehouse,34309.35,100,Motor Housing,Normal,complete
+ORD-00092,Invoice,2026-01-30 12:57:31.219018498,Finance-01,Finance,34309.35,100,Motor Housing,Normal,complete
+ORD-00093,Order Received,2026-03-16 03:25:00.000000000,Sales-02,Sales,40985.93,147,Valve Assembly,Normal,complete
+ORD-00093,Order Verification,2026-03-16 04:25:26.384282899,Sales-03,Sales,40985.93,147,Valve Assembly,Normal,complete
+ORD-00093,Inventory Check,2026-03-16 19:56:43.114347353,Warehouse-01,Warehouse,40985.93,147,Valve Assembly,Normal,complete
+ORD-00093,Production Planning,2026-03-16 21:54:33.641060146,Planner-02,Planning,40985.93,147,Valve Assembly,Normal,complete
+ORD-00093,Production,2026-03-17 02:20:32.991667059,Prod-01,Production,40985.93,147,Valve Assembly,Normal,complete
+ORD-00093,Quality Inspection,2026-03-17 18:59:38.994233414,QC-02,Quality,40985.93,147,Valve Assembly,Normal,complete
+ORD-00093,Dispatch,2026-03-17 22:37:37.393849481,Warehouse-02,Warehouse,40985.93,147,Valve Assembly,Normal,complete
+ORD-00093,Invoice,2026-03-17 23:31:54.583532486,Finance-01,Finance,40985.93,147,Valve Assembly,Normal,complete
+ORD-00094,Order Received,2026-01-05 01:42:00.000000000,Sales-01,Sales,21240.86,188,Gear Assembly,Normal,complete
+ORD-00094,Order Verification,2026-01-05 02:22:38.200069073,Sales-03,Sales,21240.86,188,Gear Assembly,Normal,complete
+ORD-00094,Inventory Check,2026-01-05 16:48:24.841452116,Warehouse-02,Warehouse,21240.86,188,Gear Assembly,Normal,complete
+ORD-00094,Production Planning,2026-01-05 20:18:34.236021656,Planner-01,Planning,21240.86,188,Gear Assembly,Normal,complete
+ORD-00094,Production,2026-01-05 22:31:21.636732166,Prod-01,Production,21240.86,188,Gear Assembly,Normal,complete
+ORD-00094,Quality Inspection,2026-01-06 11:59:19.245460216,QC-01,Quality,21240.86,188,Gear Assembly,Normal,complete
+ORD-00094,Dispatch,2026-01-06 13:21:52.506730964,Warehouse-02,Warehouse,21240.86,188,Gear Assembly,Normal,complete
+ORD-00094,Invoice,2026-01-06 14:07:20.435539652,Finance-01,Finance,21240.86,188,Gear Assembly,Normal,complete
+ORD-00095,Order Received,2026-01-17 04:31:00.000000000,Sales-01,Sales,58590.93,159,Control Panel,High,complete
+ORD-00095,Order Verification,2026-01-17 05:03:19.628568211,Sales-02,Sales,58590.93,159,Control Panel,High,complete
+ORD-00095,Inventory Check,2026-01-17 16:18:30.620056810,Warehouse-01,Warehouse,58590.93,159,Control Panel,High,complete
+ORD-00095,Production Planning,2026-01-17 20:08:28.670807580,Planner-01,Planning,58590.93,159,Control Panel,High,complete
+ORD-00095,Production,2026-01-17 21:18:07.511064930,Prod-01,Production,58590.93,159,Control Panel,High,complete
+ORD-00095,Quality Inspection,2026-01-18 13:40:57.499637703,QC-01,Quality,58590.93,159,Control Panel,High,complete
+ORD-00095,Dispatch,2026-01-18 15:09:35.268708349,Warehouse-01,Warehouse,58590.93,159,Control Panel,High,complete
+ORD-00095,Invoice,2026-01-18 16:04:46.033687755,Finance-01,Finance,58590.93,159,Control Panel,High,complete
+ORD-00096,Order Received,2026-02-21 00:35:00.000000000,Sales-01,Sales,46057.92,187,Motor Housing,Normal,complete
+ORD-00096,Order Verification,2026-02-21 02:16:49.743624266,Sales-02,Sales,46057.92,187,Motor Housing,Normal,complete
+ORD-00096,Inventory Check,2026-02-21 15:50:00.093647155,Warehouse-02,Warehouse,46057.92,187,Motor Housing,Normal,complete
+ORD-00096,Production Planning,2026-02-21 18:59:47.254003368,Planner-01,Planning,46057.92,187,Motor Housing,Normal,complete
+ORD-00096,Production,2026-02-21 20:37:23.961587733,Prod-01,Production,46057.92,187,Motor Housing,Normal,complete
+ORD-00096,Quality Inspection,2026-02-22 08:08:13.264912955,QC-02,Quality,46057.92,187,Motor Housing,Normal,complete
+ORD-00096,Dispatch,2026-02-22 10:26:29.015560513,Warehouse-01,Warehouse,46057.92,187,Motor Housing,Normal,complete
+ORD-00096,Invoice,2026-02-22 12:28:07.420743472,Finance-01,Finance,46057.92,187,Motor Housing,Normal,complete
+ORD-00097,Order Received,2026-02-13 06:49:00.000000000,Sales-01,Sales,44790.14,151,Motor Housing,Normal,complete
+ORD-00097,Order Verification,2026-02-13 08:27:57.552152730,Sales-01,Sales,44790.14,151,Motor Housing,Normal,complete
+ORD-00097,Inventory Check,2026-02-13 12:30:30.103710665,Warehouse-02,Warehouse,44790.14,151,Motor Housing,Normal,complete
+ORD-00097,Production Planning,2026-02-13 15:33:27.376255730,Planner-01,Planning,44790.14,151,Motor Housing,Normal,complete
+ORD-00097,Production,2026-02-13 18:05:08.006045189,Prod-02,Production,44790.14,151,Motor Housing,Normal,complete
+ORD-00097,Quality Inspection,2026-02-14 10:50:29.910506171,QC-01,Quality,44790.14,151,Motor Housing,Normal,complete
+ORD-00097,Dispatch,2026-02-14 13:13:16.940389501,Warehouse-02,Warehouse,44790.14,151,Motor Housing,Normal,complete
+ORD-00097,Invoice,2026-02-14 14:26:00.385090183,Finance-02,Finance,44790.14,151,Motor Housing,Normal,complete
+ORD-00098,Order Received,2026-02-27 03:04:00.000000000,Sales-02,Sales,63729.42,223,Motor Housing,Normal,complete
+ORD-00098,Order Verification,2026-02-27 04:13:47.022793960,Sales-01,Sales,63729.42,223,Motor Housing,Normal,complete
+ORD-00098,Inventory Check,2026-02-27 09:15:19.655131941,Warehouse-01,Warehouse,63729.42,223,Motor Housing,Normal,complete
+ORD-00098,Production Planning,2026-02-27 11:01:37.353290183,Planner-01,Planning,63729.42,223,Motor Housing,Normal,complete
+ORD-00098,Production,2026-02-27 13:05:18.174628475,Prod-04,Production,63729.42,223,Motor Housing,Normal,complete
+ORD-00098,Quality Inspection,2026-02-28 00:11:38.675826550,QC-02,Quality,63729.42,223,Motor Housing,Normal,complete
+ORD-00098,Dispatch,2026-02-28 02:57:13.283108239,Warehouse-01,Warehouse,63729.42,223,Motor Housing,Normal,complete
+ORD-00098,Invoice,2026-02-28 04:14:15.564715723,Finance-02,Finance,63729.42,223,Motor Housing,Normal,complete
+ORD-00099,Order Received,2026-02-06 02:22:00.000000000,Sales-01,Sales,34038.74,102,Industrial Pump,High,complete
+ORD-00099,Order Verification,2026-02-06 04:04:29.926703072,Sales-03,Sales,34038.74,102,Industrial Pump,High,complete
+ORD-00099,Inventory Check,2026-02-06 16:21:32.558246194,Warehouse-01,Warehouse,34038.74,102,Industrial Pump,High,complete
+ORD-00099,Production Planning,2026-02-06 19:46:10.407038383,Planner-01,Planning,34038.74,102,Industrial Pump,High,complete
+ORD-00099,Production,2026-02-06 21:11:03.321024741,Prod-04,Production,34038.74,102,Industrial Pump,High,complete
+ORD-00099,Quality Inspection,2026-02-07 13:55:42.177963328,QC-02,Quality,34038.74,102,Industrial Pump,High,complete
+ORD-00099,Dispatch,2026-02-07 15:56:09.604320560,Warehouse-02,Warehouse,34038.74,102,Industrial Pump,High,complete
+ORD-00099,Invoice,2026-02-07 17:15:04.970283733,Finance-02,Finance,34038.74,102,Industrial Pump,High,complete
+ORD-00100,Order Received,2026-01-07 00:30:00.000000000,Sales-01,Sales,32079.63,238,Motor Housing,Normal,complete
+ORD-00100,Order Verification,2026-01-07 02:03:43.474570742,Sales-02,Sales,32079.63,238,Motor Housing,Normal,complete
+ORD-00100,Inventory Check,2026-01-07 05:58:49.258593943,Warehouse-02,Warehouse,32079.63,238,Motor Housing,Normal,complete
+ORD-00100,Production Planning,2026-01-07 09:44:57.922038369,Planner-02,Planning,32079.63,238,Motor Housing,Normal,complete
+ORD-00100,Production,2026-01-07 13:17:57.929403487,Prod-04,Production,32079.63,238,Motor Housing,Normal,complete
+ORD-00100,Quality Inspection,2026-01-08 02:34:21.836903513,QC-01,Quality,32079.63,238,Motor Housing,Normal,complete
+ORD-00100,Dispatch,2026-01-08 05:48:14.001857469,Warehouse-02,Warehouse,32079.63,238,Motor Housing,Normal,complete
+ORD-00100,Invoice,2026-01-08 07:24:13.453213012,Finance-01,Finance,32079.63,238,Motor Housing,Normal,complete

@@ -1,0 +1,10 @@
+{
+  "purpose": "ProcessLens MVP development and validation",
+  "datasets": [
+    "quickstart",
+    "clean",
+    "rework",
+    "messy"
+  ],
+  "seeded_for_reproducibility": true
+}
