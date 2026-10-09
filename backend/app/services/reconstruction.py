@@ -3,9 +3,10 @@ Process Reconstruction Service.
 Deterministically reconstructs case traces, sequences, and variants from CSV event records.
 Adheres strictly to the ProcessLens Data-Quality Policy:
 - No silent record mutation or deletion
-- Clear accounting of exclusions and data defects
+- Structured traceability for all excluded rows with original raw values
+- Complete cases vs incomplete cases strictly separated
+- Incomplete cases never contribute to variant statistics
 - Deterministic timestamp sorting with row_index tie-breaking
-- Strict variant derivation based on ordered activity sequence
 """
 
 import io
@@ -15,6 +16,7 @@ from collections import defaultdict
 import pandas as pd
 from app.core.config import settings
 from app.schemas.reconstruction import (
+    ReconstructionExcludedEvent,
     ReconstructedEvent,
     CaseTrace,
     ProcessVariant,
@@ -36,7 +38,7 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
     if not reader.fieldnames:
         raise ValueError("Uploaded file is empty or missing a valid CSV header.")
 
-    # Validate required canonical headers
+    # Validate required canonical headers (exact parity with validator.py)
     header_cols = [c.strip().lower() for c in reader.fieldnames if c]
     required_cols = [c.lower() for c in settings.CANONICAL_REQUIRED_COLUMNS]
 
@@ -55,15 +57,17 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
     col_resource = header_map.get("resource")
 
     # Exclusions tracking
-    missing_case_id_rows: List[int] = []
-    missing_activity_rows: List[int] = []
-    missing_or_invalid_ts_rows: List[int] = []
-    
+    all_excluded_events: List[ReconstructionExcludedEvent] = []
+    case_excluded_events: Dict[str, List[ReconstructionExcludedEvent]] = defaultdict(list)
+    missing_case_id_count = 0
+    missing_activity_count = 0
+    missing_or_invalid_ts_count = 0
+
     # Per-case raw event staging
     case_raw_events: Dict[str, List[ReconstructedEvent]] = defaultdict(list)
     case_warnings: Dict[str, List[str]] = defaultdict(list)
     case_error_flags: Dict[str, bool] = defaultdict(bool)
-    
+
     total_source_rows = 0
     eligible_event_count = 0
     unique_cases_seen: set = set()
@@ -71,6 +75,7 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
 
     for row_idx, row in enumerate(reader, start=1):
         total_source_rows += 1
+        clean_row_dict = {k: v for k, v in row.items() if k is not None}
 
         raw_case_id = row.get(col_case_id, "") if col_case_id else ""
         raw_activity = row.get(col_activity, "") if col_activity else ""
@@ -84,40 +89,66 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
 
         # 1. Check for missing case ID
         if not case_id_val:
-            missing_case_id_rows.append(row_idx)
+            missing_case_id_count += 1
+            excluded_item = ReconstructionExcludedEvent(
+                row_index=row_idx,
+                case_id=None,
+                issue_type="MISSING_CASE_ID",
+                raw_values=clean_row_dict,
+                details="case_id field is missing or empty"
+            )
+            all_excluded_events.append(excluded_item)
             continue
 
         unique_cases_seen.add(case_id_val)
 
         # 2. Check for missing activity
         if not activity_val:
-            missing_activity_rows.append(row_idx)
+            missing_activity_count += 1
             case_error_flags[case_id_val] = True
-            case_warnings[case_id_val].append(
-                f"Row {row_idx}: Event excluded from trace due to missing activity name."
+            excluded_item = ReconstructionExcludedEvent(
+                row_index=row_idx,
+                case_id=case_id_val,
+                issue_type="MISSING_ACTIVITY",
+                raw_values=clean_row_dict,
+                details="activity field is missing or empty"
             )
+            all_excluded_events.append(excluded_item)
+            case_excluded_events[case_id_val].append(excluded_item)
             continue
 
         # 3. Check for missing or invalid timestamp
         if not timestamp_val:
-            missing_or_invalid_ts_rows.append(row_idx)
+            missing_or_invalid_ts_count += 1
             case_error_flags[case_id_val] = True
-            case_warnings[case_id_val].append(
-                f"Row {row_idx}: Event '{activity_val}' excluded from trace due to missing timestamp."
+            excluded_item = ReconstructionExcludedEvent(
+                row_index=row_idx,
+                case_id=case_id_val,
+                issue_type="MISSING_TIMESTAMP",
+                raw_values=clean_row_dict,
+                details="timestamp field is missing or empty"
             )
+            all_excluded_events.append(excluded_item)
+            case_excluded_events[case_id_val].append(excluded_item)
             continue
 
         try:
             parsed_dt = pd.to_datetime(timestamp_val, errors='raise').to_pydatetime(warn=False)
         except Exception:
-            missing_or_invalid_ts_rows.append(row_idx)
+            missing_or_invalid_ts_count += 1
             case_error_flags[case_id_val] = True
-            case_warnings[case_id_val].append(
-                f"Row {row_idx}: Event '{activity_val}' excluded from trace due to unparseable timestamp '{timestamp_val}'."
+            excluded_item = ReconstructionExcludedEvent(
+                row_index=row_idx,
+                case_id=case_id_val,
+                issue_type="INVALID_TIMESTAMP",
+                raw_values=clean_row_dict,
+                details=f"Timestamp string '{timestamp_val}' could not be parsed into valid datetime format"
             )
+            all_excluded_events.append(excluded_item)
+            case_excluded_events[case_id_val].append(excluded_item)
             continue
 
-        # Extract extra contextual attributes (excluding primary columns)
+        # Extract extra contextual attributes
         excluded_keys = {col_case_id, col_activity, col_timestamp, col_resource}
         attributes = {k: v for k, v in row.items() if k not in excluded_keys and v is not None}
 
@@ -154,7 +185,8 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
     for case_id in sorted(unique_cases_seen):
         events = case_raw_events[case_id]
         has_errors = case_error_flags[case_id]
-        warnings = case_warnings[case_id]
+        warnings = list(case_warnings[case_id])
+        excluded_for_case = case_excluded_events[case_id]
 
         # Deterministic chronological sort:
         # Secondary key is row_index to break equal timestamp ties stably
@@ -167,6 +199,10 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
 
         if not is_complete:
             incomplete_case_ids.append(case_id)
+            if excluded_for_case:
+                warnings.append(
+                    f"Case has {len(excluded_for_case)} excluded event(s) and is omitted from process variant statistics."
+                )
 
         case_traces.append(CaseTrace(
             case_id=case_id,
@@ -174,14 +210,16 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
             activity_sequence=activity_seq,
             event_count=len(events_sorted),
             is_complete=is_complete,
+            excluded_events=excluded_for_case,
             warnings=warnings,
             start_time=start_time,
             end_time=end_time
         ))
 
-    # Derive process variants from complete, reconstructable cases
+    # Derive process variants ONLY from complete cases
     complete_cases = [c for c in case_traces if c.is_complete]
-    reconstructed_cases_count = len(complete_cases)
+    complete_cases_count = len(complete_cases)
+    incomplete_cases_count = len(incomplete_case_ids)
 
     variant_groups: Dict[Tuple[str, ...], List[str]] = defaultdict(list)
     for c in complete_cases:
@@ -200,7 +238,7 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
     for var_idx, seq_key in enumerate(sorted_variant_keys, start=1):
         cases_in_var = variant_groups[seq_key]
         count = len(cases_in_var)
-        percentage = round((count / reconstructed_cases_count * 100.0), 2) if reconstructed_cases_count > 0 else 0.0
+        percentage = round((count / complete_cases_count * 100.0), 2) if complete_cases_count > 0 else 0.0
 
         process_variants.append(ProcessVariant(
             variant_id=f"VAR-{var_idx:03d}",
@@ -210,17 +248,12 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
             percentage=percentage
         ))
 
-    total_excluded_rows = (
-        len(missing_case_id_rows) +
-        len(missing_activity_rows) +
-        len(missing_or_invalid_ts_rows)
-    )
-
     exclusions = ReconstructionExclusions(
-        missing_case_id_rows=missing_case_id_rows,
-        missing_activity_rows=missing_activity_rows,
-        missing_or_invalid_timestamp_rows=missing_or_invalid_ts_rows,
-        total_excluded_rows=total_excluded_rows,
+        total_excluded_rows=len(all_excluded_events),
+        missing_case_id_count=missing_case_id_count,
+        missing_activity_count=missing_activity_count,
+        missing_or_invalid_timestamp_count=missing_or_invalid_ts_count,
+        excluded_events=all_excluded_events,
         incomplete_case_ids=incomplete_case_ids
     )
 
@@ -229,7 +262,8 @@ def reconstruct_process_from_csv(content_bytes: bytes, filename: str) -> Process
         total_source_rows=total_source_rows,
         eligible_event_count=eligible_event_count,
         total_cases_found=len(unique_cases_seen),
-        reconstructed_cases_count=reconstructed_cases_count,
+        complete_cases_count=complete_cases_count,
+        incomplete_cases_count=incomplete_cases_count,
         variant_count=len(process_variants),
         exclusions=exclusions,
         variants=process_variants,

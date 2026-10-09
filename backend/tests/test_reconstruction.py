@@ -1,6 +1,6 @@
 """
 Tests for Process Reconstruction and Variant Derivation (Phase 2).
-Covers deterministic sorting, variant derivation, data quality policy exclusions,
+Covers deterministic sorting, variant derivation, structured data quality exclusions,
 tie-breaking, duplicate handling, and sample datasets.
 """
 
@@ -20,7 +20,8 @@ def test_multiple_cases_known_sequences():
     )
     res = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
     assert res.total_cases_found == 2
-    assert res.reconstructed_cases_count == 2
+    assert res.complete_cases_count == 2
+    assert res.incomplete_cases_count == 0
     assert res.variant_count == 1
     assert res.variants[0].activity_sequence == ["Order Received", "Check Inventory", "Dispatch"]
     assert res.variants[0].case_count == 2
@@ -35,7 +36,8 @@ def test_unsorted_timestamp_order():
         "C1,Check Inventory,2026-01-01 12:00:00\n"
     )
     res = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
-    assert res.reconstructed_cases_count == 1
+    assert res.complete_cases_count == 1
+    assert res.incomplete_cases_count == 0
     trace = res.cases[0]
     # Must be sorted chronologically regardless of upload order
     assert trace.activity_sequence == ["Order Received", "Check Inventory", "Dispatch"]
@@ -99,32 +101,69 @@ def test_equal_timestamps_deterministic_tie_breaking():
     assert trace.activity_sequence == ["FirstUploaded", "SecondUploaded"]
     assert trace.events[0].row_index < trace.events[1].row_index
 
-def test_exclusions_and_incomplete_cases():
+def test_structured_exclusions_and_incomplete_cases():
     csv_data = (
-        "case_id,activity,timestamp\n"
-        ",Activity1,2026-01-01 10:00:00\n"           # row 1: missing case_id
-        "C_Good,Activity1,2026-01-01 10:00:00\n"     # row 2: valid
-        "C_Bad,Activity1,2026-01-01 10:00:00\n"      # row 3: valid event in C_Bad
-        "C_Bad,,2026-01-01 11:00:00\n"               # row 4: missing activity
-        "C_Bad2,Activity1,not_a_timestamp\n"         # row 5: invalid timestamp
+        "case_id,activity,timestamp,resource\n"
+        ",Activity1,2026-01-01 10:00:00,R1\n"               # row 1: missing case_id
+        "C_Good,Activity1,2026-01-01 10:00:00,R2\n"         # row 2: valid in C_Good
+        "C_Bad,Activity1,2026-01-01 10:00:00,R3\n"          # row 3: valid in C_Bad
+        "C_Bad,,2026-01-01 11:00:00,R4\n"                   # row 4: missing activity
+        "C_Bad2,Activity1,not_a_timestamp,R5\n"             # row 5: invalid timestamp
     )
     res = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
-    assert 1 in res.exclusions.missing_case_id_rows
-    assert 4 in res.exclusions.missing_activity_rows
-    assert 5 in res.exclusions.missing_or_invalid_timestamp_rows
+    
+    # Exclusions counts
     assert res.exclusions.total_excluded_rows == 3
+    assert res.exclusions.missing_case_id_count == 1
+    assert res.exclusions.missing_activity_count == 1
+    assert res.exclusions.missing_or_invalid_timestamp_count == 1
+    
+    # Structured excluded event records
+    ex_events = res.exclusions.excluded_events
+    assert len(ex_events) == 3
+    
+    # Check row 1: missing case_id
+    ex_row1 = next(e for e in ex_events if e.row_index == 1)
+    assert ex_row1.issue_type == "MISSING_CASE_ID"
+    assert ex_row1.case_id is None
+    assert ex_row1.raw_values["activity"] == "Activity1"
+    
+    # Check row 4: missing activity
+    ex_row4 = next(e for e in ex_events if e.row_index == 4)
+    assert ex_row4.issue_type == "MISSING_ACTIVITY"
+    assert ex_row4.case_id == "C_Bad"
+    assert ex_row4.raw_values["case_id"] == "C_Bad"
+    
+    # Check row 5: invalid timestamp
+    ex_row5 = next(e for e in ex_events if e.row_index == 5)
+    assert ex_row5.issue_type == "INVALID_TIMESTAMP"
+    assert ex_row5.case_id == "C_Bad2"
+    assert ex_row5.raw_values["timestamp"] == "not_a_timestamp"
 
-    # C_Bad and C_Bad2 should be flagged incomplete
+    # Case-level completeness and isolation from variants
+    assert res.complete_cases_count == 1
+    assert res.incomplete_cases_count == 2
     assert "C_Bad" in res.exclusions.incomplete_case_ids
     assert "C_Bad2" in res.exclusions.incomplete_case_ids
-    assert res.reconstructed_cases_count == 1
-    assert res.variants[0].case_ids == ["C_Good"]
+
+    # C_Bad trace inspection
+    c_bad_trace = next(c for c in res.cases if c.case_id == "C_Bad")
+    assert c_bad_trace.is_complete is False
+    assert len(c_bad_trace.events) == 1  # only valid event retained
+    assert len(c_bad_trace.excluded_events) == 1
+    assert c_bad_trace.excluded_events[0].issue_type == "MISSING_ACTIVITY"
+
+    # Ensure incomplete cases are NOT in variant statistics
+    all_variant_cases = [cid for v in res.variants for cid in v.case_ids]
+    assert all_variant_cases == ["C_Good"]
+    assert "C_Bad" not in all_variant_cases
+    assert "C_Bad2" not in all_variant_cases
 
 def test_duplicate_events_preserved_and_flagged():
     csv_data = (
         "case_id,activity,timestamp\n"
         "C1,Order Received,2026-01-01 10:00:00\n"
-        "C1,Order Received,2026-01-01 10:00:00\n" # duplicate row
+        "C1,Order Received,2026-01-01 10:00:00\n"  # duplicate row
     )
     res = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
     trace = res.cases[0]
@@ -140,7 +179,8 @@ def test_empty_input_and_no_cases():
     assert res.total_source_rows == 0
     assert res.eligible_event_count == 0
     assert res.total_cases_found == 0
-    assert res.reconstructed_cases_count == 0
+    assert res.complete_cases_count == 0
+    assert res.incomplete_cases_count == 0
     assert res.variant_count == 0
     assert res.variants == []
 
@@ -153,7 +193,8 @@ def test_variant_percentages_documented_denominator():
         "C4,B,2026-01-01 10:00:00\n"
     )
     res = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
-    assert res.reconstructed_cases_count == 4
+    assert res.complete_cases_count == 4
+    assert res.incomplete_cases_count == 0
     assert res.variant_count == 2
     # 3 cases for A = 75.0%
     assert res.variants[0].activity_sequence == ["A"]
@@ -178,7 +219,8 @@ def test_reconstruct_quickstart_dataset(client, sample_quickstart_path):
     assert data["total_source_rows"] == 800
     assert data["eligible_event_count"] == 800
     assert data["total_cases_found"] == 100
-    assert data["reconstructed_cases_count"] == 100
+    assert data["complete_cases_count"] == 100
+    assert data["incomplete_cases_count"] == 0
     assert data["exclusions"]["total_excluded_rows"] == 0
     assert len(data["variants"]) > 0
 
@@ -191,7 +233,8 @@ def test_reconstruct_clean_dataset(client, sample_clean_path):
     data = response.json()
 
     assert data["total_source_rows"] > 0
-    assert data["reconstructed_cases_count"] > 0
+    assert data["complete_cases_count"] > 0
+    assert data["incomplete_cases_count"] == 0
     # Dominant variant should have highest case count
     dominant = data["variants"][0]
     assert dominant["case_count"] > 0
@@ -205,7 +248,7 @@ def test_reconstruct_rework_dataset(client, sample_rework_path):
     assert response.status_code == 200
     data = response.json()
 
-    assert data["reconstructed_cases_count"] > 0
+    assert data["complete_cases_count"] > 0
     # Rework should produce multiple distinct variants
     rework_variants = [v for v in data["variants"] if "Rework" in v["activity_sequence"]]
     assert len(rework_variants) > 0
@@ -222,3 +265,5 @@ def test_reconstruct_messy_dataset(client, sample_messy_path):
     exclusions = data["exclusions"]
     assert exclusions["total_excluded_rows"] > 0
     assert len(exclusions["incomplete_case_ids"]) > 0
+    assert len(exclusions["excluded_events"]) == exclusions["total_excluded_rows"]
+    assert data["incomplete_cases_count"] > 0
