@@ -32,12 +32,12 @@ class ActivityRework(BaseModel):
     rework_case_count: int = Field(..., description="Count of complete cases with distinct-timestamp recurrences")
     rework_case_percentage: float = Field(..., description="Percentage of complete cases with distinct-timestamp recurrences")
     rework_occurrences: int = Field(..., description="Total distinct-timestamp repetitions beyond initial execution")
-    duplicate_events_count: int = Field(..., description="Total identical-timestamp duplicate events recorded")
+    duplicate_events_count: int = Field(..., description="Total identical-timestamp duplicate events recorded in complete cases (evaluates complete cases only)")
 
 class ActivityTransition(BaseModel):
     source_activity: str = Field(..., description="Preceding activity")
     target_activity: str = Field(..., description="Succeeding activity")
-    transition_count: int = Field(..., description="Total direct transitions observed across complete cases")
+    transition_count: int = Field(..., description="Total direct transitions between distinct operational events observed across complete cases (duplicate records excluded)")
     case_count: int = Field(..., description="Count of complete cases containing this transition")
     duration_stats: DurationStats = Field(..., description="Transition elapsed duration statistics (milestone elapsed time, not waiting/processing)")
 

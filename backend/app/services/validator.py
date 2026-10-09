@@ -88,6 +88,7 @@ def validate_csv_content(content_bytes: bytes, filename: str) -> DataQualityRepo
             ))
 
         # 3. Missing / Invalid timestamp check
+        parsed_ts = None
         if not timestamp_val:
             row_has_issue = True
             summary.missing_timestamp_count += 1
@@ -114,8 +115,10 @@ def validate_csv_content(content_bytes: bytes, filename: str) -> DataQualityRepo
                 ))
 
         # 4. Duplicate event check (case_id + activity + timestamp)
+        # Uses normalized parsed datetime string when parseable to align with reconstruction
         if case_id_val and activity_val and timestamp_val:
-            event_key = (case_id_val, activity_val, timestamp_val)
+            ts_key = str(parsed_ts) if parsed_ts is not None else timestamp_val
+            event_key = (case_id_val, activity_val, ts_key)
             if event_key in seen_events:
                 row_has_issue = True
                 summary.duplicate_event_count += 1

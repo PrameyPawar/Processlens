@@ -11,6 +11,7 @@ Validates deterministic process metrics:
 
 import io
 import pytest
+from app.core.config import settings
 from app.services.reconstruction import reconstruct_process_from_csv
 from app.services.analytics import calculate_process_analytics, compute_duration_stats
 
@@ -290,3 +291,97 @@ def test_api_analytics_messy_dataset(client, sample_messy_path):
     assert summary["incomplete_cases_count"] > 0
     # Complete cases evaluated count must equal summary complete_cases_count
     assert data["cycle_time"]["evaluated_cases_count"] == summary["complete_cases_count"]
+
+def test_transitions_exclude_duplicate_events_and_preserve_equal_timestamps():
+    # Case C1: Order Received at 10:00, Order Received duplicate at 10:00, Dispatch at 11:00
+    # Duplicate event must NOT produce a 0.0s self-transition (Order Received -> Order Received)
+    # Case C2: Start at 10:00, ParallelStep at 10:00, End at 11:00
+    # Distinct co-temporal activities MUST produce a 0.0s transition (Start -> ParallelStep)
+    csv_data = (
+        "case_id,activity,timestamp\n"
+        "C1,Order Received,2026-01-01 10:00:00\n"
+        "C1,Order Received,2026-01-01 10:00:00\n"
+        "C1,Dispatch,2026-01-01 11:00:00\n"
+        "C2,Start,2026-01-02 10:00:00\n"
+        "C2,ParallelStep,2026-01-02 10:00:00\n"
+        "C2,End,2026-01-02 11:00:00\n"
+    )
+    rec = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
+    ana = calculate_process_analytics(rec)
+
+    trans_pairs = {(t.source_activity, t.target_activity): t for t in ana.transitions}
+
+    # 1. Artificial duplicate self-transition must be absent
+    assert ("Order Received", "Order Received") not in trans_pairs
+
+    # 2. Transition from non-duplicate Order Received to Dispatch must exist with 3600s
+    assert ("Order Received", "Dispatch") in trans_pairs
+    assert trans_pairs[("Order Received", "Dispatch")].duration_stats.mean_seconds == 3600.0
+
+    # 3. Legitimate co-temporal transition between different activities must be preserved
+    assert ("Start", "ParallelStep") in trans_pairs
+    assert trans_pairs[("Start", "ParallelStep")].duration_stats.mean_seconds == 0.0
+    assert trans_pairs[("Start", "ParallelStep")].transition_count == 1
+
+    # 4. Subsequent transition in C2 preserved
+    assert ("ParallelStep", "End") in trans_pairs
+    assert trans_pairs[("ParallelStep", "End")].duration_stats.mean_seconds == 3600.0
+
+def test_transitions_preserve_genuine_repeated_activity_loops():
+    # Case C1: Inspect at 10:00, Fix at 11:00, Inspect at 12:00 (loop back at distinct timestamp)
+    # Case C2: Inspect at 10:00, Inspect at 11:00 (immediate operational repetition at distinct timestamp)
+    csv_data = (
+        "case_id,activity,timestamp\n"
+        "C1,Inspect,2026-01-01 10:00:00\n"
+        "C1,Fix,2026-01-01 11:00:00\n"
+        "C1,Inspect,2026-01-01 12:00:00\n"
+        "C2,Inspect,2026-01-02 10:00:00\n"
+        "C2,Inspect,2026-01-02 11:00:00\n"
+    )
+    rec = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
+    ana = calculate_process_analytics(rec)
+
+    trans_pairs = {(t.source_activity, t.target_activity): t for t in ana.transitions}
+
+    # C1 loop transitions
+    assert ("Inspect", "Fix") in trans_pairs
+    assert ("Fix", "Inspect") in trans_pairs
+
+    # C2 immediate self-loop at distinct timestamps MUST be preserved
+    assert ("Inspect", "Inspect") in trans_pairs
+    assert trans_pairs[("Inspect", "Inspect")].duration_stats.mean_seconds == 3600.0
+    assert trans_pairs[("Inspect", "Inspect")].transition_count == 1
+
+def test_analytics_non_csv_rejected(client):
+    files = {"file": ("test.txt", b"some text content", "text/plain")}
+    response = client.post("/api/v1/analytics/process", files=files)
+    assert response.status_code == 400
+    assert "Unsupported file type" in response.json()["detail"]
+
+def test_analytics_missing_required_headers(client):
+    csv_data = "case_id,timestamp\nC1,2026-01-01 10:00:00\n"
+    files = {"file": ("test.csv", csv_data.encode("utf-8"), "text/csv")}
+    response = client.post("/api/v1/analytics/process", files=files)
+    assert response.status_code == 400
+    assert "Missing required canonical column" in response.json()["detail"]
+
+def test_analytics_empty_filename_rejected(client):
+    boundary = "boundary456"
+    body = (
+        b"--" + boundary.encode() + b"\r\n"
+        b'Content-Disposition: form-data; name="file"; filename=""\r\n'
+        b"Content-Type: text/csv\r\n\r\n"
+        b"case_id,activity,timestamp\r\n"
+        b"--" + boundary.encode() + b"--\r\n"
+    )
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
+    response = client.post("/api/v1/analytics/process", content=body, headers=headers)
+    assert response.status_code == 400
+    assert "Filename cannot be empty" in response.json()["detail"]
+
+def test_analytics_exceeds_max_file_size(client):
+    large_payload = b"case_id,activity,timestamp\n" + b"x" * (settings.MAX_FILE_SIZE_BYTES + 1)
+    files = {"file": ("large.csv", large_payload, "text/csv")}
+    response = client.post("/api/v1/analytics/process", files=files)
+    assert response.status_code == 400
+    assert "File size exceeds maximum allowed limit" in response.json()["detail"]

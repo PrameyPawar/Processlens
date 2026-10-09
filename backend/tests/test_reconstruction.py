@@ -6,6 +6,7 @@ tie-breaking, duplicate handling, and sample datasets.
 
 import io
 import pytest
+from app.core.config import settings
 from app.services.reconstruction import reconstruct_process_from_csv
 
 def test_multiple_cases_known_sequences():
@@ -267,3 +268,37 @@ def test_reconstruct_messy_dataset(client, sample_messy_path):
     assert len(exclusions["incomplete_case_ids"]) > 0
     assert len(exclusions["excluded_events"]) == exclusions["total_excluded_rows"]
     assert data["incomplete_cases_count"] > 0
+
+def test_reconstruct_non_csv_rejected(client):
+    files = {"file": ("test.txt", b"some text content", "text/plain")}
+    response = client.post("/api/v1/process/reconstruct", files=files)
+    assert response.status_code == 400
+    assert "Unsupported file type" in response.json()["detail"]
+
+def test_reconstruct_missing_required_headers(client):
+    csv_data = "case_id,timestamp\nC1,2026-01-01 10:00:00\n"
+    files = {"file": ("test.csv", csv_data.encode("utf-8"), "text/csv")}
+    response = client.post("/api/v1/process/reconstruct", files=files)
+    assert response.status_code == 400
+    assert "Missing required canonical column" in response.json()["detail"]
+
+def test_reconstruct_empty_filename_rejected(client):
+    boundary = "boundary123"
+    body = (
+        b"--" + boundary.encode() + b"\r\n"
+        b'Content-Disposition: form-data; name="file"; filename=""\r\n'
+        b"Content-Type: text/csv\r\n\r\n"
+        b"case_id,activity,timestamp\r\n"
+        b"--" + boundary.encode() + b"--\r\n"
+    )
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
+    response = client.post("/api/v1/process/reconstruct", content=body, headers=headers)
+    assert response.status_code == 400
+    assert "Filename cannot be empty" in response.json()["detail"]
+
+def test_reconstruct_exceeds_max_file_size(client):
+    large_payload = b"case_id,activity,timestamp\n" + b"x" * (settings.MAX_FILE_SIZE_BYTES + 1)
+    files = {"file": ("large.csv", large_payload, "text/csv")}
+    response = client.post("/api/v1/process/reconstruct", files=files)
+    assert response.status_code == 400
+    assert "File size exceeds maximum allowed limit" in response.json()["detail"]

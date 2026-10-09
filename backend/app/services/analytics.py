@@ -1,11 +1,13 @@
 """
 Process Analytics Service (Phase 3).
 Calculates deterministic process metrics from reconstructed case traces:
-- Population consistency (strictly over complete cases)
+- Population consistency (strictly over complete cases; incomplete cases excluded)
 - Cycle time distributions (including single-event cases at 0.0s)
 - Activity frequencies, case coverage, and repetition ratios
 - Repeated-activity indicators (distinguishing genuine temporal recurrence from identical-timestamp duplicates)
-- Step-to-step transition durations
+- Duplicate event counts (strictly within complete cases, aligned with analytics population scope)
+- Step-to-step transition durations (excluding recording duplicates to prevent artificial 0.0s self-transitions,
+  while preserving legitimate co-temporal transitions and genuine repeated-activity loops)
 - Linear-interpolation p90 percentiles
 """
 
@@ -153,16 +155,19 @@ def calculate_process_analytics(reconstruction: ProcessReconstructionResult) -> 
     rework_list.sort(key=lambda r: (-r.rework_case_count, -r.rework_occurrences, r.activity))
 
     # 3. Direct Transitions (consecutive steps in complete cases)
+    # Exclude identical-timestamp duplicate records from creating artificial 0.0s self-transitions,
+    # while preserving transitions between distinct activities that share timestamps and genuine
+    # repeated-activity loops at distinct timestamps.
     transition_durations: Dict[Tuple[str, str], List[float]] = defaultdict(list)
     transition_case_set: Dict[Tuple[str, str], set] = defaultdict(set)
 
     for c in complete_cases:
-        events = c.events
-        for i in range(len(events) - 1):
-            src = events[i].activity
-            tgt = events[i + 1].activity
+        non_duplicate_events = [e for e in c.events if not e.is_duplicate]
+        for i in range(len(non_duplicate_events) - 1):
+            src = non_duplicate_events[i].activity
+            tgt = non_duplicate_events[i + 1].activity
             pair = (src, tgt)
-            dur = (events[i + 1].timestamp_parsed - events[i].timestamp_parsed).total_seconds()
+            dur = (non_duplicate_events[i + 1].timestamp_parsed - non_duplicate_events[i].timestamp_parsed).total_seconds()
             dur = max(0.0, dur)
             transition_durations[pair].append(dur)
             transition_case_set[pair].add(c.case_id)

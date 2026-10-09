@@ -95,3 +95,26 @@ Phase 3 requires computing operational process metrics (activity frequency, case
 - 32/32 backend tests passing across all suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`).
 - Zero division-by-zero vulnerabilities on empty input files or datasets containing only incomplete cases.
 
+---
+
+## Decision Record 005: Reliability Hardening & Transition Integrity
+* **Date:** 2026-10-09
+* **Status:** Implemented & Verified
+* **Owner:** Backend Reliability Engineer
+
+### Context
+QA audit revealed:
+1. Duplicate events in traces created artificial `(A -> A)` self-transitions of duration `0.0s`.
+2. Ingestion and reconstruction duplicate-key detection differed when timestamps had different textual formats representing identical datetime values.
+3. The scope of `ActivityRework.duplicate_events_count` required explicit documentation regarding its complete-case population basis.
+4. HTTP boundary failure modes (>10MB payload, empty filename, non-CSV extension) lacked regression coverage on reconstruction and analytics endpoints.
+
+### Decision
+1. **Transition Integrity:** Updated `calculate_process_analytics` to filter out `event.is_duplicate` records when computing transitions. Legitimate co-temporal transitions between distinct activities and genuine operational loops at distinct timestamps are strictly preserved.
+2. **Duplicate Key Semantic Alignment:** Updated `validate_csv_content` in `validator.py` to use normalized parsed datetime strings when valid, achieving exact parity with `reconstruction.py`.
+3. **Duplicate Scope Explicit Definition:** Documented that `ActivityRework.duplicate_events_count` evaluates complete cases only, adhering to the fundamental rule that all process analytics metrics are calculated strictly over the complete-case population.
+4. **Boundary Failure Coverage:** Added regression tests covering non-CSV uploads, files exceeding 10MB limit, empty filename headers, and missing canonical columns across all API endpoints.
+
+### Consequences & Verification
+- Artificial 0.0s self-transitions eliminated from messy dataset and synthetic fixtures.
+- Backward-compatibility preserved across all endpoints.
