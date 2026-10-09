@@ -40,3 +40,31 @@ Phase 1 requires a robust, non-destructive CSV ingestion engine that validates r
 - 100% of backend tests (`7/7 passed`).
 - Frontend production bundle built cleanly without TypeScript or Vite errors.
 - Raw invalid records are preserved and reported; zero silent deletions.
+
+---
+
+## Decision Record 003: Deterministic Process Reconstruction & Variant Derivation (Phase 2)
+* **Date:** 2026-10-09
+* **Status:** Implemented & Verified
+* **Owner:** Process Analytics Engineer
+
+### Context
+Phase 2 requires converting raw event logs into chronologically ordered case traces and identifying process variants without using heuristics or nondeterministic LLM grouping.
+
+### Decision
+1. Implemented `backend/app/services/reconstruction.py` and `backend/app/schemas/reconstruction.py`.
+2. Group events strictly by `case_id` and sort them chronologically by parsed timestamp.
+3. Handle equal timestamps deterministically by breaking ties using the source file row position (`row_index`).
+4. Preserve repeated activities within the sequence (do not collapse loops).
+5. Identify process variants using the exact ordered sequence of activity names as the unique key (`tuple(activity_sequence)`).
+6. Calculate variant percentages using `reconstructed_cases_count` (the count of valid, complete cases) as the explicit denominator.
+7. Enforce strict data-quality exclusions:
+   - Rows with missing `case_id` are excluded from all cases and reported in `missing_case_id_rows`.
+   - Rows with missing `activity` or unparseable timestamps cannot form valid traces; they are excluded and their parent cases are flagged `is_complete=False` and excluded from variant statistics.
+   - Duplicate events are preserved in the trace, flagged `is_duplicate=True`, and retained in the activity sequence.
+8. Exposed `POST /api/v1/process/reconstruct` endpoint in FastAPI while keeping `POST /api/v1/ingestion/upload` intact and fully compatible.
+
+### Consequences & Verification
+- 21/21 backend tests passing (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`).
+- 100% deterministic outputs across repeated runs on identical inputs.
+

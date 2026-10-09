@@ -1,6 +1,6 @@
 """
 FastAPI application entrypoint for ProcessLens.
-Provides health check, CSV ingestion, and process reconstruction endpoints.
+Provides health check and CSV ingestion endpoints.
 """
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, status
@@ -9,7 +9,7 @@ from app.core.config import settings
 from app.schemas.ingestion import DataQualityReport
 from app.schemas.reconstruction import ProcessReconstructionResult
 from app.services.validator import validate_csv_content
-from app.services.reconstructor import reconstruct_process
+from app.services.reconstruction import reconstruct_process_from_csv
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -78,13 +78,11 @@ async def upload_csv_file(file: UploadFile = File(...)):
             detail=f"An error occurred while processing the file: {str(e)}"
         )
 
-
 @app.post(f"{settings.API_V1_STR}/process/reconstruct", response_model=ProcessReconstructionResult, status_code=status.HTTP_200_OK)
-async def reconstruct_csv_file(file: UploadFile = File(...)):
+async def reconstruct_process_endpoint(file: UploadFile = File(...)):
     """
-    Accepts a CSV event log file, reconstructs process traces by grouping
-    events into cases, ordering them chronologically, and identifying
-    process variants. Returns a structured ProcessReconstructionResult.
+    Reconstructs chronological case traces, activity sequences, and process variants
+    from an uploaded CSV event log.
     """
     if not file.filename:
         raise HTTPException(
@@ -107,7 +105,7 @@ async def reconstruct_csv_file(file: UploadFile = File(...)):
         )
 
     try:
-        result = reconstruct_process(content, file.filename)
+        result = reconstruct_process_from_csv(content, file.filename)
         return result
     except ValueError as e:
         raise HTTPException(
@@ -117,5 +115,6 @@ async def reconstruct_csv_file(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred during process reconstruction: {str(e)}"
+            detail=f"An error occurred while reconstructing the process: {str(e)}"
         )
+
