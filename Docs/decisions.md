@@ -297,3 +297,48 @@ Following initial Phase 5 opportunity implementation (commit `3687e66`), a seman
 ### Consequences & Verification
 - 79/79 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`, `test_opportunity.py`).
 - Zero regressions in existing API contracts.
+
+---
+
+## Decision Record 011: Phase 6 Automation Readiness Assessment Architecture and Categorical Gating Model
+* **Date:** 2026-10-10
+* **Status:** Implemented & Verified
+* **Owner:** Opportunity & Economics Analyst (Lead), Product Lead, Backend Engineer
+
+### Context
+Phase 5 established deterministic opportunity detection where `operational_priority_score` ranks measured operational patterns solely for investigation. Operational delay and recurrence alone cannot determine whether an opportunity can or should be automated:
+1. **Separation of Priority and Feasibility:** A mandatory step with 45% duration concentration (e.g. physical heat treatment or complex contract negotiation) may rank in Tier 1 for investigation without being suitable for software automation. Conversely, a routine 30-second data re-entry task may be 100% automation-ready.
+2. **Limits of Event Log Visibility:** Event logs record timestamps and activity sequences. They cannot observe data payload structures (e.g. paper vs. API), target system architectures (e.g. REST API vs. Citrix), business rule codification (e.g. deterministic IF-THEN vs. subjective discretion), or statutory mandates.
+3. **Flaws of Arbitrary Numeric Averaging:** A naive weighted average (e.g. $0.25 \times S_1 + \dots$) dangerously masks fatal blockers (e.g. high volume and digital inputs compensating for a life-safety hazard or illegal automated execution).
+4. **Distinction Between Unknown and Prohibited:** Domain intake may be missing (`UNKNOWN`), empirical data may have small sample size (`INSUFFICIENT_EVIDENCE`), or an approach may face technical prerequisites (`PREREQUISITE_REQUIRED`) versus an established hard prohibition (`PROHIBITIVE_BARRIER`).
+
+### Decisions
+1. **Categorical Non-Compensatory Gating Model:**
+   - Removed composite numeric readiness indexes.
+   - Defined four overall readiness tiers evaluated in strict non-compensatory precedence:
+     1. `PROHIBITED_OR_BLOCKED`: Established hard prohibition on the assessed approach.
+     2. `INSUFFICIENT_CRITICAL_EVIDENCE`: Critical domain dimensions remain `UNKNOWN` or event-log sample is `LIMITED` ($N < 10$). Never silently impute favorable values.
+     3. `PREREQUISITES_REQUIRED`: Feasible in principle, but technical/procedural prerequisites or human-in-the-loop controls are required.
+     4. `READY_FOR_SPECIFICATION`: All six dimensions favorable.
+2. **No Sample-Size Discounting on Domain Inputs:**
+   - Domain assessments evaluate system interface availability, rule determinism, and data formats; they are not discounted by event-log case counts.
+3. **Refined Barrier Semantics:**
+   - `PROHIBITIVE_BARRIER` is strictly reserved for documented hard prohibitions (`PROHIBITED_BY_LAW`, `PROHIBITED_ACCESS`).
+   - Work that is safety-critical, judgment-intensive, or uses restricted interfaces evaluates to `PREREQUISITE_REQUIRED` (e.g. human-in-the-loop review, desktop automation, Document AI), not categorical bans.
+4. **Provisional Empirical Heuristics:**
+   - Event-log volume and path consistency are documented as observed process characteristics, not proof of task automation suitability or business-rule stability.
+5. **Contradictory Evidence Detection:**
+   - When domain claims assert unattended execution but event logs show recurrence $\ge 20\%$ or cycle outliers $\ge 10\%$, a structured `ReadinessDiscrepancy` is emitted with HTTP 200, prompting review of intentional multi-pass review vs. defect rework. Legitimate recurrence is never assumed to be an operational defect.
+6. **Keying by Stable `opportunity_id` & Validation:**
+   - Domain assessments are submitted per opportunity keyed by stable `opportunity_id`.
+   - Unknown opportunity IDs are rejected with HTTP 400 Bad Request listing valid IDs from the uploaded CSV.
+   - Partial domain submissions are supported: submitted opportunities are evaluated with domain data; unassessed opportunities evaluate cleanly to `INSUFFICIENT_CRITICAL_EVIDENCE`.
+7. **Clean Pipeline Service Reuse:**
+   - The endpoint `POST /api/v1/readiness/assess` reuses existing ingestion, reconstruction, analytics, and problem/opportunity detection services without duplicating domain logic.
+8. **Specification Readiness Boundary Guardrail:**
+   - Explicitly disclaimed in documentation and response schemas that `READY_FOR_SPECIFICATION` signifies readiness for detailed solution design and stakeholder specification; it does **not** authorize production deployment.
+
+### Consequences & Verification
+- 95/95 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`, `test_opportunity.py`, `test_readiness.py`).
+- Added 16 dedicated readiness tests covering default unknown baseline, hard prohibitions, human-in-the-loop prerequisites, specification readiness, contradictory evidence, legitimate recurrence, invalid ID validation, malformed JSON, and regression across all four synthetic datasets.
+- Zero regressions in Phases 1–5 contracts.

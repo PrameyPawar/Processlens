@@ -3,7 +3,8 @@ FastAPI application entrypoint for ProcessLens.
 Provides health check and CSV ingestion endpoints.
 """
 
-from fastapi import FastAPI, UploadFile, File, HTTPException, status
+from typing import Optional
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.schemas.ingestion import DataQualityReport
@@ -11,11 +12,13 @@ from app.schemas.reconstruction import ProcessReconstructionResult
 from app.schemas.analytics import ProcessAnalyticsResult
 from app.schemas.detection import ProblemDetectionResult
 from app.schemas.opportunity import OpportunityDetectionResult
+from app.schemas.readiness import ReadinessAssessmentResponse
 from app.services.validator import validate_csv_content
 from app.services.reconstruction import reconstruct_process_from_csv
 from app.services.analytics import calculate_process_analytics
 from app.services.detection import detect_process_problems
 from app.services.opportunity import detect_improvement_opportunities
+from app.services.readiness import parse_domain_assessments_json, assess_opportunities_readiness
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -250,3 +253,60 @@ async def detect_opportunities_endpoint(file: UploadFile = File(...)):
             detail=f"An error occurred while detecting opportunities: {str(e)}"
         )
 
+
+@app.post(f"{settings.API_V1_STR}/readiness/assess", response_model=ReadinessAssessmentResponse, status_code=status.HTTP_200_OK)
+async def assess_readiness_endpoint(
+    file: UploadFile = File(...),
+    domain_assessments: Optional[str] = Form(None),
+):
+    """
+    Reconstructs the process, computes analytics, detects problems and opportunities,
+    and deterministically assesses automation readiness across six dimensions.
+    Reuses existing pipeline services with zero logic duplication.
+    """
+    if not file.filename:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Filename cannot be empty."
+        )
+
+    if not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
+        )
+
+    content = await file.read()
+
+    if len(content) > settings.MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
+        )
+
+    # Validate and parse domain assessments JSON if provided
+    try:
+        parsed_domain = parse_domain_assessments_json(domain_assessments)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    try:
+        reconstruction = reconstruct_process_from_csv(content, file.filename)
+        analytics_result = calculate_process_analytics(reconstruction)
+        detection_result = detect_process_problems(reconstruction, analytics_result)
+        opportunity_result = detect_improvement_opportunities(reconstruction, analytics_result, detection_result)
+        readiness_result = assess_opportunities_readiness(opportunity_result, parsed_domain, file.filename)
+        return readiness_result
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while assessing automation readiness: {str(e)}"
+        )
