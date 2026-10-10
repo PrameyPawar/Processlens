@@ -23,14 +23,17 @@ class OpportunityArchetype(str, Enum):
 
 class InterventionCategory(str, Enum):
     """
-    Categorical approach of candidate intervention.
-    Interventions are hypotheses to investigate with process owners, not guaranteed cures.
+    Categorical classification of candidate intervention approach.
+    Interventions are hypotheses to investigate with process owners, not proven remedies.
+    When operational evidence (e.g. elapsed duration concentration or recurrence prevalence)
+    does not establish a specific intervention mechanism, UNDETERMINED_INVESTIGATION is assigned.
     """
+    UNDETERMINED_INVESTIGATION = "UNDETERMINED_INVESTIGATION"
     PROCESS_SIMPLIFICATION = "PROCESS_SIMPLIFICATION"
-    TASK_AUTOMATION_CANDIDATE = "TASK_AUTOMATION_CANDIDATE"
     QUALITY_GATING = "QUALITY_GATING"
     EXCEPTION_MANAGEMENT = "EXCEPTION_MANAGEMENT"
     DATA_INSTRUMENTATION = "DATA_INSTRUMENTATION"
+    TASK_AUTOMATION_CANDIDATE = "TASK_AUTOMATION_CANDIDATE"
 
 
 class PriorityTier(str, Enum):
@@ -48,7 +51,8 @@ class PriorityTier(str, Enum):
 class ScoreBreakdown(BaseModel):
     """
     Transparent breakdown of the deterministic operational priority score.
-    Ranks operational signal exposure and evidence weight; is not a business-value, ROI, or probability estimate.
+    Ranks measured operational patterns for operational investigation; it does NOT establish
+    avoidability, business value, savings, ROI, or intervention/implementation readiness.
     """
     coverage_score: float = Field(
         ...,
@@ -171,11 +175,11 @@ class OpportunityCandidate(BaseModel):
     # Deterministic Operational Priority
     operational_priority_score: float = Field(
         ...,
-        description="Deterministic priority score (0.0 to 100.0) reflecting operational exposure and evidence strength"
+        description="Deterministic score (0.0 to 100.0) ranking measured operational patterns for investigation. It does NOT establish avoidability, business value, savings, ROI, or intervention readiness."
     )
     priority_tier: PriorityTier = Field(
         ...,
-        description="Categorical priority tier. Always TIER_4_EXPLORATORY when evidence_strength is LIMITED"
+        description="Categorical priority tier ranking operational patterns for investigation: TIER_1_HIGH, TIER_2_MEDIUM, TIER_3_LOW, TIER_4_EXPLORATORY. Always TIER_4_EXPLORATORY when evidence_strength is LIMITED"
     )
     score_breakdown: ScoreBreakdown = Field(
         ...,

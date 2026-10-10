@@ -265,3 +265,34 @@ Phase 4 established deterministic problem detection, identifying operational pat
 - 78/78 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`, `test_opportunity.py`).
 - 0 regressions in existing Phase 1–4 contracts.
 - End-to-end opportunity detection verified on all synthetic datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
+
+---
+
+## Decision Record 010: Phase 5 Semantic Validation & Neutral Intervention Classification
+* **Date:** 2026-10-10
+* **Status:** Implemented & Verified
+* **Owner:** Opportunity & Economics Analyst, Product Lead
+
+### Context
+Following initial Phase 5 opportunity implementation (commit `3687e66`), a semantic review identified two unwarranted inferences requiring immediate alignment with ProcessLens core principles:
+1. **Premature Assignment of `TASK_AUTOMATION_CANDIDATE`:** Assigning task automation based solely on elapsed duration concentration was an unverified leap. Milestone logs capture elapsed chronological time; they do not reveal whether delay stems from manual effort, physical processing (e.g. curing, cooling), external suppliers, batching, or queueing.
+2. **Clarification of Operational Priority Score Semantics:** The `operational_priority_score` measures and ranks data patterns for investigation. It does not establish that a pattern represents avoidable waste, nor does it imply business value or automation readiness.
+3. **Mandatory Steps with High Duration:** A mandatory, highly valuable process step (e.g. `Fabrication -> Heat Treatment`) may accumulate substantial elapsed duration and rank highly in data coverage and concentration without being unnecessary, wasteful, or an automation candidate.
+
+### Decisions
+1. **Neutral Intervention Classification (`UNDETERMINED_INVESTIGATION`):**
+   - Added `UNDETERMINED_INVESTIGATION` to `InterventionCategory`.
+   - Replaced automatic assignment of `TASK_AUTOMATION_CANDIDATE` in `DELAY_COMPRESSION` and `RECURRENCE_REDUCTION` rules with `UNDETERMINED_INVESTIGATION`.
+   - `TASK_AUTOMATION_CANDIDATE` remains a valid enum member for backward compatibility and future phases where automation suitability criteria are explicitly evaluated.
+2. **Schema & Documentation Clarifications:**
+   - Updated `ScoreBreakdown` and `OpportunityCandidate.operational_priority_score` docstrings and descriptions to state explicitly:
+     *"Deterministic score (0.0 to 100.0) ranking measured operational patterns for investigation. It does NOT establish avoidability, business value, savings, ROI, or intervention readiness."*
+3. **Neutral Phrasing & Strict Evidence Separation:**
+   - Formulated balanced `candidate_actions` and `investigation_hypotheses` prompting process owners to investigate active work vs. idle waiting vs. physical constraints.
+   - Preserved explicit limitations: high duration concentration does not prove that a step is unnecessary, avoidable, or suitable for automation. Implementation readiness is explicitly separated (deferred to Phase 6).
+4. **Mandatory Transition Verification Test:**
+   - Added `test_mandatory_transition_high_duration_ranks_high_without_automation_claim`: verifies that a mandatory physical step (`Fabrication -> Heat Treatment`) with 45% duration share ranks highly ($71.25$, `TIER_1_HIGH`), receives `UNDETERMINED_INVESTIGATION` (never `TASK_AUTOMATION_CANDIDATE`), and contains zero claims of waste, avoidability, or justified automation.
+
+### Consequences & Verification
+- 79/79 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`, `test_opportunity.py`).
+- Zero regressions in existing API contracts.

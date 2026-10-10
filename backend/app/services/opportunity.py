@@ -32,8 +32,8 @@ def calculate_opportunity_score(
       2. Concentration Score (0.0 to 50.0): Archetype-specific operational magnitude.
       3. Evidence Weight: Sample size confidence discount factor.
 
-    This score ranks operational signal prominence in observed event data.
-    It is NOT a probability, business-value estimate, ROI, or savings calculation.
+    This score ranks measured operational patterns for investigation.
+    It does NOT establish avoidability, business value, ROI, savings, or intervention readiness.
     """
     # 1. Coverage Score (0 to 50 points based on % of complete cases affected)
     bounded_case_pct = max(0.0, min(100.0, affected_case_percentage))
@@ -137,15 +137,15 @@ def detect_improvement_opportunities(
             target_entity = f"{source} -> {target}"
             opp_id = f"opp_delay_{slugify(source)}_{slugify(target)}"
             actions = [
-                f"Evaluate automated data exchange, API integration, or system triggers between '{source}' and '{target}'.",
-                f"Review and streamline manual handoff protocols to minimize idle wait times between milestones.",
+                f"Investigate whether elapsed duration between '{source}' and '{target}' reflects active working time, queueing delay, physical processing, or external dependencies.",
+                f"Evaluate candidate intervention levers (e.g. handoff streamlining, schedule coordination, or system integration if manual data re-entry is confirmed).",
             ]
 
             candidate = OpportunityCandidate(
                 id=opp_id,
                 title=f"Compress Elapsed Duration on {source} to {target}",
                 archetype=OpportunityArchetype.DELAY_COMPRESSION,
-                intervention_category=InterventionCategory.TASK_AUTOMATION_CANDIDATE,
+                intervention_category=InterventionCategory.UNDETERMINED_INVESTIGATION,
                 target_entity=target_entity,
                 source_finding_ids=[finding.id],
                 evidence_strength=finding.evidence_strength,
@@ -165,12 +165,13 @@ def detect_improvement_opportunities(
                 candidate_actions=actions,
                 candidate_interventions=actions,
                 rationale=(
-                    f"High elapsed time concentration ({share:.2f}% of total cycle time) indicates a significant "
-                    f"operational opportunity to compress cycle time."
+                    f"High elapsed duration concentration ({share:.2f}% of cumulative complete-case cycle time) identifies an operational pattern "
+                    f"prioritised for investigation to evaluate potential cycle-time compression."
                 ),
                 limitations=[
-                    "Milestone timestamps reflect chronological elapsed time between events and do not separate active labor from queueing/idle time.",
-                    "High duration concentration is an operational observation and does not guarantee that automation is feasible or cost-effective without workflow review.",
+                    "Milestone timestamps reflect chronological elapsed time between events and do not separate active labor from queueing, idle time, or physical processing.",
+                    "High duration concentration is an operational observation; it does not establish that the transition is unnecessary, avoidable, or suitable for automation without workflow review.",
+                    "Implementation and automation readiness are evaluated separately and are not determined from event logs alone.",
                 ],
                 operational_priority_score=score,
                 priority_tier=tier,
@@ -213,15 +214,15 @@ def detect_improvement_opportunities(
 
             opp_id = f"opp_recurrence_{slugify(activity)}"
             actions = [
-                f"Introduce upstream validation gating or completion checklists prior to '{activity}' to increase first-pass yield.",
-                f"Standardize intake requirements to eliminate preventable revisions and re-work loops.",
+                f"Investigate root causes of repeated executions for '{activity}' with process owners (e.g. specification changes, missing intake data, or intentional review iterations).",
+                f"Evaluate candidate interventions such as upstream intake validation checklists, standardized templates, or quality review gating.",
             ]
 
             candidate = OpportunityCandidate(
                 id=opp_id,
                 title=f"Reduce Repetitions and Loopbacks on {activity}",
                 archetype=OpportunityArchetype.RECURRENCE_REDUCTION,
-                intervention_category=InterventionCategory.QUALITY_GATING,
+                intervention_category=InterventionCategory.UNDETERMINED_INVESTIGATION,
                 target_entity=activity,
                 source_finding_ids=[finding.id],
                 evidence_strength=finding.evidence_strength,
@@ -240,12 +241,13 @@ def detect_improvement_opportunities(
                 candidate_actions=actions,
                 candidate_interventions=actions,
                 rationale=(
-                    f"Prevalent activity recurrence ({r_pct:.2f}% of cases affected) indicates potential operational "
-                    f"rework or iterative delays that could be addressed upstream."
+                    f"Prevalent activity recurrence ({r_pct:.2f}% of cases affected) prioritises this pattern for investigation "
+                    f"to examine first-pass yield and recurring operational effort."
                 ),
                 limitations=[
                     "Repeated activities represent observed operational patterns; they do not distinguish intentional iterative reviews from operational failure without domain context.",
                     "Identical-timestamp duplicate records are excluded from recurrence counts.",
+                    "Implementation and automation readiness are evaluated separately and are not determined from event logs alone.",
                 ],
                 operational_priority_score=score,
                 priority_tier=tier,

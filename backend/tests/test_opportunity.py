@@ -605,3 +605,74 @@ def test_api_endpoint_validation_errors():
     assert res.status_code == 400
     assert "Filename cannot be empty" in res.json()["detail"]
 
+
+def test_mandatory_transition_high_duration_ranks_high_without_automation_claim():
+    """
+    Verifies that a common mandatory transition with high duration concentration:
+      1. Ranks highly based on measured coverage and concentration (TIER_1_HIGH).
+      2. Does NOT assign TASK_AUTOMATION_CANDIDATE (assigns neutral UNDETERMINED_INVESTIGATION).
+      3. Does NOT claim the step is unnecessary, avoidable, or that automation is justified.
+      4. Explicitly lists limitations distinguishing elapsed milestone duration from active labor
+         and stating that implementation/automation readiness is evaluated separately.
+    """
+    # 10 complete cases of a 3-step mandatory process: Fabrication -> Heat Treatment -> Dispatch
+    # Each case: Fabrication (0s) -> Heat Treatment (45s) -> Dispatch (100s). Cycle time = 100s.
+    # Cumulative cycle time = 1000s across 10 cases.
+    # Transition Fabrication -> Heat Treatment:
+    #   count = 10, mean = 45s, total = 450s, share = 45.0%
+    # Transition Heat Treatment -> Dispatch:
+    #   count = 10, mean = 55s, total = 550s, share = 55.0%
+    # Total transitions = 1000s -> exactly reconciles!
+    rows = ["case_id,activity,timestamp"]
+    for i in range(1, 11):
+        rows.append(f"C{i:02d},Fabrication,2026-01-01 00:00:00")
+        rows.append(f"C{i:02d},Heat Treatment,2026-01-01 00:00:45")
+        rows.append(f"C{i:02d},Dispatch,2026-01-01 00:01:40")
+    csv_content = "\n".join(rows).encode("utf-8")
+
+    recon = reconstruct_process_from_csv(csv_content, "mandatory_cure.csv")
+    analytics = calculate_process_analytics(recon)
+    detection = detect_process_problems(recon, analytics)
+    result = detect_improvement_opportunities(recon, analytics, detection)
+
+    assert result.summary.evaluated_cases_count == 10
+    assert result.summary.reconciliation_passed is True
+
+    # Find the opportunity for Fabrication -> Heat Treatment
+    opps = [o for o in result.opportunities if o.target_entity == "Fabrication -> Heat Treatment"]
+    assert len(opps) == 1
+    opp = opps[0]
+
+    # Hand-calculated score verification:
+    # Coverage: 10/10 cases (100%) -> 50.0 points
+    # Concentration: 45.0% share -> 50 * (45.0 / 50.0) = 45.0 points
+    # Raw score: 50.0 + 45.0 = 95.0
+    # Evidence weight for N=10 cases (MODERATE): 0.75
+    # Final score: round(95.0 * 0.75, 2) = 71.25
+    assert opp.score_breakdown.coverage_score == 50.0
+    assert opp.score_breakdown.concentration_score == 45.0
+    assert opp.score_breakdown.raw_score == 95.0
+    assert opp.score_breakdown.evidence_weight == 0.75
+    assert opp.operational_priority_score == 71.25
+
+    # 1. Measured pattern ranks highly in Tier 1
+    assert opp.priority_tier == PriorityTier.TIER_1_HIGH
+
+    # 2. Classified as neutral UNDETERMINED_INVESTIGATION, NOT TASK_AUTOMATION_CANDIDATE
+    assert opp.intervention_category == InterventionCategory.UNDETERMINED_INVESTIGATION
+    assert opp.intervention_category != InterventionCategory.TASK_AUTOMATION_CANDIDATE
+
+    # 3. No unfounded claims that the step is unnecessary or automation is justified
+    combined_text = (
+        opp.rationale
+        + " " + " ".join(opp.observed_facts)
+        + " " + " ".join(opp.investigation_hypotheses)
+    ).lower()
+    assert "unnecessary" not in combined_text
+    assert "defect" not in combined_text
+    assert "automation is justified" not in combined_text
+
+    # 4. Limitations explicitly state boundaries
+    limitations_text = " ".join(opp.limitations)
+    assert "does not establish that the transition is unnecessary, avoidable, or suitable for automation" in limitations_text
+    assert "Implementation and automation readiness are evaluated separately" in limitations_text
