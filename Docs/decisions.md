@@ -292,6 +292,7 @@ Following initial Phase 5 opportunity implementation (commit `3687e66`), a seman
    - Preserved explicit limitations: high duration concentration does not prove that a step is unnecessary, avoidable, or suitable for automation. Implementation readiness is explicitly separated (deferred to Phase 6).
 4. **Mandatory Transition Verification Test:**
    - Added `test_mandatory_transition_high_duration_ranks_high_without_automation_claim`: verifies that a mandatory physical step (`Fabrication -> Heat Treatment`) with 45% duration share ranks highly ($71.25$, `TIER_1_HIGH`), receives `UNDETERMINED_INVESTIGATION` (never `TASK_AUTOMATION_CANDIDATE`), and contains zero claims of waste, avoidability, or justified automation.
+   - Exact hand-calculated arithmetic: Coverage = $50.0 \times (10 / 10) = 50.0$ points; Concentration = $50.0 \times (45.0 / 50.0) = 45.0$ points; Raw Score = $50.0 + 45.0 = 95.0$; Evidence Weight for $N=10$ cases (MODERATE) = $0.75$; Final Operational Priority Score = $\text{round}(95.0 \times 0.75, 2) = 71.25 \rightarrow \text{TIER\_1\_HIGH}$.
 
 ### Consequences & Verification
 - 79/79 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`, `test_opportunity.py`).
