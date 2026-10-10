@@ -227,3 +227,41 @@ Key compatibility questions audited:
   - `test_json_serialization_behavior_bottleneck_vs_duration_concentration`: Verifies that legacy instances serialize as `"BOTTLENECK"`, canonical instances serialize as `"DURATION_CONCENTRATION"`, and live engine outputs strictly emit canonical `"DURATION_CONCENTRATION"`.
   - `test_openapi_schema_generated_deprecation_metadata`: Verifies `deprecated=True` in generated OpenAPI JSON schema.
   - `test_backward_compatibility_incoming_payloads`: Verifies that payloads containing deprecated legacy fields deserialize cleanly without 422 errors.
+
+---
+
+## Decision Record 009: Phase 5 Deterministic Opportunity Detection, Evidence Traceability, and Operational Priority Scoring
+* **Date:** 2026-10-10
+* **Status:** Implemented & Verified
+* **Owner:** Opportunity & Economics Analyst (Lead), Product Lead
+
+### Context
+Phase 4 established deterministic problem detection, identifying operational patterns (`DURATION_CONCENTRATION`, `REPETITION`, `CYCLE_TIME_OUTLIER`, `PATH_VARIATION`, `DATA_QUALITY_LIMITATION`) without premature business-impact claims. Phase 5 requires converting these operational findings into structured, evidence-backed Opportunity Candidates while strictly adhering to the ProcessLens North Star:
+1. **Derive from Verified Findings:** Every opportunity candidate must trace directly to at least one valid Phase 4 `ProblemFinding` ID.
+2. **Explicit Distinction of Evidence Layers:** Distinguish observed facts, investigation hypotheses, and candidate interventions in the response.
+3. **No Speculative Economics:** Event logs provide operational timestamps and activity names, not wages, licensing costs, or implementation hours. Financial ROI belongs to Phase 7.
+4. **Transparent Provisional Priority Scoring:** Operational priority score $P = (S_{\text{coverage}} + S_{\text{concentration}}) \times W_{\text{evidence}}$ ($0$ to $100$), with a strict guardrail: `LIMITED` evidence ($<10$ cases) always assigns `TIER_4_EXPLORATORY` regardless of score.
+5. **Data Quality Awareness:** When transition duration reconciliation fails, duration-share opportunities are suppressed, and a `DATA_INSTRUMENTATION` opportunity is generated instead.
+6. **No Domain Hardcoding:** Zero hardcoded activity names or manufacturing rules. Opportunities emerge entirely from data-driven signals.
+
+### Decisions
+1. **Pydantic Schemas (`schemas/opportunity.py`):**
+   - Enums: `OpportunityArchetype` (`DELAY_COMPRESSION`, `RECURRENCE_REDUCTION`, `TAIL_VARIANCE_MITIGATION`, `PATH_STANDARDIZATION`, `DATA_INSTRUMENTATION`), `InterventionCategory` (`PROCESS_SIMPLIFICATION`, `TASK_AUTOMATION_CANDIDATE`, `QUALITY_GATING`, `EXCEPTION_MANAGEMENT`, `DATA_INSTRUMENTATION`), and `PriorityTier` (`TIER_1_HIGH`, `TIER_2_MEDIUM`, `TIER_3_LOW`, `TIER_4_EXPLORATORY`).
+   - Distinct metric percentage fields: `duration_share_percentage`, `recurrence_case_percentage`, `outlier_case_percentage`, and `variant_case_percentage` replace ambiguous generic shares.
+   - Distinct evidence fields: `observed_facts`, `investigation_hypotheses`, `candidate_actions`, `candidate_interventions`, `rationale`, and `limitations`.
+   - Models: `ScoreBreakdown`, `OpportunityCandidate`, `OpportunitySummary`, `OpportunityDetectionResult`.
+2. **Domain Service (`services/opportunity.py`):**
+   - Implemented `detect_improvement_opportunities(reconstruction, analytics, detection)` consuming typed outputs from Phases 2, 3, and 4.
+   - Handled deduplication: multiple findings for the same target entity/archetype merge into a single candidate, combining source finding IDs while preserving the highest priority score and metrics.
+   - Deterministic sorting: sorted by `(-operational_priority_score, -affected_case_count, target_entity, id)`.
+3. **API Endpoint (`POST /api/v1/opportunities/detect`):**
+   - Preserves all existing endpoint contracts (`/health`, `/ingestion/upload`, `/process/reconstruct`, `/analytics/process`, `/problems/detect`).
+   - Validates CSV file extension, empty filename, and file size limit.
+   - Executes end-to-end pipeline: Reconstruct $\to$ Analytics $\to$ Detect Problems $\to$ Detect Opportunities.
+4. **Testing (`tests/test_opportunity.py`):**
+   - 15 dedicated unit and integration tests covering priority score formulas, boundary conditions, score traceability, finding ID validation, deduplication, reconciliation suppression, missing metrics, and all 4 development datasets.
+
+### Consequences & Verification
+- 78/78 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`, `test_opportunity.py`).
+- 0 regressions in existing Phase 1–4 contracts.
+- End-to-end opportunity detection verified on all synthetic datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
