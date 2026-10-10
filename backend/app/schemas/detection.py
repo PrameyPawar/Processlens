@@ -1,5 +1,6 @@
 """
 Pydantic schemas for deterministic Problem Detection and Operational Signals (Phase 4).
+Defines canonical fields and deprecated legacy compatibility fields.
 """
 
 from enum import Enum
@@ -8,28 +9,42 @@ from pydantic import BaseModel, Field
 
 
 class FindingCategory(str, Enum):
+    """
+    High-level category of detected operational signals.
+    Canonical value for transition elapsed time concentration is DURATION_CONCENTRATION.
+    BOTTLENECK is deprecated and retained for backward compatibility.
+    """
     DURATION_CONCENTRATION = "DURATION_CONCENTRATION"
     REPETITION = "REPETITION"
     CYCLE_TIME_OUTLIER = "CYCLE_TIME_OUTLIER"
     PATH_VARIATION = "PATH_VARIATION"
     DATA_QUALITY_LIMITATION = "DATA_QUALITY_LIMITATION"
 
-    # Backward-compatibility alias
-    BOTTLENECK = "DURATION_CONCENTRATION"
+    # Deprecated: Legacy category preserved for backward compatibility.
+    # New consumers must use canonical DURATION_CONCENTRATION.
+    BOTTLENECK = "BOTTLENECK"
 
 
 class SignalLevel(str, Enum):
+    """
+    Signal prominence level reflecting pattern magnitude in observed data:
+    HIGH, MEDIUM, LOW, INFO. Distinct from evidence strength; does not assert business impact.
+    """
     HIGH = "HIGH"
     MEDIUM = "MEDIUM"
     LOW = "LOW"
     INFO = "INFO"
 
 
-# Backward-compatibility alias
+# Deprecated: Legacy alias for SignalLevel. New consumers must use SignalLevel.
 SeverityLevel = SignalLevel
 
 
 class EvidenceStrength(str, Enum):
+    """
+    Statistical confidence based strictly on evaluated sample size for that specific finding:
+    HIGH (>=30), MODERATE (10-29), LIMITED (<10).
+    """
     HIGH = "HIGH"
     MODERATE = "MODERATE"
     LIMITED = "LIMITED"
@@ -81,36 +96,40 @@ class DetectionSummary(BaseModel):
     )
     high_signal_count: int = Field(
         0,
-        description="Count of HIGH prominence findings"
+        description="Canonical: Count of HIGH prominence findings"
     )
     medium_signal_count: int = Field(
         0,
-        description="Count of MEDIUM prominence findings"
+        description="Canonical: Count of MEDIUM prominence findings"
     )
     low_signal_count: int = Field(
         0,
-        description="Count of LOW prominence findings"
+        description="Canonical: Count of LOW prominence findings"
     )
     info_signal_count: int = Field(
         0,
-        description="Count of INFO prominence findings"
+        description="Canonical: Count of INFO prominence findings"
     )
-    # Backward-compatibility aliases
+    # Deprecated legacy aliases
     high_severity_count: Optional[int] = Field(
         None,
-        description="Backward-compatibility alias for high_signal_count"
+        deprecated=True,
+        description="Deprecated: Legacy alias for high_signal_count. New consumers must use canonical high_signal_count."
     )
     medium_severity_count: Optional[int] = Field(
         None,
-        description="Backward-compatibility alias for medium_signal_count"
+        deprecated=True,
+        description="Deprecated: Legacy alias for medium_signal_count. New consumers must use canonical medium_signal_count."
     )
     low_severity_count: Optional[int] = Field(
         None,
-        description="Backward-compatibility alias for low_signal_count"
+        deprecated=True,
+        description="Deprecated: Legacy alias for low_signal_count. New consumers must use canonical low_signal_count."
     )
     info_severity_count: Optional[int] = Field(
         None,
-        description="Backward-compatibility alias for info_signal_count"
+        deprecated=True,
+        description="Deprecated: Legacy alias for info_signal_count. New consumers must use canonical info_signal_count."
     )
     reconciliation: ReconciliationStatus = Field(
         ...,
@@ -125,7 +144,7 @@ class ProblemFinding(BaseModel):
     )
     category: FindingCategory = Field(
         ...,
-        description="High-level category of detected operational signal (e.g. DURATION_CONCENTRATION, REPETITION)"
+        description="High-level category of detected operational signal (e.g. DURATION_CONCENTRATION, REPETITION). Canonical category for elapsed duration concentration is DURATION_CONCENTRATION."
     )
     rule: str = Field(
         ...,
@@ -137,11 +156,12 @@ class ProblemFinding(BaseModel):
     )
     signal_level: SignalLevel = Field(
         ...,
-        description="Signal prominence level: HIGH, MEDIUM, LOW, INFO. Reflects magnitude/concentration in data; does not assert business impact."
+        description="Canonical signal prominence level: HIGH, MEDIUM, LOW, INFO. Reflects magnitude/concentration in data; does not assert business impact."
     )
     severity: Optional[SignalLevel] = Field(
         None,
-        description="Backward-compatibility alias for signal_level"
+        deprecated=True,
+        description="Deprecated: Legacy alias for signal_level. New consumers must use canonical signal_level."
     )
     evidence_strength: EvidenceStrength = Field(
         ...,
@@ -149,7 +169,7 @@ class ProblemFinding(BaseModel):
     )
     metrics: Dict[str, Any] = Field(
         default_factory=dict,
-        description="Transparent deterministic metrics supporting the finding"
+        description="Transparent deterministic metrics supporting the finding. New consumers must use canonical keys (e.g. recurrence_case_count). Legacy rework_* keys are deprecated."
     )
     explanation: str = Field(
         ...,

@@ -35,6 +35,7 @@ from app.schemas.detection import (
     SignalLevel,
     SeverityLevel,
     EvidenceStrength,
+    ProblemFinding,
     ProblemDetectionResult
 )
 from app.schemas.reconstruction import ProcessReconstructionResult, CaseTrace, ReconstructedEvent
@@ -562,3 +563,137 @@ def test_integration_four_development_datasets():
             assert rare_findings[0].metrics["rare_variant_count"] == expected_rare_variants
         else:
             assert len(rare_findings) == 0
+
+
+def test_enum_values_and_legacy_compatibility():
+    """
+    Verifies that FindingCategory retains canonical DURATION_CONCENTRATION
+    and deprecated legacy BOTTLENECK with distinct string values.
+    """
+    assert FindingCategory.DURATION_CONCENTRATION.value == "DURATION_CONCENTRATION"
+    assert FindingCategory.BOTTLENECK.value == "BOTTLENECK"
+
+    # Both values deserialize correctly from raw strings
+    assert FindingCategory("DURATION_CONCENTRATION") == FindingCategory.DURATION_CONCENTRATION
+    assert FindingCategory("BOTTLENECK") == FindingCategory.BOTTLENECK
+
+    # SeverityLevel is an alias for SignalLevel
+    assert SeverityLevel is SignalLevel
+    assert SeverityLevel.HIGH == SignalLevel.HIGH
+
+
+def test_json_serialization_behavior_bottleneck_vs_duration_concentration():
+    """
+    Verifies JSON serialization behavior:
+    1. A finding explicitly created with legacy BOTTLENECK serializes as its old value "BOTTLENECK".
+    2. A finding created with canonical DURATION_CONCENTRATION serializes as "DURATION_CONCENTRATION".
+    3. The live engine generates findings with canonical DURATION_CONCENTRATION only.
+    """
+    import json
+
+    # Legacy finding serialization
+    legacy_finding = ProblemFinding(
+        id="legacy_1",
+        category=FindingCategory.BOTTLENECK,
+        rule="TRANSITION_DURATION_SHARE",
+        title="Legacy Title",
+        signal_level=SignalLevel.MEDIUM,
+        severity=SignalLevel.MEDIUM,
+        evidence_strength=EvidenceStrength.HIGH,
+        explanation="Test explanation",
+        limitations=[]
+    )
+    legacy_json = json.loads(legacy_finding.model_dump_json())
+    assert legacy_json["category"] == "BOTTLENECK"
+    assert legacy_json["severity"] == "MEDIUM"
+    assert legacy_json["signal_level"] == "MEDIUM"
+
+    # Canonical finding serialization
+    canonical_finding = ProblemFinding(
+        id="canonical_1",
+        category=FindingCategory.DURATION_CONCENTRATION,
+        rule="TRANSITION_DURATION_SHARE",
+        title="Canonical Title",
+        signal_level=SignalLevel.MEDIUM,
+        severity=SignalLevel.MEDIUM,
+        evidence_strength=EvidenceStrength.HIGH,
+        explanation="Test explanation",
+        limitations=[]
+    )
+    canonical_json = json.loads(canonical_finding.model_dump_json())
+    assert canonical_json["category"] == "DURATION_CONCENTRATION"
+    assert canonical_json["signal_level"] == "MEDIUM"
+
+    # Live engine output verification on quickstart dataset
+    filepath = os.path.join(DATA_DIR, "manufacturing_orders_quickstart.csv")
+    with open(filepath, "rb") as f:
+        content = f.read()
+
+    recon = reconstruct_process_from_csv(content, "quickstart.csv")
+    analytics = calculate_process_analytics(recon)
+    result = detect_process_problems(recon, analytics)
+
+    result_json = json.loads(result.model_dump_json())
+    for f in result_json["findings"]:
+        if f["rule"] == "TRANSITION_DURATION_SHARE":
+            # Engine strictly emits canonical DURATION_CONCENTRATION
+            assert f["category"] == "DURATION_CONCENTRATION"
+            assert f["category"] != "BOTTLENECK"
+
+
+def test_openapi_schema_generated_deprecation_metadata():
+    """
+    Verifies that the generated OpenAPI schema includes deprecated=True
+    metadata on legacy fields and enumerates both canonical and legacy categories.
+    """
+    openapi_schema = app.openapi()
+    schemas = openapi_schema["components"]["schemas"]
+
+    # ProblemFinding schema checks
+    finding_schema = schemas["ProblemFinding"]
+    assert "signal_level" in finding_schema["properties"]
+    assert "severity" in finding_schema["properties"]
+    assert finding_schema["properties"]["severity"].get("deprecated") is True
+
+    # DetectionSummary schema checks
+    summary_schema = schemas["DetectionSummary"]
+    assert "high_signal_count" in summary_schema["properties"]
+    assert "high_severity_count" in summary_schema["properties"]
+    assert summary_schema["properties"]["high_severity_count"].get("deprecated") is True
+    assert summary_schema["properties"]["medium_severity_count"].get("deprecated") is True
+    assert summary_schema["properties"]["low_severity_count"].get("deprecated") is True
+    assert summary_schema["properties"]["info_severity_count"].get("deprecated") is True
+
+    # FindingCategory enum checks
+    cat_schema = schemas["FindingCategory"]
+    assert "DURATION_CONCENTRATION" in cat_schema["enum"]
+    assert "BOTTLENECK" in cat_schema["enum"]
+
+
+def test_backward_compatibility_incoming_payloads():
+    """
+    Verifies that incoming JSON payloads using deprecated legacy fields
+    (category: BOTTLENECK, severity, rework_* metrics) validate cleanly.
+    """
+    legacy_payload = {
+        "id": "finding_legacy_test",
+        "category": "BOTTLENECK",
+        "rule": "ACTIVITY_RECURRENCE",
+        "title": "Legacy Finding",
+        "signal_level": "HIGH",
+        "severity": "HIGH",
+        "evidence_strength": "MODERATE",
+        "metrics": {
+            "rework_case_count": 12,
+            "rework_case_percentage": 24.0,
+            "rework_occurrences": 15
+        },
+        "explanation": "Legacy test explanation",
+        "limitations": []
+    }
+
+    finding = ProblemFinding.model_validate(legacy_payload)
+    assert finding.category == FindingCategory.BOTTLENECK
+    assert finding.severity == SignalLevel.HIGH
+    assert finding.signal_level == SignalLevel.HIGH
+    assert finding.metrics["rework_case_count"] == 12
