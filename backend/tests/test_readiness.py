@@ -311,6 +311,35 @@ def test_readiness_invalid_opportunity_id_rejected():
     assert "Valid IDs:" in str(excinfo.value)
 
 
+def test_readiness_duplicate_opportunity_id_rejected():
+    """
+    Verifies that submitting multiple domain assessments for the same opportunity_id raises ValueError.
+    """
+    filepath = os.path.join(DATA_DIR, "manufacturing_orders_clean.csv")
+    with open(filepath, "rb") as f:
+        content = f.read()
+
+    recon = reconstruct_process_from_csv(content, "clean.csv")
+    analytics = calculate_process_analytics(recon)
+    detection = detect_process_problems(recon, analytics)
+    opportunities = detect_improvement_opportunities(recon, analytics, detection)
+
+    target_id = opportunities.opportunities[0].id
+    dup_input1 = OpportunityDomainAssessmentInput(
+        opportunity_id=target_id,
+        digital_data_format=DigitalDataFormat.STRUCTURED_DIGITAL,
+    )
+    dup_input2 = OpportunityDomainAssessmentInput(
+        opportunity_id=target_id,
+        digital_data_format=DigitalDataFormat.SEMI_STRUCTURED,
+    )
+
+    with pytest.raises(ValueError) as excinfo:
+        assess_opportunities_readiness(opportunities, [dup_input1, dup_input2], "clean.csv")
+
+    assert f"Duplicate domain assessment for opportunity_id '{target_id}'" in str(excinfo.value)
+
+
 # ---------------------------------------------------------------------------
 # API Endpoint Integration Tests: POST /api/v1/readiness/assess
 # ---------------------------------------------------------------------------

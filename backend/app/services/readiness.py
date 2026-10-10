@@ -433,6 +433,11 @@ def assess_opportunities_readiness(
                     f"Submitted assessments must match opportunities detected from the provided event log. "
                     f"Valid IDs: {sorted_valid}"
                 )
+            if item.opportunity_id in domain_map:
+                raise ValueError(
+                    f"Duplicate domain assessment for opportunity_id '{item.opportunity_id}'. "
+                    "Each opportunity candidate may only be assessed once per request."
+                )
             domain_map[item.opportunity_id] = item
 
     # 3. Assess each opportunity deterministically
