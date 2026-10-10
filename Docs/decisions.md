@@ -153,3 +153,36 @@ Phase 3 established deterministic process metrics (cycle times, frequencies, rew
 - Reconciliation check passes on all 4 development datasets with $< 0.0001\%$ numerical discrepancy.
 - Rework loop detection verified on `rework.csv` (`Quality Inspection` in 253 cases).
 - 18 rare variants verified on `messy.csv`.
+
+---
+
+## Decision Record 007: Phase 4 Semantic Correction & Signal Prominence Separation
+* **Date:** 2026-10-10
+* **Status:** Implemented & Verified
+* **Owner:** Process Analytics Engineer & Product Lead
+
+### Context
+Following review of Phase 4 (commit `8ae785d`), three semantic and classification alignments were required to adhere to the core principles of ProcessLens:
+1. **Unsupported Bottleneck Classification:** Labeling elapsed-duration-share findings as `BOTTLENECK` constituted an unverified claim. Process logs record milestone timestamps, not active task execution versus queue time. A high share represents elapsed time concentration, not proven process constraint.
+2. **Conflation of Signal Prominence and Evidence Strength:** Signal prominence (how large or concentrated a pattern is in data, e.g. 80% duration share or 33% recurrence) was previously combined with sample size thresholds (`m_tau >= 10`) under a "severity" label. Furthermore, labeling data patterns as "HIGH severity" falsely implied business impact or operational defect.
+3. **Recurrence Terminology:** Metric keys such as `rework_case_count` and `rework_case_percentage` in finding metrics asserted operational "rework" rather than neutral activity recurrence.
+
+### Decision
+1. **Neutral Finding Category (`DURATION_CONCENTRATION`):** Replaced `BOTTLENECK` with `DURATION_CONCENTRATION` across schemas and domain service. `BOTTLENECK` is retained as an enum alias mapping to `DURATION_CONCENTRATION` for backward compatibility.
+2. **Strict Separation of Signal Prominence and Evidence Strength:**
+   - Introduced `SignalLevel` (`HIGH`, `MEDIUM`, `LOW`, `INFO`) reflecting pattern magnitude in observed data:
+     - Duration share: $\ge 40\%$ (HIGH), $\ge 25\%$ (MEDIUM), $< 25\%$ (LOW).
+     - Recurrence prevalence: $\ge 30\%$ (HIGH), $\ge 15\%$ (MEDIUM), $< 15\%$ (LOW).
+     - Cycle-time outliers: $\ge 5\%$ (MEDIUM), $< 5\%$ (LOW).
+   - Sample size checks (e.g. `m_tau >= 10`) are removed from signal level determination and reside exclusively in `evidence_strength` ($N \ge 30$ High, $10-29$ Moderate, $< 10$ Limited).
+   - Schema field renamed to `signal_level`, with `severity` retained as an optional backward-compatible alias.
+   - `DetectionSummary` exposes `high_signal_count`, `medium_signal_count`, etc., alongside `high_severity_count` backward-compatibility aliases.
+3. **Neutral Recurrence Metric Keys:** Updated finding metrics dictionary to use `recurrence_case_count`, `recurrence_case_percentage`, and `recurrence_occurrences`. Retained `rework_case_count` aliases in the dictionary for transition compatibility.
+4. **API Compatibility Implications:**
+   - **Primary Schema Additions:** Clients reading `ProblemFinding` should consume `category == "DURATION_CONCENTRATION"`, `signal_level`, and `metrics["recurrence_case_count"]`.
+   - **Deprecations with Zero-Breakage Aliases:** `category == "BOTTLENECK"` deserializes to `DURATION_CONCENTRATION`. `finding.severity` and `summary.high_severity_count` remain populated. Legacy consumers of `rework_case_count` in finding metrics continue to receive the key alongside `recurrence_case_count`.
+
+### Consequences & Verification
+- 59/59 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`).
+- Orthogonality verified by `test_separation_of_signal_prominence_and_evidence_strength` (sample size $< 10$ with share $\ge 80\%$ yields `signal_level = HIGH` and `evidence_strength = LIMITED`).
+- Neutral language verified across all findings (`test_neutral_terminology_and_no_unsupported_claims`).

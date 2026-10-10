@@ -1,5 +1,5 @@
 """
-Pydantic schemas for deterministic Problem and Bottleneck Detection (Phase 4).
+Pydantic schemas for deterministic Problem Detection and Operational Signals (Phase 4).
 """
 
 from enum import Enum
@@ -8,18 +8,25 @@ from pydantic import BaseModel, Field
 
 
 class FindingCategory(str, Enum):
-    BOTTLENECK = "BOTTLENECK"
+    DURATION_CONCENTRATION = "DURATION_CONCENTRATION"
     REPETITION = "REPETITION"
     CYCLE_TIME_OUTLIER = "CYCLE_TIME_OUTLIER"
     PATH_VARIATION = "PATH_VARIATION"
     DATA_QUALITY_LIMITATION = "DATA_QUALITY_LIMITATION"
 
+    # Backward-compatibility alias
+    BOTTLENECK = "DURATION_CONCENTRATION"
 
-class SeverityLevel(str, Enum):
+
+class SignalLevel(str, Enum):
     HIGH = "HIGH"
     MEDIUM = "MEDIUM"
     LOW = "LOW"
     INFO = "INFO"
+
+
+# Backward-compatibility alias
+SeverityLevel = SignalLevel
 
 
 class EvidenceStrength(str, Enum):
@@ -72,21 +79,38 @@ class DetectionSummary(BaseModel):
         ...,
         description="Total problem findings emitted"
     )
-    high_severity_count: int = Field(
+    high_signal_count: int = Field(
         0,
-        description="Count of HIGH severity findings"
+        description="Count of HIGH prominence findings"
     )
-    medium_severity_count: int = Field(
+    medium_signal_count: int = Field(
         0,
-        description="Count of MEDIUM severity findings"
+        description="Count of MEDIUM prominence findings"
     )
-    low_severity_count: int = Field(
+    low_signal_count: int = Field(
         0,
-        description="Count of LOW severity findings"
+        description="Count of LOW prominence findings"
     )
-    info_severity_count: int = Field(
+    info_signal_count: int = Field(
         0,
-        description="Count of INFO severity findings"
+        description="Count of INFO prominence findings"
+    )
+    # Backward-compatibility aliases
+    high_severity_count: Optional[int] = Field(
+        None,
+        description="Backward-compatibility alias for high_signal_count"
+    )
+    medium_severity_count: Optional[int] = Field(
+        None,
+        description="Backward-compatibility alias for medium_signal_count"
+    )
+    low_severity_count: Optional[int] = Field(
+        None,
+        description="Backward-compatibility alias for low_signal_count"
+    )
+    info_severity_count: Optional[int] = Field(
+        None,
+        description="Backward-compatibility alias for info_signal_count"
     )
     reconciliation: ReconciliationStatus = Field(
         ...,
@@ -101,7 +125,7 @@ class ProblemFinding(BaseModel):
     )
     category: FindingCategory = Field(
         ...,
-        description="High-level category of detected operational signal"
+        description="High-level category of detected operational signal (e.g. DURATION_CONCENTRATION, REPETITION)"
     )
     rule: str = Field(
         ...,
@@ -111,13 +135,17 @@ class ProblemFinding(BaseModel):
         ...,
         description="Short neutral descriptive title"
     )
-    severity: SeverityLevel = Field(
+    signal_level: SignalLevel = Field(
         ...,
-        description="Signal severity level: HIGH, MEDIUM, LOW, INFO"
+        description="Signal prominence level: HIGH, MEDIUM, LOW, INFO. Reflects magnitude/concentration in data; does not assert business impact."
+    )
+    severity: Optional[SignalLevel] = Field(
+        None,
+        description="Backward-compatibility alias for signal_level"
     )
     evidence_strength: EvidenceStrength = Field(
         ...,
-        description="Finding-specific evidence strength: HIGH, MODERATE, or LIMITED"
+        description="Finding-specific evidence strength: HIGH, MODERATE, or LIMITED based strictly on evaluated sample size"
     )
     metrics: Dict[str, Any] = Field(
         default_factory=dict,
@@ -125,7 +153,7 @@ class ProblemFinding(BaseModel):
     )
     explanation: str = Field(
         ...,
-        description="Neutral explanation of evidence without asserting root causes or waste"
+        description="Neutral explanation of evidence without asserting root causes, defects, waste, or bottlenecks"
     )
     limitations: List[str] = Field(
         default_factory=list,

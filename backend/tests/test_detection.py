@@ -1,5 +1,5 @@
 """
-Unit and regression test suite for Phase 4: Deterministic Problem and Bottleneck Detection.
+Unit and regression test suite for Phase 4: Deterministic Problem Detection and Operational Signals.
 Covers:
 - Hand-calculated duplicate interval preservation
 - Repeated transitions and rework loop duration shares
@@ -8,7 +8,9 @@ Covers:
 - Zero-IQR cycle-time distributions
 - Reconciliation discrepancy detection and duration-share suppression
 - Small sample cautions and finding-specific evidence strength
-- Deterministic IDs and severity sorting
+- Separation of signal prominence from evidence strength
+- Neutral terminology and rejection of unsupported bottleneck claims
+- Deterministic IDs and signal prominence sorting
 - API endpoint contracts and HTTP boundary validation
 - Integration tests against all 4 development datasets
 """
@@ -30,6 +32,7 @@ from app.services.detection import (
 )
 from app.schemas.detection import (
     FindingCategory,
+    SignalLevel,
     SeverityLevel,
     EvidenceStrength,
     ProblemDetectionResult
@@ -57,7 +60,7 @@ def test_hand_calculated_duplicate_interval_preservation():
     Case C1: A(t=10) -> A(t=10, dup) -> B(t=25).
     Reconstruction marks duplicate event; analytics forms 1 transition (A -> B) of duration 15s.
     Detection verifies cumulative cycle time = 15s, transition total = 15s,
-    reconciliation passes, and A -> B has 100% duration share.
+    reconciliation passes, category is DURATION_CONCENTRATION, and A -> B has 100% duration share.
     """
     csv_content = (
         "case_id,activity,timestamp\n"
@@ -78,12 +81,15 @@ def test_hand_calculated_duplicate_interval_preservation():
     assert detection.summary.reconciliation.discrepancy_seconds == 0.0
     assert detection.summary.reconciliation.duration_share_suppressed is False
 
-    # Transition share is 100%
+    # Neutral category is DURATION_CONCENTRATION, not BOTTLENECK
     trans_findings = [f for f in detection.findings if f.rule == "TRANSITION_DURATION_SHARE"]
     assert len(trans_findings) == 1
+    assert trans_findings[0].category == FindingCategory.DURATION_CONCENTRATION
     assert trans_findings[0].metrics["duration_share_percentage"] == 100.0
     assert trans_findings[0].metrics["transition_count"] == 1
-    # Evidence strength for 1 execution is LIMITED
+
+    # Signal prominence is HIGH (100% share), but evidence strength is LIMITED (1 execution)
+    assert trans_findings[0].signal_level == SignalLevel.HIGH
     assert trans_findings[0].evidence_strength == EvidenceStrength.LIMITED
 
 
@@ -95,6 +101,7 @@ def test_repeated_transitions_rework_loop_shares():
       - A -> B: count = 2, total = 20s (mean = 10s), share = 66.67%
       - B -> A: count = 1, total = 10s (mean = 10s), share = 33.33%
     Sum of shares = 100.0%. Reconciliation passes.
+    Recurrence metrics use neutral terminology (recurrence_case_count).
     """
     csv_content = (
         "case_id,activity,timestamp\n"
@@ -113,16 +120,24 @@ def test_repeated_transitions_rework_loop_shares():
     assert detection.summary.reconciliation.total_transition_duration_seconds == 30.0
     assert detection.summary.reconciliation.discrepancy_seconds == 0.0
 
-    # Shares check
+    # Shares check with neutral DURATION_CONCENTRATION category
     trans_findings = {f.id: f for f in detection.findings if f.rule == "TRANSITION_DURATION_SHARE"}
     assert "finding_transition_step_a_step_b" in trans_findings
     assert "finding_transition_step_b_step_a" in trans_findings
+    assert trans_findings["finding_transition_step_a_step_b"].category == FindingCategory.DURATION_CONCENTRATION
     assert trans_findings["finding_transition_step_a_step_b"].metrics["duration_share_percentage"] == 66.67
     assert trans_findings["finding_transition_step_b_step_a"].metrics["duration_share_percentage"] == 33.33
 
-    # Recurrence findings for Step_A and Step_B
+    # Neutral recurrence metrics
     recurr_findings = [f for f in detection.findings if f.rule == "ACTIVITY_RECURRENCE"]
     assert len(recurr_findings) == 2
+    for rf in recurr_findings:
+        assert rf.category == FindingCategory.REPETITION
+        assert "recurrence_case_count" in rf.metrics
+        assert "recurrence_case_percentage" in rf.metrics
+        assert "recurrence_occurrences" in rf.metrics
+        assert rf.metrics["recurrence_case_count"] == 1
+        assert rf.metrics["recurrence_occurrences"] == 1
 
 
 def test_incomplete_cases_isolation():
@@ -176,7 +191,7 @@ def test_zero_duration_single_event_cases():
     # Check zero cycle time finding
     zero_findings = [f for f in detection.findings if f.rule == "ZERO_CYCLE_TIME_PROCESS"]
     assert len(zero_findings) == 1
-    assert zero_findings[0].severity == SeverityLevel.INFO
+    assert zero_findings[0].signal_level == SignalLevel.INFO
 
 
 def test_simultaneous_events_zero_duration():
@@ -221,7 +236,7 @@ def test_zero_iqr_cycle_time_distribution():
 
     zero_var_findings = [f for f in detection.findings if f.rule == "ZERO_VARIANCE_CYCLE_TIME"]
     assert len(zero_var_findings) == 1
-    assert zero_var_findings[0].severity == SeverityLevel.INFO
+    assert zero_var_findings[0].signal_level == SignalLevel.INFO
     assert zero_var_findings[0].metrics["iqr_seconds"] == 0.0
 
 
@@ -231,7 +246,6 @@ def test_reconciliation_discrepancy_suppresses_duration_shares():
     all TRANSITION_DURATION_SHARE findings are suppressed and an explicit
     ACCOUNTING_RECONCILIATION_DISCREPANCY finding is emitted.
     """
-    # Create synthetic reconstruction and analytics where discrepancy is 20%
     dt1 = datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
     dt2 = datetime(2026, 1, 1, 0, 1, 40, tzinfo=timezone.utc)  # 100 seconds
     cases = [
@@ -261,7 +275,6 @@ def test_reconciliation_discrepancy_suppresses_duration_shares():
         cases=cases
     )
 
-    # Analytics reports transition duration as 80s instead of 100s (20% gap)
     trans = [
         ActivityTransition(
             source_activity="A",
@@ -307,7 +320,7 @@ def test_reconciliation_discrepancy_suppresses_duration_shares():
     # Assert diagnostic finding emitted
     discrepancy_findings = [f for f in detection.findings if f.rule == "ACCOUNTING_RECONCILIATION_DISCREPANCY"]
     assert len(discrepancy_findings) == 1
-    assert discrepancy_findings[0].severity == SeverityLevel.HIGH
+    assert discrepancy_findings[0].signal_level == SignalLevel.HIGH
     assert discrepancy_findings[0].evidence_strength == EvidenceStrength.HIGH
 
 
@@ -349,9 +362,68 @@ def test_finding_specific_evidence_strength():
     assert evaluate_evidence_strength(1) == EvidenceStrength.LIMITED
 
 
+def test_separation_of_signal_prominence_and_evidence_strength():
+    """
+    Verifies that signal prominence and evidence strength are strictly orthogonal:
+    A high-concentration transition with few executions has HIGH signal prominence
+    and LIMITED evidence strength. Sample size does not inflate or suppress signal prominence.
+    """
+    # 2 cases: A -> B takes 50s out of 60s total cycle time (83.33% share)
+    csv_content = (
+        "case_id,activity,timestamp\n"
+        "C1,A,2026-01-01 00:00:00\n"
+        "C1,B,2026-01-01 00:00:25\n"
+        "C1,C,2026-01-01 00:00:30\n"
+        "C2,A,2026-01-01 00:00:00\n"
+        "C2,B,2026-01-01 00:00:25\n"
+        "C2,C,2026-01-01 00:00:30\n"
+    ).encode("utf-8")
+
+    recon = reconstruct_process_from_csv(csv_content, "small_prominent.csv")
+    analytics = calculate_process_analytics(recon)
+    detection = detect_process_problems(recon, analytics)
+
+    trans_ab = next((f for f in detection.findings if f.id == "finding_transition_a_b"), None)
+    assert trans_ab is not None
+
+    # High duration concentration (83.33% >= 40%) -> HIGH signal prominence
+    assert trans_ab.signal_level == SignalLevel.HIGH
+
+    # Only 2 executions (< 10) -> LIMITED evidence strength
+    assert trans_ab.evidence_strength == EvidenceStrength.LIMITED
+
+    # Asserts that high prominence does NOT falsely claim HIGH evidence strength
+    assert trans_ab.signal_level != trans_ab.evidence_strength
+
+
+def test_neutral_terminology_and_no_unsupported_claims():
+    """
+    Verifies that findings adhere to neutral operational language:
+    - Category is DURATION_CONCENTRATION, not BOTTLENECK
+    - Recurrence metrics use recurrence_case_count, not rework
+    - No unverified claims of defects, waste, or bottlenecks
+    """
+    filepath = os.path.join(DATA_DIR, "manufacturing_orders_rework.csv")
+    with open(filepath, "rb") as f:
+        content = f.read()
+
+    recon = reconstruct_process_from_csv(content, "rework.csv")
+    analytics = calculate_process_analytics(recon)
+    detection = detect_process_problems(recon, analytics)
+
+    for finding in detection.findings:
+        # Category must not be unverified "BOTTLENECK"
+        assert finding.category.value != "BOTTLENECK" or finding.category == FindingCategory.DURATION_CONCENTRATION
+        assert "bottleneck" not in finding.title.lower()
+        assert "defect" not in finding.explanation.lower()
+        assert "waste" not in finding.explanation.lower()
+        assert "savings" not in finding.explanation.lower()
+        assert "roi" not in finding.explanation.lower()
+
+
 def test_deterministic_finding_ids_and_ordering():
     """
-    Verifies deterministic finding IDs and stable sorting by severity.
+    Verifies deterministic finding IDs and stable sorting by signal prominence.
     """
     assert slugify("Production -> Quality Inspection") == "production_quality_inspection"
     assert slugify("Order Verification") == "order_verification"
@@ -371,10 +443,10 @@ def test_deterministic_finding_ids_and_ordering():
     ids2 = [f.id for f in run2.findings]
     assert ids1 == ids2
 
-    # Verify severity sorting (HIGH -> MEDIUM -> LOW -> INFO)
-    severities = [f.severity for f in run1.findings]
-    severity_order = {SeverityLevel.HIGH: 0, SeverityLevel.MEDIUM: 1, SeverityLevel.LOW: 2, SeverityLevel.INFO: 3}
-    order_ranks = [severity_order[s] for s in severities]
+    # Verify signal prominence sorting (HIGH -> MEDIUM -> LOW -> INFO)
+    signals = [f.signal_level for f in run1.findings]
+    signal_order = {SignalLevel.HIGH: 0, SignalLevel.MEDIUM: 1, SignalLevel.LOW: 2, SignalLevel.INFO: 3}
+    order_ranks = [signal_order[s] for s in signals]
     assert order_ranks == sorted(order_ranks)
 
 
@@ -397,6 +469,7 @@ def test_api_endpoint_problems_detect():
     assert "findings" in data
     assert data["summary"]["evaluated_cases_count"] == 100
     assert data["summary"]["reconciliation"]["reconciled"] is True
+    assert "high_signal_count" in data["summary"]
 
     # Empty filename
     boundary = "boundary789"
@@ -436,7 +509,7 @@ def test_integration_four_development_datasets():
     Comprehensive integration test on all four development datasets:
     - quickstart.csv (100 cases)
     - clean.csv (750 cases)
-    - rework.csv (750 cases, rework loop on Quality Inspection)
+    - rework.csv (750 cases, recurrence loop on Quality Inspection)
     - messy.csv (750 cases, 652 complete, 18 rare variants)
     """
     datasets = [
@@ -461,13 +534,23 @@ def test_integration_four_development_datasets():
         assert detection.summary.reconciliation.reconciled is True
         assert detection.summary.reconciliation.discrepancy_percentage < 0.01
 
-        # Check rework finding
+        # Check duration concentration category
+        trans_findings = [f for f in detection.findings if f.rule == "TRANSITION_DURATION_SHARE"]
+        for tf in trans_findings:
+            assert tf.category == FindingCategory.DURATION_CONCENTRATION
+
+        # Check recurrence finding with neutral terminology
         recurr_findings = [f for f in detection.findings if f.rule == "ACTIVITY_RECURRENCE"]
         if has_rework:
             assert len(recurr_findings) >= 1
             quality_recurr = next((f for f in recurr_findings if "quality_inspection" in f.id), None)
             assert quality_recurr is not None
-            assert quality_recurr.metrics["rework_case_count"] == 253
+            assert quality_recurr.category == FindingCategory.REPETITION
+            assert quality_recurr.metrics["recurrence_case_count"] == 253
+            assert quality_recurr.metrics["recurrence_case_percentage"] == 33.73
+            assert quality_recurr.metrics["recurrence_occurrences"] == 253
+            assert quality_recurr.signal_level == SignalLevel.HIGH
+            assert quality_recurr.evidence_strength == EvidenceStrength.HIGH
         else:
             assert len(recurr_findings) == 0
 
@@ -475,6 +558,7 @@ def test_integration_four_development_datasets():
         rare_findings = [f for f in detection.findings if f.rule == "RARE_PROCESS_VARIANT"]
         if expected_rare_variants > 0:
             assert len(rare_findings) == 1
+            assert rare_findings[0].category == FindingCategory.PATH_VARIATION
             assert rare_findings[0].metrics["rare_variant_count"] == expected_rare_variants
         else:
             assert len(rare_findings) == 0

@@ -1,5 +1,5 @@
 """
-Deterministic problem and bottleneck detection domain service (Phase 4).
+Deterministic problem detection and operational signals domain service (Phase 4).
 Consumes Phase 2 reconstruction and Phase 3 analytics results.
 """
 
@@ -9,6 +9,7 @@ from app.schemas.reconstruction import ProcessReconstructionResult
 from app.schemas.analytics import ProcessAnalyticsResult
 from app.schemas.detection import (
     FindingCategory,
+    SignalLevel,
     SeverityLevel,
     EvidenceStrength,
     ReconciliationStatus,
@@ -26,8 +27,8 @@ def slugify(text: str) -> str:
 
 def evaluate_evidence_strength(sample_size: int) -> EvidenceStrength:
     """
-    Evaluates finding-specific evidence strength based on the specific sample size
-    for that finding (e.g. transition executions, rework cases, or variant cases).
+    Evaluates finding-specific evidence strength based strictly on the evaluated sample size
+    for that specific finding (e.g. transition executions, recurrence cases, or variant cases).
     Thresholds:
       - >= 30: HIGH
       - 10 to 29: MODERATE
@@ -69,15 +70,16 @@ def detect_process_problems(
     tolerance_percentage: float = 1.0,
 ) -> ProblemDetectionResult:
     """
-    Detects deterministic process problems and bottlenecks:
+    Detects deterministic process operational signals:
       1. Accounting integrity check (transition durations vs complete-case cycle time).
-      2. Transition duration-share bottlenecks (suppressed if reconciliation fails or cycle time is 0).
+      2. Transition duration concentration (suppressed if reconciliation fails or cycle time is 0).
       3. Repeated activity / recurrence indicators.
       4. Cycle-time Tukey 1.5x IQR outliers.
       5. Rare process variant path variation.
       6. Data quality limitations (reconciliation discrepancies, zero cycle time, small samples).
 
     All metrics operate strictly on complete cases.
+    Signal prominence is strictly separated from statistical evidence strength.
     """
     complete_cases = [c for c in reconstruction.cases if c.is_complete]
     n_complete = len(complete_cases)
@@ -127,10 +129,10 @@ def detect_process_problems(
 
     # Rule A: Accounting Reconciliation Discrepancy
     if not reconciled:
-        severity = (
-            SeverityLevel.HIGH
+        signal_level = (
+            SignalLevel.HIGH
             if discrepancy_pct > 10.0
-            else SeverityLevel.MEDIUM
+            else SignalLevel.MEDIUM
         )
         findings.append(
             ProblemFinding(
@@ -138,7 +140,8 @@ def detect_process_problems(
                 category=FindingCategory.DATA_QUALITY_LIMITATION,
                 rule="ACCOUNTING_RECONCILIATION_DISCREPANCY",
                 title="Transition Durations Do Not Reconcile With Process Cycle Time",
-                severity=severity,
+                signal_level=signal_level,
+                severity=signal_level,
                 evidence_strength=EvidenceStrength.HIGH,
                 metrics={
                     "total_transition_duration_seconds": round(
@@ -173,7 +176,8 @@ def detect_process_problems(
                 category=FindingCategory.DATA_QUALITY_LIMITATION,
                 rule="ZERO_CYCLE_TIME_PROCESS",
                 title="Process Has Zero Recorded Elapsed Cycle Time",
-                severity=SeverityLevel.INFO,
+                signal_level=SignalLevel.INFO,
+                severity=SignalLevel.INFO,
                 evidence_strength=EvidenceStrength.HIGH,
                 metrics={
                     "evaluated_cases_count": n_complete,
@@ -198,7 +202,8 @@ def detect_process_problems(
                 category=FindingCategory.DATA_QUALITY_LIMITATION,
                 rule="SMALL_SAMPLE_CAUTION",
                 title="Limited Sample Size For Problem Detection",
-                severity=SeverityLevel.INFO,
+                signal_level=SignalLevel.INFO,
+                severity=SignalLevel.INFO,
                 evidence_strength=EvidenceStrength.LIMITED,
                 metrics={"evaluated_cases_count": n_complete},
                 explanation=(
@@ -211,7 +216,7 @@ def detect_process_problems(
             )
         )
 
-    # Rule D: Transition Duration Share Bottlenecks (when verified and cycle time > 0)
+    # Rule D: Transition Duration Concentration (when verified and cycle time > 0)
     if not duration_share_suppressed and cumulative_cycle_time > 0.0:
         for t in analytics.transitions:
             dur = t.transition_count * t.duration_stats.mean_seconds
@@ -219,21 +224,24 @@ def detect_process_problems(
             if share >= duration_share_threshold_pct:
                 m_tau = t.transition_count
                 strength = evaluate_evidence_strength(m_tau)
-                if share >= 40.0 and m_tau >= 10:
-                    severity = SeverityLevel.HIGH
+
+                # Signal prominence is based strictly on concentration magnitude in data
+                if share >= 40.0:
+                    signal_level = SignalLevel.HIGH
                 elif share >= 25.0:
-                    severity = SeverityLevel.MEDIUM
+                    signal_level = SignalLevel.MEDIUM
                 else:
-                    severity = SeverityLevel.LOW
+                    signal_level = SignalLevel.LOW
 
                 slug = f"{slugify(t.source_activity)}_{slugify(t.target_activity)}"
                 findings.append(
                     ProblemFinding(
                         id=f"finding_transition_{slug}",
-                        category=FindingCategory.BOTTLENECK,
+                        category=FindingCategory.DURATION_CONCENTRATION,
                         rule="TRANSITION_DURATION_SHARE",
-                        title=f"High Duration Share on {t.source_activity} to {t.target_activity}",
-                        severity=severity,
+                        title=f"High Duration Concentration on {t.source_activity} to {t.target_activity}",
+                        signal_level=signal_level,
+                        severity=signal_level,
                         evidence_strength=strength,
                         metrics={
                             "source_activity": t.source_activity,
@@ -261,7 +269,7 @@ def detect_process_problems(
                         ),
                         limitations=[
                             "Elapsed transition duration reflects chronological time between milestone recordings and does not distinguish active work from waiting time without explicit start/end lifecycle timestamps.",
-                            "Does not imply operational inefficiency or defect without business domain context.",
+                            "Duration concentration indicates where elapsed time accumulates; it does not independently prove an operational bottleneck, constraint, defect, or inefficiency without domain context.",
                         ],
                     )
                 )
@@ -270,12 +278,14 @@ def detect_process_problems(
     for r in analytics.rework:
         if r.rework_case_count > 0:
             strength = evaluate_evidence_strength(r.rework_case_count)
+
+            # Signal prominence is based on prevalence of recurrence
             if r.rework_case_percentage >= 30.0:
-                severity = SeverityLevel.HIGH
+                signal_level = SignalLevel.HIGH
             elif r.rework_case_percentage >= 15.0:
-                severity = SeverityLevel.MEDIUM
+                signal_level = SignalLevel.MEDIUM
             else:
-                severity = SeverityLevel.LOW
+                signal_level = SignalLevel.LOW
 
             slug = slugify(r.activity)
             findings.append(
@@ -284,16 +294,23 @@ def detect_process_problems(
                     category=FindingCategory.REPETITION,
                     rule="ACTIVITY_RECURRENCE",
                     title=f"Repeated Execution of {r.activity}",
-                    severity=severity,
+                    signal_level=signal_level,
+                    severity=signal_level,
                     evidence_strength=strength,
                     metrics={
                         "activity": r.activity,
+                        "recurrence_case_count": r.rework_case_count,
+                        "recurrence_case_percentage": round(
+                            r.rework_case_percentage, 2
+                        ),
+                        "recurrence_occurrences": r.rework_occurrences,
+                        "duplicate_events_count": r.duplicate_events_count,
+                        # Backward-compatibility aliases
                         "rework_case_count": r.rework_case_count,
                         "rework_case_percentage": round(
                             r.rework_case_percentage, 2
                         ),
                         "rework_occurrences": r.rework_occurrences,
-                        "duplicate_events_count": r.duplicate_events_count,
                     },
                     explanation=(
                         f"Activity '{r.activity}' recurred at distinct timestamps in {r.rework_case_count} "
@@ -302,6 +319,7 @@ def detect_process_problems(
                     ),
                     limitations=[
                         "Repeated activities indicate re-execution patterns, which may represent intended operational rework, iterative review, or standard multi-step procedures.",
+                        "Prevalent recurrence is an observation of process behavior, not independent proof of operational waste or process failure.",
                         f"Identical-timestamp duplicate records ({r.duplicate_events_count}) are excluded from recurrence counts.",
                     ],
                 )
@@ -322,7 +340,8 @@ def detect_process_problems(
                     category=FindingCategory.DATA_QUALITY_LIMITATION,
                     rule="ZERO_VARIANCE_CYCLE_TIME",
                     title="Zero Variance in Process Cycle Times",
-                    severity=SeverityLevel.INFO,
+                    signal_level=SignalLevel.INFO,
+                    severity=SignalLevel.INFO,
                     evidence_strength=strength,
                     metrics={
                         "evaluated_cases_count": n_complete,
@@ -350,10 +369,10 @@ def detect_process_problems(
                 outlier_count = len(outliers)
                 outlier_pct = (outlier_count / n_complete) * 100.0
                 strength = evaluate_evidence_strength(n_complete)
-                severity = (
-                    SeverityLevel.MEDIUM
+                signal_level = (
+                    SignalLevel.MEDIUM
                     if outlier_pct >= 5.0
-                    else SeverityLevel.LOW
+                    else SignalLevel.LOW
                 )
 
                 findings.append(
@@ -362,7 +381,8 @@ def detect_process_problems(
                         category=FindingCategory.CYCLE_TIME_OUTLIER,
                         rule="CYCLE_TIME_TUKEY_OUTLIER",
                         title="Cycle-Time Outliers Exceeding Statistical Upper Fence",
-                        severity=severity,
+                        signal_level=signal_level,
+                        severity=signal_level,
                         evidence_strength=strength,
                         metrics={
                             "evaluated_cases_count": n_complete,
@@ -381,7 +401,7 @@ def detect_process_problems(
                             f"of {upper_fence:.2f}s (Q3 + 1.5*IQR)."
                         ),
                         limitations=[
-                            "Tukey fence is a non-parametric statistical dispersion heuristic, not proof of operational defect.",
+                            "Tukey fence is a non-parametric statistical dispersion heuristic, not proof of operational defect or business impact.",
                             "Outlier cases may reflect valid process exceptions, complex customer orders, or intentional holding periods.",
                         ],
                     )
@@ -402,7 +422,8 @@ def detect_process_problems(
                 category=FindingCategory.PATH_VARIATION,
                 rule="RARE_PROCESS_VARIANT",
                 title="High Process Path Variation (Infrequent Variants)",
-                severity=SeverityLevel.LOW,
+                signal_level=SignalLevel.LOW,
+                severity=SignalLevel.LOW,
                 evidence_strength=strength,
                 metrics={
                     "rare_variant_count": len(rare_variants),
@@ -424,29 +445,33 @@ def detect_process_problems(
             )
         )
 
-    # Deterministic Sorting of Findings
-    severity_order = {
-        SeverityLevel.HIGH: 0,
-        SeverityLevel.MEDIUM: 1,
-        SeverityLevel.LOW: 2,
-        SeverityLevel.INFO: 3,
+    # Deterministic Sorting of Findings by Signal Prominence
+    signal_order = {
+        SignalLevel.HIGH: 0,
+        SignalLevel.MEDIUM: 1,
+        SignalLevel.LOW: 2,
+        SignalLevel.INFO: 3,
     }
     findings.sort(
         key=lambda f: (
-            severity_order.get(f.severity, 99),
+            signal_order.get(f.signal_level, 99),
             f.category.value,
             f.id,
         )
     )
 
-    high_cnt = sum(1 for f in findings if f.severity == SeverityLevel.HIGH)
-    med_cnt = sum(1 for f in findings if f.severity == SeverityLevel.MEDIUM)
-    low_cnt = sum(1 for f in findings if f.severity == SeverityLevel.LOW)
-    info_cnt = sum(1 for f in findings if f.severity == SeverityLevel.INFO)
+    high_cnt = sum(1 for f in findings if f.signal_level == SignalLevel.HIGH)
+    med_cnt = sum(1 for f in findings if f.signal_level == SignalLevel.MEDIUM)
+    low_cnt = sum(1 for f in findings if f.signal_level == SignalLevel.LOW)
+    info_cnt = sum(1 for f in findings if f.signal_level == SignalLevel.INFO)
 
     summary = DetectionSummary(
         evaluated_cases_count=n_complete,
         total_findings_count=len(findings),
+        high_signal_count=high_cnt,
+        medium_signal_count=med_cnt,
+        low_signal_count=low_cnt,
+        info_signal_count=info_cnt,
         high_severity_count=high_cnt,
         medium_severity_count=med_cnt,
         low_severity_count=low_cnt,
