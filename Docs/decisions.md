@@ -118,3 +118,38 @@ QA audit revealed:
 ### Consequences & Verification
 - Artificial 0.0s self-transitions eliminated from messy dataset and synthetic fixtures.
 - Backward-compatibility preserved across all endpoints.
+
+---
+
+## Decision Record 006: Phase 4 Deterministic Problem and Bottleneck Detection
+* **Date:** 2026-10-10
+* **Status:** Implemented & Verified
+* **Owner:** Process Analytics Engineer & Product Lead
+
+### Context
+Phase 3 established deterministic process metrics (cycle times, frequencies, rework indicators, transitions) on complete cases. Phase 4 requires detecting operational inefficiencies and delays while strictly preventing unverified claims:
+1. Transition duration shares cannot unconditionally claim to sum to 100% due to branching, rework loops, and potential gaps.
+2. In cases where transition interval totals fail to reconcile with complete-case cycle times, duration shares must be suppressed rather than returning misleading percentages.
+3. The 1% reconciliation tolerance serves solely as an accounting integrity check between event intervals and case spans; it does not independently prove that individual transitions are correctly attributed, non-overlapping, or active work.
+4. Evidence strength cannot be inferred globally from overall case counts ($N \ge 30$), but must reflect finding-specific sample sizes (e.g. transition execution counts, recurrence case counts).
+5. All terminology must remain strictly neutral: findings report measured operational variance, recurrence, and elapsed duration shares without asserting proven defects, root causes, savings, or automation feasibility.
+
+### Decision
+1. **Pydantic Schemas (`schemas/detection.py`):**
+   - Defined enums `FindingCategory` (`BOTTLENECK`, `REPETITION`, `CYCLE_TIME_OUTLIER`, `PATH_VARIATION`, `DATA_QUALITY_LIMITATION`), `SeverityLevel` (`HIGH`, `MEDIUM`, `LOW`, `INFO`), and `EvidenceStrength` (`HIGH`, `MODERATE`, `LIMITED`).
+   - Defined typed models `ReconciliationStatus`, `DetectionSummary`, `ProblemFinding`, and `ProblemDetectionResult`.
+2. **Domain Service (`services/detection.py`):**
+   - Implemented `detect_process_problems(reconstruction, analytics)` consuming typed Phase 2 and Phase 3 outputs without duplicate CSV parsing.
+   - **Accounting Reconciliation Health Check:** Evaluates $\Delta = |\sum D_\tau - T_{\text{cumulative\_cycle}}| / T_{\text{cumulative\_cycle}}$. If discrepancy exceeds 1.0% or cycle time is 0.0s, transition duration-share findings are suppressed, and an explicit diagnostic finding (`ACCOUNTING_RECONCILIATION_DISCREPANCY` or `ZERO_CYCLE_TIME_PROCESS`) is emitted with measured accounting metrics.
+   - **Finding-Specific Evidence Strength:** High ($\ge 30$), Moderate ($10-29$), Limited ($< 10$) based strictly on the finding's evaluated sample dimension ($M_\tau$ for transitions, recurrence case count, variant case count).
+   - **Tukey 1.5x IQR Outlier Detection:** Applied to complete-case cycle times. If $\text{IQR} = 0.0\text{s}$, emits informative `ZERO_VARIANCE_CYCLE_TIME` finding rather than spurious outliers.
+   - **Deterministic Sorting & IDs:** IDs generated via `slugify()`; findings stably sorted by severity (`HIGH` -> `MEDIUM` -> `LOW` -> `INFO`), category, and ID.
+3. **API Contract (`POST /api/v1/problems/detect`):**
+   - Added endpoint in `main.py` preserving all existing contracts and boundary validations (file size, extension, empty filename).
+4. **Documentation of Limitations:** Explicitly documented that passing the 1% reconciliation check verifies arithmetic consistency only and does not prove active working time or non-overlapping transitions.
+
+### Consequences & Verification
+- 57/57 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`).
+- Reconciliation check passes on all 4 development datasets with $< 0.0001\%$ numerical discrepancy.
+- Rework loop detection verified on `rework.csv` (`Quality Inspection` in 253 cases).
+- 18 rare variants verified on `messy.csv`.
