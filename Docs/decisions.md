@@ -435,3 +435,65 @@ To protect the roadmap from architectural drift, arbitrary scoring, and speculat
 - 175/175 backend tests passing across all test suites with 0 failures and 0 regressions.
 - All Phase 1–7 contracts preserved.
 - Verified deterministic ranking and roadmap generation.
+
+---
+
+## Decision Record 014: Phase 9 Evidence Audit, Traceability & Epistemic Ledger Architecture
+* **Date:** 2026-10-11
+* **Status:** Implemented & Verified
+* **Owner:** Lead Process Mining Architect, Senior Backend Engineer, QA Engineer
+
+### Context
+ProcessLens Phases 1–8 established the complete deterministic pipeline from CSV ingestion through operational metrics, opportunity identification, readiness gating, financial economics, and portfolio prioritisation. However, for executive decision support to be trustworthy and defensible, every recommendation must be inspectable and auditable back to ground-truth operational events. Stakeholders must be able to trace *why* an opportunity was ranked where it was, inspect genuine source event rows, verify calculation derivations, and distinguish empirical facts from assumptions, estimates, hypotheses, and strategic decisions.
+
+### Decisions
+1. **Epistemic Classification Model (`EpistemicType` in `backend/app/schemas/evidence.py`):**
+   - Strictly partitioned into five immutable categories:
+     - `FACT`: Directly observed from ingested event logs (e.g., event counts, timestamps, variant frequencies, duration percentiles).
+     - `ASSUMPTION`: Externally provided or defaulted domain parameters (e.g., hourly labor rates, implementation cost, recurring cost, baseline prioritisation weights).
+     - `HYPOTHESIS`: Process improvement conjectures (e.g., opportunity archetype potential, estimated addressable percentage, time savings target).
+     - `ESTIMATE`: Monetized and extrapolated projections computed from facts + assumptions (e.g., annual capacity hours released, gross/net capacity benefit, payback period).
+     - `DECISION`: Strategic policy gates and portfolio tiering (e.g., readiness outcome, feasibility status, portfolio cohort placement, ranking position).
+   - Enforced rule: No score, financial calculation, or policy outcome may be classified as `FACT`.
+2. **Deterministic Source Anchoring Contract (`EventRowAnchor`, `CaseTraceExemplar`):**
+   - Preserved canonical `row_index`: 1-based data-row index excluding the CSV header row.
+   - Defined physical `csv_line_number = row_index + 1` corresponding 1:1 with the physical line on disk.
+   - Exemplars are constrained to at most 3 cases per opportunity, selected via deterministic tie-breaking (e.g. descending transition duration, repetition count, cycle time) with secondary sort on `case_id`.
+   - Never fabricates or synthesizes exemplars; if no relevant exemplar events exist (e.g., `DATA_INSTRUMENTATION` on clean data), an empty exemplar list is returned with an explicit limitation note.
+3. **Archetype Exemplar Extraction (`backend/app/services/evidence.py`):**
+   - `DELAY_COMPRESSION`: Exemplars anchor source rows performing the slowest transition between source and target activities.
+   - `RECURRENCE_REDUCTION`: Exemplars anchor source rows executing duplicate/repeated instances of the target activity.
+   - `TAIL_VARIANCE_MITIGATION`: Exemplars anchor full trace start and end rows for Tukey upper-fence cycle time outlier cases.
+   - `PATH_STANDARDIZATION`: Exemplars anchor trace start and end rows for rare process variants (<2% frequency).
+   - `DATA_INSTRUMENTATION`: Exemplars anchor raw data rows rejected by reconstruction validation; returns empty exemplar list when dataset has zero exclusions.
+4. **Transparent Metric Derivations (`MetricDerivationAudit`):**
+   - Audits actual formula inputs, intermediate quantities, calculation expressions, rounding conventions, and provenance for:
+     - `OPS_SCORE_V1`: Operational priority score piecewise linear components.
+     - `ANNUALIZATION_V1`: Observation window duration and extrapolation ratio.
+     - `LABOR_EFFORT_V1`: Continuous delay hours vs discrete rework hours released.
+     - `CAPACITY_VAL_V1`: Gross and net capacity value calculations and caveats.
+     - `PAYBACK_PERIOD_V1`: Payback period in months with zero/negative benefit branching.
+     - `WEIGHT_REDIST_V1`: Dynamic redistribution of weights for unscored factors.
+     - `COMPOSITE_SCORE_V1`: Weighted average composite score scaled to 0–100.
+5. **Cryptographic Manifest & Verification (`EvidenceAuditManifest`):**
+   - Computes SHA-256 fingerprint of the uploaded CSV content.
+   - Records file size in bytes, total rows, valid rows, excluded rows, cases count, and variants count.
+   - Labels reconciliation status (`PERFECT` or `EXCLUSIONS_PRESENT`).
+   - Tags active formula versions, effective factor weights, and explicitly declares `is_persisted_snapshot=False` to document in-memory execution.
+6. **API Endpoint (`POST /api/v1/evidence/audit` in `backend/app/main.py`):**
+   - Accepts multipart file upload (10 MB limit) with optional JSON overrides (`prioritisation_weights`, `economic_inputs`, `domain_assessments`, and `opportunity_id` filter).
+   - Returns full dossier collection or exactly one filtered dossier; returns HTTP 400 for unknown opportunity ID or malformed payloads.
+   - Fully backward-compatible; does not modify Phase 1–8 response models or route handlers.
+7. **Comprehensive Test Suite (`backend/tests/test_evidence.py`):**
+   - 28 unit and integration tests across 7 groups verifying:
+     - Group 1: Source-row and CSV line number 1-based alignment with physical file lines.
+     - Group 2: Exemplar extraction and relevance for all 5 archetypes, max-3 limits, deterministic tie-breaking, and empty exemplar handling.
+     - Group 3: Derivation audits for operational scores, composite scores, and monetized economics.
+     - Group 4: Strict epistemic ledger categorization and category boundaries.
+     - Group 5: Full pipeline regressions across all 4 synthetic datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
+     - Group 6: Exact opportunity ID filtering (single dossier match) and HTTP 400 for unknown IDs.
+     - Group 7: File size limits, extension validation, empty filename rejection, SHA-256 digest integrity, manifest fields, malformed JSON rejection, and backward compatibility.
+
+### Consequences & Verification
+- 203/203 backend tests passing across all test suites (28 dedicated evidence tests + 175 baseline tests) with 0 failures and 0 regressions.
+- Complete deterministic, auditable evidence trail established without persistence, external databases, or LLMs.
