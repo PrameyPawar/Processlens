@@ -645,3 +645,61 @@ python -m pytest backend/tests -q --tb=short
 - 41/41 dedicated tests passing in `backend/tests/test_llm_provider.py`.
 - 284 total backend tests passing with 0 regressions.
 - Existing deterministic templates and Phase 10.3 grounding verifier tests remain 100% untouched and passing.
+
+---
+
+## Decision Record 018: Phase 10 Task 10.5 Explanation API & Pipeline Architecture
+* **Date:** 2026-10-11
+* **Status:** Implemented & Verified (Task 10.5)
+* **Owner:** Senior Backend Architect, Reliability Engineer
+
+### Context
+ProcessLens Phase 10 established explanation schemas (Task 10.1), deterministic templates (Task 10.2), deterministic grounding verification (Task 10.3), and a typed LLM provider abstraction and adapter (Task 10.4). Task 10.5 connects these modular components into a production-conscious explanation generation pipeline and exposes the primary explanation endpoint `POST /api/v1/explanation/generate`.
+
+To protect operational integrity and executive decision support:
+1. Operational data, metrics, and evidence remain the sole source of analytical truth.
+2. The LLM must never calculate, alter, or fabricate numbers, metrics, ROI, capacity hours, readiness scores, or rankings.
+3. All LLM completions are treated as untrusted and passed through the deterministic Phase 10.3 grounding verifier.
+4. Output is certified as `LLM_AUGMENTED` with `VERIFIED_GROUNDED` only when the verifier explicitly approves it.
+5. On any failure (unsupported number, fabricated entity, causal claim, guaranteed-savings assertion, unmonetized zero substitution, provider timeout, network error, or missing configuration), the pipeline automatically and seamlessly falls back to the deterministic template explanation, truthfully recording `FALLBACK_APPLIED` and structured fallback discrepancies.
+6. When LLM generation is not evaluated (`enable_llm=False`), the grounding status remains truthfully `NOT_EVALUATED`.
+
+### Decisions
+1. **Dedicated Prompt Assembly & Parsing (`backend/app/services/explanation_prompt.py`):**
+   - Implemented `build_opportunity_prompt(dossier, deterministic)`:
+     - Minimal context inclusion: provides target entity, rank, archetype, cohort, score, verified facts from epistemic ledger, and exemplars.
+     - System prompt strictly instructs the model to refine executive readability and flow without altering numbers, asserting causation, or claiming guaranteed savings.
+     - Never logs or exposes assembled prompts or credentials in responses or logs.
+   - Implemented `parse_candidate_explanation(content, deterministic)`:
+     - Parses JSON response, safely stripping markdown code blocks if present.
+     - Strictly preserves structural fields (`opportunity_id`, `archetype`, `portfolio_cohort`, `rank_order`, `composite_priority_score`, `target_entity`) from the trusted deterministic baseline, ignoring any model hallucination of structural fields.
+     - Validates presence of non-empty text fields before passing candidate to grounding verification.
+2. **Explanation Pipeline Orchestrator (`backend/app/services/explanation_pipeline.py`):**
+   - Implemented `run_explanation_pipeline(audit_response, enable_llm=False, provider=None) -> ExplanationResponse`.
+   - Generates deterministic baseline response first.
+   - If `enable_llm=False`: sets `NOT_EVALUATED` on each explanation and returns `DETERMINISTIC_TEMPLATE`.
+   - If `enable_llm=True`: resolves provider, invokes LLM with bounded timeout, parses candidate, and runs `verify_opportunity_explanation(candidate, dossier)`.
+   - If grounding passes: sets `VERIFIED_GROUNDED` and returns candidate.
+   - If grounding fails or provider errors: sets `FALLBACK_APPLIED` with structured discrepancies and returns deterministic template baseline.
+   - Classifies `explanation_source` as `LLM_AUGMENTED` only if at least one opportunity was verified grounded; otherwise `DETERMINISTIC_TEMPLATE`.
+3. **FastAPI Endpoint (`POST /api/v1/explanation/generate` in `backend/app/main.py`):**
+   - Mounted at `/api/v1/explanation/generate`, accepting CSV uploads up to 10 MB limit alongside optional JSON form overrides (`prioritisation_weights`, `economic_inputs`, `domain_assessments`, `opportunity_id`) and `enable_llm: bool = Form(False)`.
+   - Injects optional `BaseLLMProvider` dependency via `get_llm_provider`, allowing test mock injection via `app.dependency_overrides`.
+   - Validates client input (filename, extension, size, parameter JSON validity, opportunity ID existence).
+   - Expected provider failures (timeouts, 500s, network issues, malformed output) do not crash the endpoint or return HTTP 500; they gracefully return HTTP 200 with deterministic template fallbacks and structured fallback reasons.
+4. **Trust Boundary Invariants & Deterministic Constraints (`backend/app/services/explanation_prompt.py`):**
+   - Audited trust boundary between model generation and grounding verifier. The Phase 10.3 verifier deterministically checks the four narrative prose sections (`executive_summary`, `operational_problem_narrative`, `economic_interpretation`, `strategic_rationale`).
+   - Implemented strict deterministic constraints in `parse_candidate_explanation`: structural metadata (`opportunity_id`, `archetype`, `portfolio_cohort`, `rank_order`, `composite_priority_score`, `target_entity`) and epistemic/governance lists (`key_assumptions_and_risks`, `investigation_next_steps`) are strictly preserved from the deterministic baseline.
+   - Any untrusted model attempts to smuggle ungrounded numbers, phantom entities, or causal assertions into fields outside the four verified prose sections are completely dropped by deterministic construction.
+   - Any unsupported claims inside the four prose sections trigger deterministic fallback with structured discrepancies.
+5. **Comprehensive Test Suite (`backend/tests/test_explanation_pipeline.py`):**
+   - 32 unit and integration tests across 3 groups verifying:
+     - Group 1: Prompt structure, system prompt invariants, facts ledger extraction, valid/invalid JSON parsing, markdown codeblock stripping, missing field rejection, and deterministic metadata tamper-resistance.
+     - Group 2: Pipeline execution with `enable_llm=False` (`NOT_EVALUATED`), unconfigured provider fallback, valid grounded LLM output (`VERIFIED_GROUNDED`), hallucinated numeric claims rejection, unsupported entity rejection, causal claims rejection, guaranteed savings claims rejection, provider timeout resilience, HTTP 500 error resilience, smuggled claims in list fields neutralization, smuggled prose claims rejection (numbers, entities, causal, guaranteed savings), unmonetized currency rejection, malformed model output handling, and non-leakage invariant verification.
+     - Group 3: FastAPI endpoint integration: empty filename rejection, unsupported file extension rejection, malformed JSON rejection, unknown opportunity ID rejection, valid deterministic execution, mock provider override execution, opportunity ID filtering, upload size enforcement, and client provenance verification (client cannot inject dossiers or fake scores).
+
+### Consequences & Verification
+- 32/32 dedicated pipeline and endpoint tests passing in `backend/tests/test_explanation_pipeline.py`.
+- 113/113 Phase 10 tests passing across all four explanation test suites.
+- 316 total backend tests passing with 0 regressions.
+- Strict fallback guarantees verified across all error and defect modes.

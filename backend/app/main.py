@@ -4,7 +4,7 @@ Provides health check and CSV ingestion endpoints.
 """
 
 from typing import Optional
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, status
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.schemas.ingestion import DataQualityReport
@@ -16,6 +16,7 @@ from app.schemas.readiness import ReadinessAssessmentResponse
 from app.schemas.economics import EconomicsEvaluationResponse
 from app.schemas.prioritisation import PrioritisationResponse
 from app.schemas.evidence import EvidenceAuditResponse
+from app.schemas.explanation import ExplanationResponse
 from app.services.validator import validate_csv_content
 from app.services.reconstruction import reconstruct_process_from_csv
 from app.services.analytics import calculate_process_analytics
@@ -25,6 +26,9 @@ from app.services.readiness import parse_domain_assessments_json, assess_opportu
 from app.services.economics import parse_economic_inputs_json, evaluate_opportunities_economics
 from app.services.prioritisation import parse_prioritisation_weights_json, prioritise_opportunities_portfolio
 from app.services.evidence import generate_evidence_audit_response
+from app.services.explanation_pipeline import run_explanation_pipeline
+from app.services.llm_provider import BaseLLMProvider, OpenAICompatibleProvider, LLMConfigurationError
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -589,4 +593,133 @@ async def audit_evidence_endpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An error occurred while compiling evidence audit dossiers: {str(e)}"
+        )
+
+
+def get_llm_provider() -> Optional[BaseLLMProvider]:
+    """
+    FastAPI dependency resolving the configured LLM provider adapter.
+    Returns None if provider credentials or settings are not configured.
+    """
+    try:
+        return OpenAICompatibleProvider()
+    except LLMConfigurationError:
+        return None
+
+
+@app.post(f"{settings.API_V1_STR}/explanation/generate", response_model=ExplanationResponse, status_code=status.HTTP_200_OK)
+async def generate_explanations_endpoint(
+    file: UploadFile = File(...),
+    enable_llm: bool = Form(False),
+    prioritisation_weights: Optional[str] = Form(None),
+    economic_inputs: Optional[str] = Form(None),
+    domain_assessments: Optional[str] = Form(None),
+    opportunity_id: Optional[str] = Form(None),
+    provider: Optional[BaseLLMProvider] = Depends(get_llm_provider),
+):
+    """
+    Executes the end-to-end ProcessLens analysis pipeline and generates executive
+    explanations for prioritized opportunities.
+
+    If enable_llm=True and provider is configured, generates LLM-augmented explanations
+    and deterministically verifies grounding against Phase 9 evidence dossiers.
+    If grounding fails, LLM call errors out, or provider is unconfigured, seamlessly
+    returns deterministic template explanations with FALLBACK_APPLIED and structured reasons.
+    """
+    if not file.filename:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Filename cannot be empty."
+        )
+
+    if not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
+        )
+
+    content = await file.read()
+
+    if len(content) > settings.MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
+        )
+
+    # Validate and parse prioritisation weights JSON if provided
+    try:
+        parsed_weights = parse_prioritisation_weights_json(prioritisation_weights)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    # Validate and parse economic inputs JSON if provided
+    try:
+        parsed_economics = parse_economic_inputs_json(economic_inputs)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    # Validate and parse domain assessments JSON if provided
+    try:
+        parsed_domain = parse_domain_assessments_json(domain_assessments)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    try:
+        reconstruction = reconstruct_process_from_csv(content, file.filename)
+        analytics_result = calculate_process_analytics(reconstruction)
+        detection_result = detect_process_problems(reconstruction, analytics_result)
+        opportunity_result = detect_improvement_opportunities(reconstruction, analytics_result, detection_result)
+        readiness_result = assess_opportunities_readiness(opportunity_result, parsed_domain, file.filename)
+        economics_result = evaluate_opportunities_economics(
+            opportunity_result=opportunity_result,
+            readiness_result=readiness_result,
+            reconstruction=reconstruction,
+            economic_inputs=parsed_economics,
+            filename=file.filename,
+        )
+        prioritisation_result = prioritise_opportunities_portfolio(
+            economics_response=economics_result,
+            opportunity_result=opportunity_result,
+            readiness_result=readiness_result,
+            reconstruction=reconstruction,
+            weights=parsed_weights,
+            filename=file.filename,
+        )
+        evidence_result = generate_evidence_audit_response(
+            content_bytes=content,
+            filename=file.filename,
+            reconstruction=reconstruction,
+            analytics=analytics_result,
+            detection=detection_result,
+            opportunity_result=opportunity_result,
+            readiness_result=readiness_result,
+            economics_result=economics_result,
+            prioritisation_result=prioritisation_result,
+            opportunity_id_filter=opportunity_id,
+            weights_dict=parsed_weights.model_dump() if parsed_weights else None,
+        )
+
+        return run_explanation_pipeline(
+            audit_response=evidence_result,
+            enable_llm=enable_llm,
+            provider=provider,
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while generating explanations: {str(e)}"
         )
