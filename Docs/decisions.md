@@ -542,3 +542,34 @@ ProcessLens Phase 9 established complete, auditable evidence dossiers linking ra
 - 17 dedicated unit and regression tests in `backend/tests/test_explanation.py` passing with 0 failures.
 - End-to-end regression verified across all four synthetic datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
 - Full backend suite (220 tests across all 10 suites) verified without regressions.
+
+---
+
+## Decision Record 016: Phase 10 Task 10.3 Independent Grounding Verification & Anti-Hallucination Guardrails
+* **Date:** 2026-10-11
+* **Status:** Implemented & Verified (Task 10.3)
+* **Owner:** Senior Backend Architect, AI Safety Engineer, Test Engineer
+
+### Context
+Phase 10 Tasks 10.1 and 10.2 established explanation schemas and an offline deterministic template engine. However, when an external LLM is introduced to augment narratives in future phases, open-ended generation risks producing hallucinations, unsubstantiated numbers, fabricated process entities, and unauthorized economic assertions (e.g. claiming guaranteed cash savings). To establish an authoritative acceptance gate prior to provider integration, Task 10.3 introduces an independent, deterministic grounding verifier.
+
+### Decisions
+1. **Independent Verifier Contract (`backend/app/services/grounding.py`):**
+   - Implemented `verify_opportunity_explanation(explanation, dossier) -> GroundingAudit`.
+   - Pure function that never mutates either input.
+   - Evaluates the explanation against the ground-truth Phase 9 `OpportunityEvidenceDossier` and returns a `GroundingAudit` record with `VERIFIED_GROUNDED` or `FALLBACK_APPLIED`.
+2. **Multi-Dimensional Grounding Validation:**
+   - **Structural Alignment:** Enforces exact matching of `opportunity_id`, `archetype`, `portfolio_cohort`, `rank_order`, `target_entity`, and `composite_priority_score` (accounting for unscored `None` states).
+   - **Numeric Grounding:** Extracts and validates all numbers, percentages, durations, labor hours, currency figures, and payback periods against the dossier's derivation outputs, inputs, intermediate values, and exemplars.
+   - **Entity Grounding:** Extracts mentioned activities, transitions, and case IDs, rejecting any that are not present in the dossier's target entity, exemplars, or observed evidence records.
+   - **Economic Guardrails:** Detects and flags unauthorized claims of guaranteed cash savings or budget reductions; strictly prohibits substituting missing economic inputs with zero.
+   - **Causal & Epistemic Guardrails:** Rejects unsupported assertions of proven causation (e.g., "definitively causes", "conclusively proves") that cannot be established from observational event logs alone.
+3. **No Probabilistic Confidence Scores:**
+   - Omits speculative probabilistic confidence numbers. Returns clear, factual lists of `verified_numbers`, `verified_entities`, and explicit `discrepancies`.
+4. **Explicit Deferral Notice:**
+   - LLM provider integration (Task 10.4) and the FastAPI explanation endpoint (Task 10.5) remain explicitly deferred.
+
+### Consequences & Verification
+- 20 dedicated unit and regression tests in `backend/tests/test_grounding.py` passing with 0 failures.
+- 100% of valid deterministic explanations pass grounding across all four development datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
+- Full backend suite (240 tests across 11 test suites) passing without regressions.
