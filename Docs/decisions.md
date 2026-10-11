@@ -497,3 +497,48 @@ ProcessLens Phases 1–8 established the complete deterministic pipeline from CS
 ### Consequences & Verification
 - 203/203 backend tests passing across all test suites (28 dedicated evidence tests + 175 baseline tests) with 0 failures and 0 regressions.
 - Complete deterministic, auditable evidence trail established without persistence, external databases, or LLMs.
+
+---
+
+## Decision Record 015: Phase 10 Explanation Schemas & Deterministic Template Engine Architecture (Tasks 10.1 & 10.2)
+* **Date:** 2026-10-11
+* **Status:** Implemented & Verified (Tasks 10.1 & 10.2)
+* **Owner:** Senior Backend Architect, Test Engineer
+
+### Context
+ProcessLens Phase 9 established complete, auditable evidence dossiers linking raw operational events to metrics, formula derivations, and prioritisation decisions. However, raw metric tables and derivation trees require executive interpretation for non-technical operations managers. To prevent hallucinations, unbounded claims, and external API dependencies, Phase 10 introduces a dual-layer explanation architecture, beginning with strict Pydantic schemas (Task 10.1) and a 100% offline, deterministic template explanation engine (Task 10.2).
+
+### Decisions
+1. **Explanation Schemas Contract (`backend/app/schemas/explanation.py`):**
+   - Defined strict Pydantic v2 models with `extra="forbid"`:
+     - `ExplanationSource`: Enums `DETERMINISTIC_TEMPLATE` and `LLM_AUGMENTED`.
+     - `GroundingVerificationStatus`: Enums `VERIFIED_GROUNDED` and `FALLBACK_APPLIED`.
+     - `GroundingAudit`: Captures `status`, `verified_numbers`, `verified_entities`, and `discrepancies`. Omits speculative numeric confidence scores.
+     - `OpportunityExplanation`: Contains opportunity identity, archetype, cohort, rank order, composite score, target entity, executive summary, operational problem narrative, economic interpretation, strategic rationale, key assumptions/risks, investigation next steps, and `grounding_audit` (which evaluates to `None` for deterministic templates since no independent verifier has executed).
+     - `PortfolioExecutiveSummary`: High-level briefing with overall narrative, top recommended actions, foundational data prerequisites, and mandatory portfolio economics caveat.
+     - `ExplanationResponse`: Root response model wrapping manifest, portfolio summary, explanations list, source flag, optional model ID, and execution duration.
+   - Reuses existing canonical types (`OpportunityArchetype`, `PortfolioCohort`, `EvidenceAuditManifest`).
+2. **Deterministic Template Engine (`backend/app/services/explanation_templates.py`):**
+   - Implemented pure Python template functions: `generate_opportunity_explanation`, `generate_portfolio_executive_summary`, and `generate_deterministic_explanation_response`.
+   - Pure, idempotent, and free of side effects: Zero network calls, API keys, provider SDKs, filesystem writes, or mutable global state. Identical input guarantees bit-for-bit identical output.
+   - Covers all five Phase 5 archetypes:
+     - `DELAY_COMPRESSION`: Explains milestone transition elapsed duration between specific activities and cites trace exemplars; notes that elapsed duration measures chronological intervals, not verified idle vs touch time.
+     - `RECURRENCE_REDUCTION`: Explains repeated activity executions at distinct timestamps and highlights potential rework loops.
+     - `TAIL_VARIANCE_MITIGATION`: Explains cycle-time upper fence threshold exceedance and extreme outlier traces.
+     - `PATH_STANDARDIZATION`: Explains low-frequency custom routing paths (<2% frequency) and process fragmentation.
+     - `DATA_INSTRUMENTATION`: Explains excluded row anchors and logging telemetry defects requiring resolution prior to downstream automation.
+   - Empty or incomplete evidence handling: Generates restrained explanations identifying missing information without fabricating alternative hypotheses.
+3. **Epistemic and Economic Guardrails:**
+   - Epistemic preservation: Clearly prefixes assumptions, hypotheses, estimates, and limitations from the dossier ledger (`[ASSUMPTION]`, `[HYPOTHESIS]`, `[ESTIMATE]`, `[LIMITATION]`). Never labels estimates or scores as empirical facts.
+   - Unmonetized handling: When economic inputs are omitted, capacity and payback values remain explicitly unknown and unmonetized; zero values are never silently substituted.
+   - Non-additive capacity disclaimer: All portfolio and economic narratives mandate that capacity reallocation scenarios are non-additive and must not be summed across opportunities as guaranteed cash savings.
+4. **Offline Deterministic Operation:**
+   - Functions run entirely within local memory, ensuring maximum performance, zero cost, and complete resilience in air-gapped or offline testing environments.
+5. **Explicit Deferral Notice:**
+   - Tasks 10.1 and 10.2 complete the schema contracts and deterministic explanation engine only.
+   - External LLM provider integration, model SDKs, automated grounding verification against LLM outputs, and the dedicated FastAPI explanation route are explicitly deferred to subsequent Phase 10 tasks.
+
+### Consequences & Verification
+- 17 dedicated unit and regression tests in `backend/tests/test_explanation.py` passing with 0 failures.
+- End-to-end regression verified across all four synthetic datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
+- Full backend suite (220 tests across all 10 suites) verified without regressions.
