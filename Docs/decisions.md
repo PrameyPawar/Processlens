@@ -573,3 +573,75 @@ Phase 10 Tasks 10.1 and 10.2 established explanation schemas and an offline dete
 - 20 dedicated unit and regression tests in `backend/tests/test_grounding.py` passing with 0 failures.
 - 100% of valid deterministic explanations pass grounding across all four development datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
 - Full backend suite (240 tests across 11 test suites) passing without regressions.
+
+---
+
+## Decision Record 017: Phase 10 Task 10.4 LLM Provider Interface & Minimal Adapter Architecture
+* **Date:** 2026-10-11
+* **Status:** Implemented & Verified (Task 10.4)
+* **Owner:** Senior Backend Architect, AI Integration Engineer
+
+### Context
+ProcessLens Phase 10 aims to explain verified operational evidence to executive decision-makers. Having completed strict explanation schemas (Task 10.1), an offline deterministic explanation engine (Task 10.2), and an independent deterministic grounding verifier (Task 10.3), Task 10.4 introduces the external LLM provider abstraction and adapter layer. To protect ProcessLens from architectural drift, vendor lock-in, credential leakage, and non-deterministic metric calculations, the provider interface must remain strictly isolated, typed, testable, and credential-safe.
+
+### Decisions
+1. **Typed LLM Provider Schema Contract (`backend/app/schemas/llm.py`):**
+   - Defined strict Pydantic v2 schemas with `extra="forbid"`:
+     - `LLMRole`: Message sender role enum (`SYSTEM`, `USER`, `ASSISTANT`).
+     - `LLMMessage`: Individual structured chat message with validated `role` and `content`.
+     - `LLMGenerateRequest`: Generation payload requiring at least one message, bounded deterministic default temperature (`temperature=0.0`, 0.0 <= T <= 2.0), optional positive `max_tokens`, and optional model override.
+     - `LLMUsage`: Structured token consumption tracking (`prompt_tokens`, `completion_tokens`, `total_tokens`).
+     - `LLMGenerateResponse`: Standardized model completion response with `content`, `model`, optional `finish_reason`, optional `usage`, and optional `raw_response`.
+2. **Provider Abstraction (`BaseLLMProvider` in `backend/app/services/llm_provider.py`):**
+   - Established an abstract base class defining synchronous `generate(request) -> LLMGenerateResponse` and asynchronous `generate_async(request) -> LLMGenerateResponse`.
+   - Bounded typed exception hierarchy inheriting from `LLMProviderError`:
+     - `LLMConfigurationError`: Missing API key, empty base URL, or invalid timeout (<= 0).
+     - `LLMTimeoutError`: Network call exceeded bounded timeout.
+     - `LLMNetworkError`: Low-level connection, socket, or DNS resolution failure.
+     - `LLMResponseError`: HTTP status error (4xx/5xx) or malformed payload; carries `status_code: Optional[int]`.
+3. **OpenAI-Compatible REST Adapter (`OpenAICompatibleProvider`):**
+   - Uses `httpx` (already in `requirements.txt`) without adding heavyweight third-party SDK dependencies (e.g. `openai`, `anthropic`, `google-genai`).
+   - Compatible with any standard OpenAI chat completions endpoint (OpenAI, Azure OpenAI, Ollama, vLLM, Groq, Mistral, LocalAI).
+   - Configurable via environment variables or constructor parameters:
+     - `LLM_API_KEY`: Required bearer token for authentication. Fails safely and immediately with `LLMConfigurationError` if missing or whitespace.
+     - `LLM_BASE_URL`: Base API URL (default: `https://api.openai.com/v1`). Automatically normalizes trailing slashes and resolves `/chat/completions`.
+     - `LLM_MODEL`: Target model identifier (default: `gpt-4o-mini`).
+     - `LLM_TIMEOUT_SECONDS`: Strict bounded timeout in seconds (default: `30.0`).
+4. **Strict Credential Scrubbing & Error Sanitization:**
+   - Implemented `sanitize_message(msg, secrets)` and internal `_sanitize(text)` utility.
+   - Replaces configured API keys with `***REDACTED***`.
+   - Redacts Bearer token patterns and generic API key patterns from error strings and server error responses.
+   - Surfaced exception messages never expose authorization headers, secrets, or raw internal request tokens.
+5. **Deterministic Boundary Invariants:**
+   - The provider adapter returns untrusted model text.
+   - The adapter NEVER computes metrics, savings, ROI, readiness scores, or prioritisation rankings.
+   - The adapter NEVER marks output as grounded or verified. Grounding remains solely the responsibility of the Phase 10.3 verifier.
+6. **Zero-Network Test Strategy (`backend/tests/test_llm_provider.py`):**
+   - Leverages `httpx.MockTransport` for all unit and integration tests.
+   - Zero live network requests or external API calls are executed during testing.
+   - 41 comprehensive tests verify schema validation, URL normalization, scheme validation, timeout bounds, configuration checking, synchronous and asynchronous execution, HTTP 4xx/5xx errors, timeouts, network disconnections, malformed JSON, token usage metadata validation, and secret redaction.
+7. **Explicit Scope Deferral:**
+   - FastAPI explanation endpoints (`/explanation/generate`), prompt assembly, and end-to-end fallback orchestration remain deferred to Task 10.5.
+
+### Environment Configuration
+The adapter requires the following environment variables (or constructor arguments):
+- `LLM_API_KEY`: Secret API key for authentication. If unset, provider raises `LLMConfigurationError`.
+- `LLM_BASE_URL`: (Optional) Base API endpoint URL. Defaults to `https://api.openai.com/v1`.
+- `LLM_MODEL`: (Optional) Model name to use for generation. Defaults to `gpt-4o-mini`.
+- `LLM_TIMEOUT_SECONDS`: (Optional) HTTP request timeout in seconds. Defaults to `30.0`.
+
+### Running Tests
+To run the LLM provider test suite:
+```bash
+python -m pytest backend/tests/test_llm_provider.py -v --tb=short
+```
+
+To run the full backend test suite:
+```bash
+python -m pytest backend/tests -q --tb=short
+```
+
+### Consequences & Verification
+- 41/41 dedicated tests passing in `backend/tests/test_llm_provider.py`.
+- 284 total backend tests passing with 0 regressions.
+- Existing deterministic templates and Phase 10.3 grounding verifier tests remain 100% untouched and passing.
