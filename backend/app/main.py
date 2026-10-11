@@ -13,12 +13,16 @@ from app.schemas.analytics import ProcessAnalyticsResult
 from app.schemas.detection import ProblemDetectionResult
 from app.schemas.opportunity import OpportunityDetectionResult
 from app.schemas.readiness import ReadinessAssessmentResponse
+from app.schemas.economics import EconomicsEvaluationResponse
+from app.schemas.prioritisation import PrioritisationResponse
 from app.services.validator import validate_csv_content
 from app.services.reconstruction import reconstruct_process_from_csv
 from app.services.analytics import calculate_process_analytics
 from app.services.detection import detect_process_problems
 from app.services.opportunity import detect_improvement_opportunities
 from app.services.readiness import parse_domain_assessments_json, assess_opportunities_readiness
+from app.services.economics import parse_economic_inputs_json, evaluate_opportunities_economics
+from app.services.prioritisation import parse_prioritisation_weights_json, prioritise_opportunities_portfolio
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -309,4 +313,171 @@ async def assess_readiness_endpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An error occurred while assessing automation readiness: {str(e)}"
+        )
+
+
+@app.post(f"{settings.API_V1_STR}/economics/evaluate", response_model=EconomicsEvaluationResponse, status_code=status.HTTP_200_OK)
+async def evaluate_economics_endpoint(
+    file: UploadFile = File(...),
+    economic_inputs: Optional[str] = Form(None),
+    domain_assessments: Optional[str] = Form(None),
+):
+    """
+    Executes the end-to-end ProcessLens analysis pipeline and evaluates business-impact
+    and financial economics across candidate improvement and automation opportunities.
+    """
+    if not file.filename:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Filename cannot be empty."
+        )
+
+    if not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
+        )
+
+    content = await file.read()
+
+    if len(content) > settings.MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
+        )
+
+    # Validate and parse economic inputs JSON if provided
+    try:
+        parsed_economics = parse_economic_inputs_json(economic_inputs)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    # Validate and parse domain assessments JSON if provided
+    try:
+        parsed_domain = parse_domain_assessments_json(domain_assessments)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    try:
+        reconstruction = reconstruct_process_from_csv(content, file.filename)
+        analytics_result = calculate_process_analytics(reconstruction)
+        detection_result = detect_process_problems(reconstruction, analytics_result)
+        opportunity_result = detect_improvement_opportunities(reconstruction, analytics_result, detection_result)
+        readiness_result = assess_opportunities_readiness(opportunity_result, parsed_domain, file.filename)
+        economics_result = evaluate_opportunities_economics(
+            opportunity_result=opportunity_result,
+            readiness_result=readiness_result,
+            reconstruction=reconstruction,
+            economic_inputs=parsed_economics,
+            filename=file.filename,
+        )
+        return economics_result
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while evaluating economics: {str(e)}"
+        )
+
+
+@app.post(f"{settings.API_V1_STR}/prioritisation/rank", response_model=PrioritisationResponse, status_code=status.HTTP_200_OK)
+async def rank_prioritisation_endpoint(
+    file: UploadFile = File(...),
+    prioritisation_weights: Optional[str] = Form(None),
+    economic_inputs: Optional[str] = Form(None),
+    domain_assessments: Optional[str] = Form(None),
+):
+    """
+    Executes the end-to-end ProcessLens analysis pipeline (Reconstruction -> Analytics ->
+    Problems -> Opportunities -> Readiness -> Economics -> Prioritisation) and produces a
+    defensible, deterministic portfolio action roadmap.
+    """
+    if not file.filename:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Filename cannot be empty."
+        )
+
+    if not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
+        )
+
+    content = await file.read()
+
+    if len(content) > settings.MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
+        )
+
+    # Validate and parse prioritisation weights JSON if provided
+    try:
+        parsed_weights = parse_prioritisation_weights_json(prioritisation_weights)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    # Validate and parse economic inputs JSON if provided
+    try:
+        parsed_economics = parse_economic_inputs_json(economic_inputs)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    # Validate and parse domain assessments JSON if provided
+    try:
+        parsed_domain = parse_domain_assessments_json(domain_assessments)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+    try:
+        reconstruction = reconstruct_process_from_csv(content, file.filename)
+        analytics_result = calculate_process_analytics(reconstruction)
+        detection_result = detect_process_problems(reconstruction, analytics_result)
+        opportunity_result = detect_improvement_opportunities(reconstruction, analytics_result, detection_result)
+        readiness_result = assess_opportunities_readiness(opportunity_result, parsed_domain, file.filename)
+        economics_result = evaluate_opportunities_economics(
+            opportunity_result=opportunity_result,
+            readiness_result=readiness_result,
+            reconstruction=reconstruction,
+            economic_inputs=parsed_economics,
+            filename=file.filename,
+        )
+        prioritisation_result = prioritise_opportunities_portfolio(
+            economics_response=economics_result,
+            opportunity_result=opportunity_result,
+            readiness_result=readiness_result,
+            reconstruction=reconstruction,
+            weights=parsed_weights,
+            filename=file.filename,
+        )
+        return prioritisation_result
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while prioritizing opportunities: {str(e)}"
         )

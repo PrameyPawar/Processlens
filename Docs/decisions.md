@@ -342,3 +342,96 @@ Phase 5 established deterministic opportunity detection where `operational_prior
 - 95/95 backend tests passing across all test suites (`test_health.py`, `test_ingestion.py`, `test_reconstruction.py`, `test_analytics.py`, `test_detection.py`, `test_opportunity.py`, `test_readiness.py`).
 - Added 16 dedicated readiness tests covering default unknown baseline, hard prohibitions, human-in-the-loop prerequisites, specification readiness, contradictory evidence, legitimate recurrence, invalid ID validation, malformed JSON, and regression across all four synthetic datasets.
 - Zero regressions in Phases 1–5 contracts.
+
+---
+
+## Decision Record 012: Phase 7 Business Impact & Financial Economics Analysis Engine and Strategic Synthesis Architecture
+* **Date:** 2026-10-11
+* **Status:** Implemented & Verified
+* **Owner:** Opportunity & Economics Analyst (Lead), Product Lead, QA Engineer
+
+### Context
+ProcessLens Phases 1–6 established deterministic process analytics, problem detection, opportunity prioritization (`operational_priority_score`), and automation readiness gating (`overall_readiness_tier`). Phase 7 introduces deterministic business-impact and financial-economics analysis to resolve the core product question: *What should this business fix or automate first, why, and what value could it create?*
+
+To protect the product from unwarranted financial claims and ensure architectural consistency:
+1. **Tri-Partite Independence:** Operational priority (observed pattern concentration), automation readiness (technical/governance feasibility), and financial economics (payback, capacity return) must remain independent dimensions.
+2. **Epistemological Rigor:** Distinguish observed operational metrics (`MEASURED_IN_LOG`), domain intake hypotheses (`USER_PROVIDED`), and scenario-based extrapolations (`CALCULATED_ESTIMATE`). Chronological milestone duration must never be equated to active labor without explicit domain intake.
+3. **Capacity Valuation vs. Realized Cash:** Liberated labor hours represent theoretical capacity reallocation; cash-flow ROI requires verified budgetary/payroll evidence and remains unavailable (`cash_roi_available = False`).
+4. **Unrounded Downstream Precision:** Scaling ratios ($R_{\text{raw}}$) and intermediate estimates must preserve raw IEEE 754 precision; integer rounding exists solely at the presentation boundary via commercial half-up rounding ($\lfloor x + 0.5 \rfloor$).
+5. **Annualization Hierarchy:** Precedence must govern zero eligible cases, volume overrides, short windows (<30 days), and calendar projections without compounding errors into payback or ROI.
+6. **Authorization Guardrail:** No economic tier or readiness state authorizes production deployment. The strategic outcome `SPECIFY_AUTOMATION_SOLUTION` authorizes detailed functional design and requirements specification only.
+
+### Decisions
+1. **Pydantic Schemas (`backend/app/schemas/economics.py`):**
+   - Implemented models: `OpportunityEconomicInput`, `ObservationWindowInfo`, `LaborEffortMetrics`, `CapacityValuationMetrics`, `CashFlowMetrics`, `StrategicSynthesis`, `OpportunityEconomicsResult`, `EconomicsSummary`, `EconomicsEvaluationResponse`.
+   - Strictly enforced finite-number validation on all request fields (`allow_inf_nan=False`, rejecting `NaN`, `+Infinity`, `-Infinity` with HTTP 422).
+2. **Domain Service (`backend/app/services/economics.py`):**
+   - Implemented `extract_observation_window()` with strict 5-branch precedence: Root Gate ($N_{\text{sample}} = 0 \to$ Branch 5 degenerate), Override ($N_{\text{sample}} \ge 1 \to$ Branch 3 override), Missing Window (Branch 4), Zero-Duration Window (Branch 5), Short Window (<30 days $\to$ Branch 1 sample basis), Calendar Extrapolation ($\ge 30$ days $\to$ Branch 2).
+   - Sample vs. Annual Separation: In Branch 1 (<30 days), $R_{\text{raw}} = \text{None}$, sample metrics are reported, and annual estimates/payback/ROI evaluate to `None` (`INSUFFICIENT_ECONOMIC_INPUTS`).
+   - Archetype-specific labor formulas:
+     - `DELAY_COMPRESSION`: Scales aggregate sample duration via $R_{\text{raw}}$ without $N \times N$ case-count multiplication.
+     - `PATH_STANDARDIZATION`: Scales affected cases while preserving distinct variant count ($V_{\text{rare}}$) unscaled.
+     - `RECURRENCE_REDUCTION`: Scales re-execution occurrences via $R_{\text{raw}}$.
+     - `DATA_INSTRUMENTATION`: Non-labor archetype; suppresses labor/valuation and evaluates directly to `RESOLVE_DATA_INSTRUMENTATION`.
+   - Implemented `classify_economic_tier()` with full upfront validation, contradiction detection ($\epsilon = 10^{-3}$), zero-cost handling ($C_{\text{impl}} = 0 \to \text{payback} = 0.0, \text{ROI} = \text{None}, \text{COMPELLING_RETURN}$), and restored 36-month moderate return boundary.
+   - Enforced missing cost safeguards: `annual_recurring_cost = None` preserves gross capacity scenario while setting net benefit, payback, and ROI to `None` (`INSUFFICIENT_ECONOMIC_INPUTS`).
+3. **Immutable 64-Cell Strategic Synthesis Matrix (`SYNTHESIS_DECISION_MAP`):**
+   - Keys typed as `Tuple[PriorityTier, OverallReadinessTier, EconomicTier]`.
+   - All 16 combinations with `PROHIBITED_OR_BLOCKED` evaluate strictly to blocked outcomes (`BLOCKED_HIGH_POTENTIAL`, `BLOCKED_LOW_PRIORITY`, `BLOCKED_UNKNOWN_ECONOMICS`, `BLOCKED_AND_UNECONOMICAL`).
+   - High/Medium priority with `READY_FOR_SPECIFICATION` and `COMPELLING_RETURN` evaluates to `SPECIFY_AUTOMATION_SOLUTION`.
+4. **API Endpoint (`POST /api/v1/economics/evaluate` in `backend/app/main.py`):**
+   - Enforces 10 MB file size limit and sequential pipeline execution (Reconstruction $\to$ Analytics $\to$ Problems $\to$ Opportunities $\to$ Readiness $\to$ Economics).
+5. **Comprehensive Test Suite (`backend/tests/test_economics.py`):**
+   - 45 automated unit and integration tests across 10 groups covering canonical derivations, finite validation, classifier contradictions, missing vs zero costs, half-up rounding, archetype scaling, 5 annualization branches, DATA_INSTRUMENTATION bypass, 64-cell synthesis matrix, and all 4 development datasets.
+
+### Consequences & Verification
+- 141/141 backend tests passing across all 8 test suites (`test_health`, `test_ingestion`, `test_reconstruction`, `test_analytics`, `test_detection`, `test_opportunity`, `test_readiness`, `test_economics`).
+- 0 regressions in existing Phase 1–6 contracts.
+- Verified deterministic economics and synthesis across `quickstart.csv`, `clean.csv`, `rework.csv`, and `messy.csv`.
+
+---
+
+## Decision Record 013: Phase 8 Opportunity Prioritisation & Portfolio Action Roadmap Architecture
+* **Date:** 2026-10-11
+* **Status:** Implemented & Verified
+* **Owner:** Senior Backend Engineer, Process Mining Specialist, QA Engineer
+
+### Context
+ProcessLens Phases 1–7 established deterministic process reconstruction, analytics, problem detection, opportunity identification, readiness gating, and financial economics synthesis. Phase 8 completes the decision-support engine by implementing the portfolio prioritisation and ranking system to answer the central product question: *What should this business fix or automate first, why, and what value could it create?*
+
+To protect the roadmap from architectural drift, arbitrary scoring, and speculative ranking:
+1. **Cohort-First Precedence:** Portfolio sequencing must partition candidates into mutually exclusive, exhaustive strategic cohorts before any within-cohort score evaluation. Precedence dictates portfolio tiering, not arbitrary point scoring.
+2. **Deterministic Factor Scoring:** Six transparent factors (Impact, Readiness, Payback, Effort, Risk, Confidence) evaluate candidates on a 0–100 scale using bounded piecewise-linear schedules.
+3. **Transparent Evidence Provenance:** Impact distinguishes scenario-based capacity extrapolations (`CALCULATED_CAPACITY_SCENARIO`) from unmonetized operational concentration (`OPERATIONAL_CONCENTRATION_BASELINE`). Capacity scenario values across distinct opportunities may overlap and must never be represented as additive portfolio savings.
+4. **Dynamic Weight Redistribution:** Missing factors (e.g. unassessed economics or missing cost inputs) do not inject fabricated neutral midpoint scores. Available weights are dynamically rescaled to maintain the 100% total weight invariant. If no eligible factors exist, candidates evaluate strictly to `UNSCORED` with `composite_priority_score = None`.
+5. **Exact Numeric Precision:** Intermediate factor values and composite scores are calculated using full IEEE 754 precision. Only the final composite score is quantized to 4 decimal places using `ROUND_HALF_EVEN` and normalized to positive zero (`math.copysign(1.0, val) == 1.0`). Score ties are determined solely by quantized score-bucket equality, followed by deterministic secondary tie-breakers.
+
+### Decisions
+1. **Pydantic Schemas (`backend/app/schemas/prioritisation.py`):**
+   - Enums: `PortfolioCohort` (8 cohorts: `FOUNDATIONAL_DATA_QUALITY`, `IMMEDIATE_AUTOMATION_SPECIFICATION`, `GUARDRAILED_AUTOMATION`, `PROCESS_RESTRUCTURING`, `BUSINESS_CASE_VALIDATION`, `FEASIBILITY_INVESTIGATION`, `REVISE_OR_DEFERRED`, `BLOCKED_BY_BARRIERS`), `ImpactBasis`, `ScoringStatus`, `ConstraintStatus`.
+   - Models: `PrioritisationWeights` (validating non-negative, finite weights summing to 100.0), `FactorBreakdown`, `PrioritisedOpportunity`, `PrioritisationSummary`, `PrioritisationResponse`.
+2. **Domain Service (`backend/app/services/prioritisation.py`):**
+   - Implemented `OUTCOME_TO_COHORT_MAP` mapping all 15 Phase 7 `StrategicDecisionOutcome` enum values exactly once to the 8 portfolio cohorts.
+   - Implemented `evaluate_factors()` with deterministic scoring, dynamic weight redistribution, and explicit unscored state handling.
+   - Implemented `make_sort_key()` with explicit `None` handling, correct zero values, and deterministic tie-breaking: `(cohort_precedence, scored_placement, -quantized_score, -net_annual_capacity_benefit, payback_period_months, -operational_priority_score, -sample_completed_cases, opportunity_id)`.
+   - Implemented evidence-conditional `generate_primary_strength()` and `generate_primary_constraint()`, adhering strictly to observed facts and inter-cohort policies without inventing causal explanations.
+   - Non-additive cumulative capacity benefit tracking with mandatory disclaimer.
+3. **API Endpoint (`POST /api/v1/prioritisation/rank` in `backend/app/main.py`):**
+   - Mounted at `/api/v1/prioritisation/rank`, accepting CSV uploads up to the 10 MB limit alongside optional JSON strings for prioritisation weights, economic inputs, and domain assessments.
+   - Sequentially executes the full pipeline: Reconstruction $\to$ Analytics $\to$ Problems $\to$ Opportunities $\to$ Readiness $\to$ Economics $\to$ Prioritisation.
+4. **Comprehensive Test Suite (`backend/tests/test_prioritisation.py`):**
+   - 34 automated unit and integration tests across 9 groups covering:
+     - Group 1: Decimal halfway rounding, boundary jitter, negative-zero normalization.
+     - Group 2: Exhaustive mapping of all 15 Phase 7 outcomes and all 8 cohorts.
+     - Group 3: Default and custom weights, sum-to-100 validation, rejection of non-finite/negative weights.
+     - Group 4: End-to-end pipeline ranking on clean dataset with and without economic inputs.
+     - Group 5: `DATA_INSTRUMENTATION` precedence (Cohort 1) and Cohort 1 $\to$ Cohort 2 boundary constraint.
+     - Group 6: Full-precision accumulator divergence and neutral constraint fallbacks.
+     - Group 7: Dynamic weight redistribution, deterministic score scaling (0-100), and zero-available-weight fallback to `UNSCORED`.
+     - Group 8: Pipeline regressions on all four synthetic datasets (`quickstart.csv`, `clean.csv`, `rework.csv`, `messy.csv`).
+     - Group 9: API boundary validation, unsupported file formats, malformed JSON payloads, 10 MB upload limit, empty filenames, unknown/duplicate opportunity IDs in economic and domain inputs.
+
+### Consequences & Verification
+- 175/175 backend tests passing across all test suites with 0 failures and 0 regressions.
+- All Phase 1–7 contracts preserved.
+- Verified deterministic ranking and roadmap generation.
