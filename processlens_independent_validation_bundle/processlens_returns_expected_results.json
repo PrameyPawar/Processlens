@@ -1,0 +1,158 @@
+{
+  "dataset_name": "ProcessLens Independent Holdout \u2014 E-commerce Returns & Refunds",
+  "synthetic": true,
+  "independent_of_prior_manufacturing_samples": true,
+  "generation_seed": 20261022,
+  "domain": "E-commerce returns and refunds",
+  "schema": [
+    "case_id",
+    "activity",
+    "timestamp",
+    "resource",
+    "channel",
+    "return_reason"
+  ],
+  "event_count": 850,
+  "case_count": 120,
+  "unique_activity_count": 7,
+  "expected_complete_cases": 120,
+  "expected_invalid_rows": 0,
+  "expected_duplicate_events": 0,
+  "known_injected_patterns": {
+    "delayed_refund_review_cases": [
+      "RET-0031",
+      "RET-0032",
+      "RET-0033",
+      "RET-0034",
+      "RET-0035",
+      "RET-0036",
+      "RET-0037",
+      "RET-0038",
+      "RET-0039",
+      "RET-0040",
+      "RET-0041",
+      "RET-0042",
+      "RET-0043",
+      "RET-0044",
+      "RET-0045",
+      "RET-0046",
+      "RET-0047",
+      "RET-0048",
+      "RET-0049",
+      "RET-0050",
+      "RET-0051",
+      "RET-0052",
+      "RET-0053",
+      "RET-0054",
+      "RET-0055",
+      "RET-0056",
+      "RET-0057",
+      "RET-0058",
+      "RET-0059",
+      "RET-0060",
+      "RET-0061",
+      "RET-0062",
+      "RET-0063",
+      "RET-0064",
+      "RET-0065",
+      "RET-0066",
+      "RET-0067",
+      "RET-0068",
+      "RET-0069",
+      "RET-0070"
+    ],
+    "severe_tail_delay_cases": [
+      "RET-0101",
+      "RET-0102",
+      "RET-0103",
+      "RET-0104",
+      "RET-0105",
+      "RET-0106",
+      "RET-0107",
+      "RET-0108",
+      "RET-0109",
+      "RET-0110"
+    ],
+    "inspection_rework_cases": [
+      "RET-0081",
+      "RET-0082",
+      "RET-0083",
+      "RET-0084",
+      "RET-0085",
+      "RET-0086",
+      "RET-0087",
+      "RET-0088",
+      "RET-0089",
+      "RET-0090"
+    ]
+  },
+  "reference_cycle_time_hours": {
+    "min": 12.0,
+    "median": 19.0,
+    "mean": 35.6583,
+    "p90": 63.05,
+    "max": 105.5
+  },
+  "reference_transition_durations_hours": [
+    {
+      "transition": "Package Received -> Item Inspected",
+      "count": 120,
+      "mean_hours": 4.9667,
+      "median_hours": 5.0,
+      "max_hours": 6.0
+    },
+    {
+      "transition": "Refund Approved -> Payment Reversed",
+      "count": 120,
+      "mean_hours": 4.0,
+      "median_hours": 4.0,
+      "max_hours": 5.0
+    },
+    {
+      "transition": "Item Inspected -> Refund Review",
+      "count": 120,
+      "mean_hours": 2.825,
+      "median_hours": 3.0,
+      "max_hours": 4.0
+    },
+    {
+      "transition": "Item Inspected -> Item Inspected",
+      "count": 10,
+      "mean_hours": 2.2,
+      "median_hours": 2.0,
+      "max_hours": 3.0
+    },
+    {
+      "transition": "Refund Review -> Refund Approved",
+      "count": 120,
+      "mean_hours": 20.675,
+      "median_hours": 2.0,
+      "max_hours": 94.0
+    },
+    {
+      "transition": "Return Requested -> Package Received",
+      "count": 120,
+      "mean_hours": 1.5333,
+      "median_hours": 2.0,
+      "max_hours": 2.0
+    },
+    {
+      "transition": "Payment Reversed -> Case Closed",
+      "count": 120,
+      "mean_hours": 1.475,
+      "median_hours": 1.5,
+      "max_hours": 2.0
+    }
+  ],
+  "evaluation_notes": [
+    "The upload CSV deliberately excludes ground-truth labels.",
+    "Canonical fields are case_id, activity, and timestamp.",
+    "Primary planted bottleneck: Refund Review -> Refund Approved.",
+    "RET-0031 through RET-0070 have extended review-to-approval delays.",
+    "RET-0101 through RET-0110 have severe tail delays.",
+    "RET-0081 through RET-0090 contain a repeated Item Inspected activity.",
+    "Cycle time is defined in the reference as first-event to last-event elapsed time per case.",
+    "Align cycle-time boundaries, percentile method, and rework handling before comparing results.",
+    "Synthetic controlled data does not establish real-world accuracy."
+  ]
+}

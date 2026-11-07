@@ -3,9 +3,13 @@ FastAPI application entrypoint for ProcessLens.
 Provides health check and CSV ingestion endpoints.
 """
 
+from pathlib import Path
 from typing import Optional
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, status, Depends
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.body_limit import RequestBodyLimitMiddleware
+from app.core.dependencies import require_analysis_user
 from app.core.config import settings
 from app.schemas.ingestion import DataQualityReport
 from app.schemas.reconstruction import ProcessReconstructionResult
@@ -28,6 +32,9 @@ from app.services.prioritisation import parse_prioritisation_weights_json, prior
 from app.services.evidence import generate_evidence_audit_response
 from app.services.explanation_pipeline import run_explanation_pipeline
 from app.services.llm_provider import BaseLLMProvider, OpenAICompatibleProvider, LLMConfigurationError
+from app.api.v1.auth import router as auth_router
+from app.api.v1.dev import router as dev_router
+from app.api.v1.customer import router as customer_router
 
 
 app = FastAPI(
@@ -37,14 +44,44 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Enable CORS for local development
+app.add_middleware(
+    RequestBodyLimitMiddleware,
+    max_body_size=settings.MAX_FILE_SIZE_BYTES + 256 * 1024,
+)
+
+# Configure CORS for allowed origins
+cors_origins = settings.CORS_ORIGINS
+allow_all_origins = "*" in cors_origins
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["*"] if allow_all_origins else cors_origins,
+    allow_credentials=not allow_all_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+async def _read_upload_limited(file: UploadFile) -> bytes:
+    """Read at most the configured upload limit plus one byte."""
+    content = await file.read(settings.MAX_FILE_SIZE_BYTES + 1)
+    if len(content) > settings.MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_413_CONTENT_TOO_LARGE,
+            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB.",
+        )
+    return content
+
+
+# Register authentication, customer workspace, and developer diagnostic routers
+app.include_router(auth_router, prefix=settings.API_V1_STR)
+app.include_router(dev_router, prefix=settings.API_V1_STR)
+app.include_router(customer_router, prefix=settings.API_V1_STR)
+
+@app.on_event("startup")
+def validate_startup_configuration():
+    """Verify security requirements and environment settings at application boot."""
+    settings.validate_configuration()
+
 
 @app.get("/health", status_code=status.HTTP_200_OK)
 def health_check():
@@ -55,7 +92,7 @@ def health_check():
         "version": settings.VERSION
     }
 
-@app.post(f"{settings.API_V1_STR}/ingestion/upload", response_model=DataQualityReport, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/ingestion/upload", response_model=DataQualityReport, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def upload_csv_file(file: UploadFile = File(...)):
     """
     Ingests a CSV event log file, validates schema and data quality, 
@@ -74,14 +111,8 @@ async def upload_csv_file(file: UploadFile = File(...)):
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    # File size check
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     try:
         report = validate_csv_content(content, file.filename)
@@ -94,10 +125,10 @@ async def upload_csv_file(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while processing the file: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
-@app.post(f"{settings.API_V1_STR}/process/reconstruct", response_model=ProcessReconstructionResult, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/process/reconstruct", response_model=ProcessReconstructionResult, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def reconstruct_process_endpoint(file: UploadFile = File(...)):
     """
     Reconstructs chronological case traces, activity sequences, and process variants
@@ -115,13 +146,8 @@ async def reconstruct_process_endpoint(file: UploadFile = File(...)):
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     try:
         result = reconstruct_process_from_csv(content, file.filename)
@@ -134,10 +160,10 @@ async def reconstruct_process_endpoint(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while reconstructing the process: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
-@app.post(f"{settings.API_V1_STR}/analytics/process", response_model=ProcessAnalyticsResult, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/analytics/process", response_model=ProcessAnalyticsResult, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def analyze_process_endpoint(file: UploadFile = File(...)):
     """
     Reconstructs the process and computes deterministic process metrics
@@ -155,13 +181,8 @@ async def analyze_process_endpoint(file: UploadFile = File(...)):
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     try:
         reconstruction = reconstruct_process_from_csv(content, file.filename)
@@ -175,10 +196,10 @@ async def analyze_process_endpoint(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while analyzing the process: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
-@app.post(f"{settings.API_V1_STR}/problems/detect", response_model=ProblemDetectionResult, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/problems/detect", response_model=ProblemDetectionResult, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def detect_problems_endpoint(file: UploadFile = File(...)):
     """
     Reconstructs the process, calculates analytics, and executes deterministic
@@ -196,13 +217,8 @@ async def detect_problems_endpoint(file: UploadFile = File(...)):
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     try:
         reconstruction = reconstruct_process_from_csv(content, file.filename)
@@ -217,10 +233,10 @@ async def detect_problems_endpoint(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while detecting process problems: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
-@app.post(f"{settings.API_V1_STR}/opportunities/detect", response_model=OpportunityDetectionResult, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/opportunities/detect", response_model=OpportunityDetectionResult, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def detect_opportunities_endpoint(file: UploadFile = File(...)):
     """
     Reconstructs the process, calculates metrics, detects operational problems, and
@@ -238,13 +254,8 @@ async def detect_opportunities_endpoint(file: UploadFile = File(...)):
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     try:
         reconstruction = reconstruct_process_from_csv(content, file.filename)
@@ -260,11 +271,11 @@ async def detect_opportunities_endpoint(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while detecting opportunities: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
 
-@app.post(f"{settings.API_V1_STR}/readiness/assess", response_model=ReadinessAssessmentResponse, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/readiness/assess", response_model=ReadinessAssessmentResponse, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def assess_readiness_endpoint(
     file: UploadFile = File(...),
     domain_assessments: Optional[str] = Form(None),
@@ -286,13 +297,8 @@ async def assess_readiness_endpoint(
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     # Validate and parse domain assessments JSON if provided
     try:
@@ -318,11 +324,11 @@ async def assess_readiness_endpoint(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while assessing automation readiness: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
 
-@app.post(f"{settings.API_V1_STR}/economics/evaluate", response_model=EconomicsEvaluationResponse, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/economics/evaluate", response_model=EconomicsEvaluationResponse, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def evaluate_economics_endpoint(
     file: UploadFile = File(...),
     economic_inputs: Optional[str] = Form(None),
@@ -344,13 +350,8 @@ async def evaluate_economics_endpoint(
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     # Validate and parse economic inputs JSON if provided
     try:
@@ -392,11 +393,11 @@ async def evaluate_economics_endpoint(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while evaluating economics: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
 
-@app.post(f"{settings.API_V1_STR}/prioritisation/rank", response_model=PrioritisationResponse, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/prioritisation/rank", response_model=PrioritisationResponse, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def rank_prioritisation_endpoint(
     file: UploadFile = File(...),
     prioritisation_weights: Optional[str] = Form(None),
@@ -420,13 +421,8 @@ async def rank_prioritisation_endpoint(
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     # Validate and parse prioritisation weights JSON if provided
     try:
@@ -485,11 +481,11 @@ async def rank_prioritisation_endpoint(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while prioritizing opportunities: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
 
-@app.post(f"{settings.API_V1_STR}/evidence/audit", response_model=EvidenceAuditResponse, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/evidence/audit", response_model=EvidenceAuditResponse, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def audit_evidence_endpoint(
     file: UploadFile = File(...),
     prioritisation_weights: Optional[str] = Form(None),
@@ -514,13 +510,8 @@ async def audit_evidence_endpoint(
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     # Validate and parse prioritisation weights JSON if provided
     try:
@@ -592,7 +583,7 @@ async def audit_evidence_endpoint(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while compiling evidence audit dossiers: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
 
 
@@ -607,7 +598,7 @@ def get_llm_provider() -> Optional[BaseLLMProvider]:
         return None
 
 
-@app.post(f"{settings.API_V1_STR}/explanation/generate", response_model=ExplanationResponse, status_code=status.HTTP_200_OK)
+@app.post(f"{settings.API_V1_STR}/explanation/generate", response_model=ExplanationResponse, status_code=status.HTTP_200_OK, dependencies=[Depends(require_analysis_user)])
 async def generate_explanations_endpoint(
     file: UploadFile = File(...),
     enable_llm: bool = Form(False),
@@ -638,13 +629,8 @@ async def generate_explanations_endpoint(
             detail=f"Unsupported file type. Only CSV files ({', '.join(settings.ALLOWED_EXTENSIONS)}) are allowed."
         )
 
-    content = await file.read()
+    content = await _read_upload_limited(file)
 
-    if len(content) > settings.MAX_FILE_SIZE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File size exceeds maximum allowed limit of {settings.MAX_FILE_SIZE_BYTES // (1024 * 1024)}MB."
-        )
 
     # Validate and parse prioritisation weights JSON if provided
     try:
@@ -721,5 +707,37 @@ async def generate_explanations_endpoint(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while generating explanations: {str(e)}"
+            detail="An internal error occurred while processing this request."
         )
+
+
+# In a container deployment, serve the compiled SPA from this same origin as
+# the API. This keeps browser session behavior predictable and supports
+# client-side routes such as /login and /dev/dashboard on page refresh.
+FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+
+
+@app.get("/{frontend_path:path}", include_in_schema=False)
+def serve_frontend(frontend_path: str):
+    index_file = FRONTEND_DIST / "index.html"
+    if not index_file.is_file():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Frontend assets are not installed.")
+
+    if frontend_path == "" or frontend_path in {"login", "landing", "home", "dev/login", "dev/dashboard"}:
+        return FileResponse(index_file)
+
+    # Keep unknown API and health paths as real 404s instead of returning the SPA.
+    if frontend_path in {"api", "health", "docs", "redoc"} or frontend_path.startswith(("api/", "health/", "docs/", "redoc/")):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found.")
+
+    dist_root = FRONTEND_DIST.resolve()
+    candidate = (FRONTEND_DIST / frontend_path).resolve()
+    try:
+        candidate.relative_to(dist_root)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found.")
+
+    if candidate.is_file():
+        return FileResponse(candidate)
+    # React owns client-side routes; return the SPA entrypoint for direct links.
+    return FileResponse(index_file)

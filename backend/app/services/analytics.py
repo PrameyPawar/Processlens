@@ -5,8 +5,8 @@ Calculates deterministic process metrics from reconstructed case traces:
 - Cycle time distributions (including single-event cases at 0.0s)
 - Activity frequencies, case coverage, and repetition ratios
 - Repeated-activity indicators (distinguishing genuine temporal recurrence from identical-timestamp duplicates)
-- Duplicate event counts (strictly within complete cases, aligned with analytics population scope)
-- Step-to-step transition durations (excluding recording duplicates to prevent artificial 0.0s self-transitions,
+- Confirmed repeated source-ID counts (strictly within complete cases, aligned with analytics population scope)
+- Step-to-step transition durations (excluding confirmed repeated source IDs to prevent artificial 0.0s self-transitions,
   while preserving legitimate co-temporal transitions and genuine repeated-activity loops)
 - Linear-interpolation p90 percentiles
 """
@@ -99,6 +99,7 @@ def calculate_process_analytics(reconstruction: ProcessReconstructionResult) -> 
     activity_rework_cases: Dict[str, int] = defaultdict(int)
     activity_rework_occurrences: Dict[str, int] = defaultdict(int)
     activity_duplicate_counts: Dict[str, int] = defaultdict(int)
+    activity_potential_duplicate_counts: Dict[str, int] = defaultdict(int)
 
     for c in complete_cases:
         case_activity_timestamps: Dict[str, set] = defaultdict(set)
@@ -111,6 +112,8 @@ def calculate_process_analytics(reconstruction: ProcessReconstructionResult) -> 
 
             if event.is_duplicate:
                 activity_duplicate_counts[act] += 1
+            if event.is_potential_duplicate:
+                activity_potential_duplicate_counts[act] += 1
 
         # Evaluate distinct-timestamp recurrences (genuine repetition)
         for act, timestamps in case_activity_timestamps.items():
@@ -146,7 +149,8 @@ def calculate_process_analytics(reconstruction: ProcessReconstructionResult) -> 
             rework_case_count=rework_case_cnt,
             rework_case_percentage=rework_pct,
             rework_occurrences=activity_rework_occurrences[act],
-            duplicate_events_count=activity_duplicate_counts[act]
+            duplicate_events_count=activity_duplicate_counts[act],
+            potential_duplicate_events_count=activity_potential_duplicate_counts[act],
         ))
 
     # Sort frequency by total_occurrences descending
@@ -155,7 +159,7 @@ def calculate_process_analytics(reconstruction: ProcessReconstructionResult) -> 
     rework_list.sort(key=lambda r: (-r.rework_case_count, -r.rework_occurrences, r.activity))
 
     # 3. Direct Transitions (consecutive steps in complete cases)
-    # Exclude identical-timestamp duplicate records from creating artificial 0.0s self-transitions,
+    # Exclude confirmed repeated source IDs from creating artificial 0.0s self-transitions,
     # while preserving transitions between distinct activities that share timestamps and genuine
     # repeated-activity loops at distinct timestamps.
     transition_durations: Dict[Tuple[str, str], List[float]] = defaultdict(list)
@@ -203,5 +207,6 @@ def calculate_process_analytics(reconstruction: ProcessReconstructionResult) -> 
         cycle_time=cycle_time_summary,
         activity_frequency=frequency_list,
         rework=rework_list,
-        transitions=transitions_list
+        transitions=transitions_list,
+        variants=reconstruction.variants
     )

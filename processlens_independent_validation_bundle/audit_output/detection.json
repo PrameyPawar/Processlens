@@ -1,0 +1,77 @@
+{
+  "filename": "processlens_independent_returns_holdout.csv",
+  "summary": {
+    "evaluated_cases_count": 120,
+    "total_findings_count": 2,
+    "high_signal_count": 1,
+    "medium_signal_count": 0,
+    "low_signal_count": 1,
+    "info_signal_count": 0,
+    "high_severity_count": 1,
+    "medium_severity_count": 0,
+    "low_severity_count": 1,
+    "info_severity_count": 0,
+    "reconciliation": {
+      "reconciled": true,
+      "total_transition_duration_seconds": 15404400.0,
+      "cumulative_cycle_time_seconds": 15404400.0,
+      "discrepancy_seconds": 0.0,
+      "discrepancy_percentage": 0.0,
+      "tolerance_percentage": 1.0,
+      "duration_share_suppressed": false,
+      "limitation_note": "A passing reconciliation check verifies arithmetic consistency between complete-case transition intervals and case spans. It does not independently prove that individual transition durations are correctly attributed, non-overlapping, or representative of active work."
+    }
+  },
+  "findings": [
+    {
+      "id": "finding_transition_refund_review_refund_approved",
+      "category": "DURATION_CONCENTRATION",
+      "rule": "TRANSITION_DURATION_SHARE",
+      "title": "High Duration Concentration on Refund Review to Refund Approved",
+      "signal_level": "HIGH",
+      "severity": "HIGH",
+      "evidence_strength": "HIGH",
+      "metrics": {
+        "source_activity": "Refund Review",
+        "target_activity": "Refund Approved",
+        "transition_count": 120,
+        "case_count": 120,
+        "mean_duration_seconds": 74430.0,
+        "median_duration_seconds": 7200.0,
+        "p90_duration_seconds": 172800.0,
+        "cumulative_transition_duration_seconds": 8931600.0,
+        "duration_share_percentage": 57.98
+      },
+      "explanation": "Transition 'Refund Review' -> 'Refund Approved' accounts for 57.98% of cumulative complete-case cycle time across 120 executions (mean elapsed duration 74430.00s).",
+      "limitations": [
+        "Elapsed transition duration reflects chronological time between milestone recordings and does not distinguish active work from waiting time without explicit start/end lifecycle timestamps.",
+        "Duration concentration indicates where elapsed time accumulates; it does not independently prove an operational bottleneck, constraint, defect, or inefficiency without domain context."
+      ]
+    },
+    {
+      "id": "finding_recurrence_item_inspected",
+      "category": "REPETITION",
+      "rule": "ACTIVITY_RECURRENCE",
+      "title": "Repeated Execution of Item Inspected",
+      "signal_level": "LOW",
+      "severity": "LOW",
+      "evidence_strength": "MODERATE",
+      "metrics": {
+        "activity": "Item Inspected",
+        "recurrence_case_count": 10,
+        "recurrence_case_percentage": 8.33,
+        "recurrence_occurrences": 10,
+        "duplicate_events_count": 0,
+        "rework_case_count": 10,
+        "rework_case_percentage": 8.33,
+        "rework_occurrences": 10
+      },
+      "explanation": "Activity 'Item Inspected' recurred at distinct timestamps in 10 complete cases (8.33%), with 10 total repeated occurrences beyond initial execution.",
+      "limitations": [
+        "Repeated activities indicate re-execution patterns, which may represent intended operational rework, iterative review, or standard multi-step procedures.",
+        "Prevalent recurrence is an observation of process behavior, not independent proof of operational waste or process failure.",
+        "Identical-timestamp duplicate records (0) are excluded from recurrence counts."
+      ]
+    }
+  ]
+}

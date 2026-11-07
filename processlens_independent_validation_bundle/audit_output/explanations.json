@@ -1,0 +1,113 @@
+{
+  "manifest": {
+    "source_file_sha256": "640b6e847b9377d93fe53080c8d0aefdb6dfe861b31e40278a546b76f5ce5b6e",
+    "source_filename": "processlens_independent_returns_holdout.csv",
+    "source_file_size_bytes": 69200,
+    "total_source_rows": 850,
+    "complete_cases_count": 120,
+    "reconciliation_status": "RECONCILED",
+    "effective_prioritisation_weights": {
+      "impact_weight": 30.0,
+      "readiness_weight": 25.0,
+      "payback_weight": 20.0,
+      "effort_weight": 10.0,
+      "risk_weight": 5.0,
+      "confidence_weight": 10.0
+    },
+    "formula_version": "v1.0",
+    "is_persisted_snapshot": false,
+    "notes": "Dynamic evidence dossier recomputed on demand from raw operational data and deterministic analysis pipeline. Not a persisted historical snapshot."
+  },
+  "portfolio_summary": {
+    "overall_narrative": "Evaluated 2 operational opportunity candidate(s) across the process lifecycle (1 in 'FEASIBILITY_INVESTIGATION', 1 in 'REVISE_OR_DEFERRED'). Roadmap sequencing is led by opportunity 'opp_delay_refund_review_refund_approved' targeting 'Refund Review -> Refund Approved' assigned to cohort 'FEASIBILITY_INVESTIGATION' at rank #1.",
+    "top_recommended_actions": [
+      "Rank #1 [FEASIBILITY_INVESTIGATION]: Advance 'opp_delay_refund_review_refund_approved' targeting 'Refund Review -> Refund Approved' (score: 65.3846)."
+    ],
+    "foundational_prerequisites": [
+      "Event log telemetry satisfies baseline tracking consistency; no blocking data quality prerequisites were identified."
+    ],
+    "portfolio_economics_caveat": "Opportunity-level capacity valuations reflect isolated labor reallocation scenarios and may overlap across shared workflow steps. Estimated capacity values are non-additive and must NOT be summed across opportunities as cumulative portfolio savings or guaranteed financial budget reductions."
+  },
+  "explanations": [
+    {
+      "opportunity_id": "opp_delay_refund_review_refund_approved",
+      "archetype": "DELAY_COMPRESSION",
+      "portfolio_cohort": "FEASIBILITY_INVESTIGATION",
+      "rank_order": 1,
+      "composite_priority_score": 65.3846,
+      "target_entity": "Refund Review -> Refund Approved",
+      "executive_summary": "Opportunity 'opp_delay_refund_review_refund_approved' addresses a Delay Compression pattern on target 'Refund Review -> Refund Approved'. It is ranked #1 in the portfolio roadmap with a composite priority score of 65.3846, designated for technical feasibility investigation. Financial returns remain unmonetized pending labor and cost inputs.",
+      "operational_problem_narrative": "Analysis of operational event traces identifies an elapsed milestone delay across transition 'Refund Review -> Refund Approved'. Evaluation inspected 3 exemplar trace(s) demonstrating significant milestone elapsed duration: - Case 'RET-0106': elapsed transition duration of 338400.00s (case total cycle time: 379800.00s). - Case 'RET-0107': elapsed transition duration of 327600.00s (case total cycle time: 372600.00s). - Case 'RET-0105': elapsed transition duration of 316800.00s (case total cycle time: 369000.00s). Note: Timestamp intervals reflect elapsed chronological time between logged milestones; they do not distinguish active touch labor from idle queue or wait time.",
+      "economic_interpretation": "Economic inputs were not supplied for this opportunity. Annualized labor hours, gross capacity value, net annual benefit, and payback period remain unknown and unmonetized. Prioritization for this opportunity relies solely on operational frequency and concentration heuristics. To model financial return, provide hourly labor rates, touch times, and implementation cost estimates.",
+      "strategic_rationale": "Ranked #1 in the portfolio roadmap with a composite priority score of 65.3846 and assigned to cohort 'FEASIBILITY_INVESTIGATION'. Under portfolio governance rules, technical readiness or interface constraints require discovery and architectural investigation prior to solutioning.",
+      "key_assumptions_and_risks": [
+        "[ASSUMPTION] Prioritisation factor weights reflect business strategic trade-off preferences.",
+        "[HYPOTHESIS] Determine whether elapsed duration between 'Refund Review' and 'Refund Approved' reflects active working time, queueing delays, or external dependencies.",
+        "[HYPOTHESIS] Assess whether prerequisites for 'Refund Approved' can be initiated earlier or completed asynchronously.",
+        "[HYPOTHESIS] Candidate intervention category: UNDETERMINED_INVESTIGATION.",
+        "[ESTIMATE] Operational priority score calculated at 100.00.",
+        "[ESTIMATE] Composite priority score evaluated at 65.3846.",
+        "[LIMITATION] Operational event logs record milestone timestamps and activity sequences; they do not observe cognitive work, active physical labor, or idle waiting time.",
+        "[LIMITATION] Capacity valuations model theoretical labor reallocation scenarios and do not guarantee realized budget reductions or cash-flow savings.",
+        "[LIMITATION] Identified opportunities and exemplar traces represent observed patterns for operational investigation; they do not prove causation or establish that an observed duration is avoidable.",
+        "[LIMITATION] Roadmap rankings and readiness tiers provide decision support for solution specification and do not authorize automated deployment into production systems.",
+        "[LIMITATION] Milestone timestamps reflect chronological elapsed time between events and do not separate active labor from queueing, idle time, or physical processing.",
+        "[LIMITATION] High duration concentration is an operational observation; it does not establish that the transition is unnecessary, avoidable, or suitable for automation without workflow review.",
+        "[LIMITATION] Implementation and automation readiness are evaluated separately and are not determined from event logs alone."
+      ],
+      "investigation_next_steps": [
+        "Conduct direct operational observation of transition 'Refund Review -> Refund Approved' to distinguish active touch time from queue waiting or batching.",
+        "Review workstation handover protocols and resource availability logs during peak delay periods.",
+        "Evaluate whether upstream task output formats cause downstream processing pauses.",
+        "Conduct technical API discovery to assess system interface readiness and data extraction feasibility."
+      ],
+      "grounding_audit": {
+        "status": "NOT_EVALUATED",
+        "verified_numbers": [],
+        "verified_entities": [],
+        "discrepancies": []
+      }
+    },
+    {
+      "opportunity_id": "opp_recurrence_item_inspected",
+      "archetype": "RECURRENCE_REDUCTION",
+      "portfolio_cohort": "REVISE_OR_DEFERRED",
+      "rank_order": 2,
+      "composite_priority_score": 23.56,
+      "target_entity": "Item Inspected",
+      "executive_summary": "Opportunity 'opp_recurrence_item_inspected' addresses a Recurrence Reduction pattern on target 'Item Inspected'. It is ranked #2 in the portfolio roadmap with a composite priority score of 23.5600, designated for deferred consideration. Financial returns remain unmonetized pending labor and cost inputs.",
+      "operational_problem_narrative": "Analysis identifies repeated execution loops for activity 'Item Inspected' within individual case traces. Inspection of 3 exemplar trace(s) revealed repeated activity executions at distinct timestamps: - Case 'RET-0081': executed 'Item Inspected' 2 times at distinct timestamps (case total cycle time: 68400.00s). - Case 'RET-0088': executed 'Item Inspected' 2 times at distinct timestamps (case total cycle time: 68400.00s). - Case 'RET-0090': executed 'Item Inspected' 2 times at distinct timestamps (case total cycle time: 61200.00s). Repeated activity executions at distinct timestamps indicate operational rework, clarification loops, or iterative data corrections.",
+      "economic_interpretation": "Economic inputs were not supplied for this opportunity. Annualized labor hours, gross capacity value, net annual benefit, and payback period remain unknown and unmonetized. Prioritization for this opportunity relies solely on operational frequency and concentration heuristics. To model financial return, provide hourly labor rates, touch times, and implementation cost estimates.",
+      "strategic_rationale": "Ranked #2 in the portfolio roadmap with a composite priority score of 23.5600 and assigned to cohort 'REVISE_OR_DEFERRED'. Under portfolio governance rules, low operational priority or unviable return warrants deferring this opportunity from the active roadmap.",
+      "key_assumptions_and_risks": [
+        "[ASSUMPTION] Prioritisation factor weights reflect business strategic trade-off preferences.",
+        "[HYPOTHESIS] Investigate whether re-executions of 'Item Inspected' are caused by upstream data defects, missing information, or normal multi-pass procedures.",
+        "[HYPOTHESIS] Examine whether cases requiring repeated 'Item Inspected' experience extended overall cycle times.",
+        "[HYPOTHESIS] Candidate intervention category: UNDETERMINED_INVESTIGATION.",
+        "[ESTIMATE] Operational priority score calculated at 9.38.",
+        "[ESTIMATE] Composite priority score evaluated at 23.5600.",
+        "[LIMITATION] Operational event logs record milestone timestamps and activity sequences; they do not observe cognitive work, active physical labor, or idle waiting time.",
+        "[LIMITATION] Capacity valuations model theoretical labor reallocation scenarios and do not guarantee realized budget reductions or cash-flow savings.",
+        "[LIMITATION] Identified opportunities and exemplar traces represent observed patterns for operational investigation; they do not prove causation or establish that an observed duration is avoidable.",
+        "[LIMITATION] Roadmap rankings and readiness tiers provide decision support for solution specification and do not authorize automated deployment into production systems.",
+        "[LIMITATION] Repeated activities represent observed operational patterns; they do not distinguish intentional iterative reviews from operational failure without domain context.",
+        "[LIMITATION] Identical-timestamp duplicate records are excluded from recurrence counts.",
+        "[LIMITATION] Implementation and automation readiness are evaluated separately and are not determined from event logs alone."
+      ],
+      "investigation_next_steps": [
+        "Review cases exhibiting multiple instances of 'Item Inspected' with frontline staff to categorize reasons for rework.",
+        "Audit initial submission quality to determine if input validation errors trigger reprocessing loops.",
+        "Determine whether repeat activity executions represent genuine errors or legitimate iterative collaboration."
+      ],
+      "grounding_audit": {
+        "status": "NOT_EVALUATED",
+        "verified_numbers": [],
+        "verified_entities": [],
+        "discrepancies": []
+      }
+    }
+  ],
+  "explanation_source": "DETERMINISTIC_TEMPLATE",
+  "model_identifier": null,
+  "execution_duration_seconds": 0.0002
+}

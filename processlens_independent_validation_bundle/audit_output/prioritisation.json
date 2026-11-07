@@ -1,0 +1,243 @@
+{
+  "filename": "processlens_independent_returns_holdout.csv",
+  "summary": {
+    "total_opportunities_prioritised": 2,
+    "cohort_distribution": {
+      "FEASIBILITY_INVESTIGATION": 1,
+      "REVISE_OR_DEFERRED": 1
+    },
+    "top_opportunity_id": "opp_delay_refund_review_refund_approved",
+    "top_three_opportunity_ids": [
+      "opp_delay_refund_review_refund_approved",
+      "opp_recurrence_item_inspected"
+    ],
+    "top_three_cumulative_capacity_scenario": null,
+    "capacity_scenario_caveats": [
+      "Non-additive scenario estimate. Summing capacity across multiple opportunities may involve overlapping case traces or interdependent transition delays. Cross-opportunity interaction and portfolio non-overlap are not modeled in MVP."
+    ]
+  },
+  "ranked_opportunities": [
+    {
+      "rank_order": 1,
+      "opportunity_id": "opp_delay_refund_review_refund_approved",
+      "archetype": "DELAY_COMPRESSION",
+      "portfolio_cohort": "FEASIBILITY_INVESTIGATION",
+      "scoring_status": "SCORED",
+      "composite_priority_score_raw": 65.38461538461539,
+      "composite_priority_score": 65.3846,
+      "score_bucket": 65.3846,
+      "factors": {
+        "impact_score": 100.0,
+        "impact_basis": "OPERATIONAL_CONCENTRATION_BASELINE",
+        "impact_provenance": "MEASURED_IN_LOG",
+        "readiness_score": 30.0,
+        "payback_score": null,
+        "effort_score": null,
+        "risk_score": null,
+        "confidence_score": 50.0,
+        "effective_weights": {
+          "readiness": 38.4615,
+          "impact": 46.1538,
+          "confidence": 15.3846
+        },
+        "factor_caveats": [
+          "Impact derived from observed process pattern concentration; net annual capacity benefit is unverified.",
+          "Payback period is unverified; factor evaluates as None.",
+          "Implementation cost is unassessed; factor evaluates as None.",
+          "Governance and operational risk is unassessed; factor evaluates as None."
+        ]
+      },
+      "economics": {
+        "opportunity_id": "opp_delay_refund_review_refund_approved",
+        "archetype": "DELAY_COMPRESSION",
+        "observation_window": {
+          "earliest_timestamp": "2026-01-05T09:06:00",
+          "latest_timestamp": "2026-01-31T19:57:00",
+          "observation_duration_seconds": 2285460.0,
+          "observation_duration_days": 26.452083333333334,
+          "time_basis": "SAMPLE_WINDOW",
+          "annualisation_method": "NONE",
+          "annualisation_ratio": null,
+          "sample_completed_cases": 120,
+          "evaluated_case_volume_raw": 120.0,
+          "evaluated_case_volume": 120,
+          "volume_provenance": "MEASURED_IN_LOG",
+          "caveats": [
+            "Observation window duration (26.5 days) is shorter than 30 days. Automatic annual calendar extrapolation is suppressed; metrics represent sample window observations only."
+          ]
+        },
+        "labor_effort": {
+          "sample_affected_cases": 120,
+          "sample_occurrences": 120,
+          "sample_distinct_rare_variants": null,
+          "sample_active_labor_hours": null,
+          "sample_addressable_labor_hours": null,
+          "annual_affected_cases_raw": null,
+          "annual_affected_cases": null,
+          "annual_occurrences_raw": null,
+          "annual_occurrences": null,
+          "annual_active_labor_hours": null,
+          "annual_addressable_labor_hours": null,
+          "affected_cases_provenance": "MEASURED_IN_LOG",
+          "active_labor_share_percentage": null,
+          "touch_labor_minutes_per_occurrence": null,
+          "addressable_efficiency_percentage": null,
+          "labor_metrics_provenance": "MEASURED_IN_LOG",
+          "caveats": [
+            "Active labor share percentage (alpha) is missing; sample active labor hours are unavailable.",
+            "Sample observation window (<30 days) suppresses annualization; annual estimates are None."
+          ]
+        },
+        "capacity_valuation": {
+          "hourly_labor_rate": null,
+          "hourly_labor_rate_provenance": "CALCULATED_ESTIMATE",
+          "sample_gross_capacity_value": null,
+          "gross_annual_capacity_value": null,
+          "annual_recurring_cost": null,
+          "annual_recurring_cost_provenance": "CALCULATED_ESTIMATE",
+          "net_annual_capacity_benefit": null,
+          "implementation_cost": null,
+          "implementation_cost_provenance": "CALCULATED_ESTIMATE",
+          "payback_period_months": null,
+          "three_year_capacity_roi_percentage": null,
+          "three_year_net_capacity_value": null,
+          "economic_tier": "INSUFFICIENT_ECONOMIC_INPUTS",
+          "caveats": [
+            "Annual financial classification requires an annual time basis."
+          ]
+        },
+        "cash_flow": {
+          "cash_roi_available": false,
+          "cash_payback_months": null,
+          "cash_net_present_value": null,
+          "caveats": [
+            "Cash-flow ROI and budget reduction require verified headcount, payroll, or external cost evidence. Capacity values represent theoretical reallocation capacity."
+          ]
+        },
+        "synthesis": {
+          "operational_priority": "TIER_1_HIGH",
+          "overall_readiness": "INSUFFICIENT_CRITICAL_EVIDENCE",
+          "economic_tier": "INSUFFICIENT_ECONOMIC_INPUTS",
+          "strategic_decision": "INVESTIGATE_FEASIBILITY",
+          "decision_rationale": "Operational priority TIER_1_HIGH combined with INSUFFICIENT_CRITICAL_EVIDENCE automation readiness and INSUFFICIENT_ECONOMIC_INPUTS economics indicates INVESTIGATE_FEASIBILITY.",
+          "decision_provenance": "CALCULATED_ESTIMATE"
+        }
+      },
+      "operational_priority_score": 100.0,
+      "primary_strength": "observed process pattern concentration score of 100.0 in event log",
+      "primary_constraint": null,
+      "constraint_status": null
+    },
+    {
+      "rank_order": 2,
+      "opportunity_id": "opp_recurrence_item_inspected",
+      "archetype": "RECURRENCE_REDUCTION",
+      "portfolio_cohort": "REVISE_OR_DEFERRED",
+      "scoring_status": "SCORED",
+      "composite_priority_score_raw": 23.560000000000002,
+      "composite_priority_score": 23.56,
+      "score_bucket": 23.56,
+      "factors": {
+        "impact_score": 9.38,
+        "impact_basis": "OPERATIONAL_CONCENTRATION_BASELINE",
+        "impact_provenance": "MEASURED_IN_LOG",
+        "readiness_score": 30.0,
+        "payback_score": null,
+        "effort_score": null,
+        "risk_score": null,
+        "confidence_score": 50.0,
+        "effective_weights": {
+          "readiness": 38.4615,
+          "impact": 46.1538,
+          "confidence": 15.3846
+        },
+        "factor_caveats": [
+          "Impact derived from observed process pattern concentration; net annual capacity benefit is unverified.",
+          "Payback period is unverified; factor evaluates as None.",
+          "Implementation cost is unassessed; factor evaluates as None.",
+          "Governance and operational risk is unassessed; factor evaluates as None."
+        ]
+      },
+      "economics": {
+        "opportunity_id": "opp_recurrence_item_inspected",
+        "archetype": "RECURRENCE_REDUCTION",
+        "observation_window": {
+          "earliest_timestamp": "2026-01-05T09:06:00",
+          "latest_timestamp": "2026-01-31T19:57:00",
+          "observation_duration_seconds": 2285460.0,
+          "observation_duration_days": 26.452083333333334,
+          "time_basis": "SAMPLE_WINDOW",
+          "annualisation_method": "NONE",
+          "annualisation_ratio": null,
+          "sample_completed_cases": 120,
+          "evaluated_case_volume_raw": 120.0,
+          "evaluated_case_volume": 120,
+          "volume_provenance": "MEASURED_IN_LOG",
+          "caveats": [
+            "Observation window duration (26.5 days) is shorter than 30 days. Automatic annual calendar extrapolation is suppressed; metrics represent sample window observations only."
+          ]
+        },
+        "labor_effort": {
+          "sample_affected_cases": 10,
+          "sample_occurrences": 10,
+          "sample_distinct_rare_variants": null,
+          "sample_active_labor_hours": null,
+          "sample_addressable_labor_hours": null,
+          "annual_affected_cases_raw": null,
+          "annual_affected_cases": null,
+          "annual_occurrences_raw": null,
+          "annual_occurrences": null,
+          "annual_active_labor_hours": null,
+          "annual_addressable_labor_hours": null,
+          "affected_cases_provenance": "MEASURED_IN_LOG",
+          "active_labor_share_percentage": null,
+          "touch_labor_minutes_per_occurrence": null,
+          "addressable_efficiency_percentage": null,
+          "labor_metrics_provenance": "MEASURED_IN_LOG",
+          "caveats": [
+            "Touch labor minutes per occurrence is missing; sample active labor hours are unavailable.",
+            "Sample observation window (<30 days) suppresses annualization; annual estimates are None."
+          ]
+        },
+        "capacity_valuation": {
+          "hourly_labor_rate": null,
+          "hourly_labor_rate_provenance": "CALCULATED_ESTIMATE",
+          "sample_gross_capacity_value": null,
+          "gross_annual_capacity_value": null,
+          "annual_recurring_cost": null,
+          "annual_recurring_cost_provenance": "CALCULATED_ESTIMATE",
+          "net_annual_capacity_benefit": null,
+          "implementation_cost": null,
+          "implementation_cost_provenance": "CALCULATED_ESTIMATE",
+          "payback_period_months": null,
+          "three_year_capacity_roi_percentage": null,
+          "three_year_net_capacity_value": null,
+          "economic_tier": "INSUFFICIENT_ECONOMIC_INPUTS",
+          "caveats": [
+            "Annual financial classification requires an annual time basis."
+          ]
+        },
+        "cash_flow": {
+          "cash_roi_available": false,
+          "cash_payback_months": null,
+          "cash_net_present_value": null,
+          "caveats": [
+            "Cash-flow ROI and budget reduction require verified headcount, payroll, or external cost evidence. Capacity values represent theoretical reallocation capacity."
+          ]
+        },
+        "synthesis": {
+          "operational_priority": "TIER_4_EXPLORATORY",
+          "overall_readiness": "INSUFFICIENT_CRITICAL_EVIDENCE",
+          "economic_tier": "INSUFFICIENT_ECONOMIC_INPUTS",
+          "strategic_decision": "DEFER_OR_ARCHIVE",
+          "decision_rationale": "Operational priority TIER_4_EXPLORATORY combined with INSUFFICIENT_CRITICAL_EVIDENCE automation readiness and INSUFFICIENT_ECONOMIC_INPUTS economics indicates DEFER_OR_ARCHIVE.",
+          "decision_provenance": "CALCULATED_ESTIMATE"
+        }
+      },
+      "operational_priority_score": 9.38,
+      "primary_strength": "readiness assessment tier INSUFFICIENT_CRITICAL_EVIDENCE",
+      "primary_constraint": "Portfolio roadmap policy prioritizes FEASIBILITY_INVESTIGATION ahead of REVISE_OR_DEFERRED. Candidate is evaluated as DEFER_OR_ARCHIVE: Operational priority TIER_4_EXPLORATORY combined with INSUFFICIENT_CRITICAL_EVIDENCE automation readiness and INSUFFICIENT_ECONOMIC_INPUTS economics indicates DEFER_OR_ARCHIVE.",
+      "constraint_status": "INTER_COHORT_PRECEDENCE"
+    }
+  ]
+}

@@ -1,9 +1,8 @@
-# ProcessLens .gitignore
-
-# Environment variables & secrets
+# Environment variables and secrets
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+!**/.env.example
 *.env
 *.pem
 *.key
@@ -42,13 +41,13 @@ htmlcov/
 .ruff_cache/
 .mypy_cache/
 
-# Virtual Environments
+# Virtual environments
 venv/
 .venv/
 env/
 ENV/
 
-# Node / Frontend
+# Node / frontend
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -58,14 +57,17 @@ dist/
 dist-ssr/
 *.local
 
-# Temporary runtime uploads / outputs
+# Runtime uploads, local databases, and generated output
 uploads/
 tmp/
 temp/
 scratch/
 *.log
+*.db
+*.sqlite
+*.sqlite3
 
-# OS & Editor files
+# OS and editor files
 .DS_Store
 Thumbs.db
 Desktop.ini
@@ -73,3 +75,9 @@ Desktop.ini
 .vscode/
 *.swp
 *.swo
+
+# Local handoff and reference artifacts
+/ProcessLens_Agent_Reference.md
+/agentchar.md
+/landingpageinspro_sourcecode
+/test_shot.png

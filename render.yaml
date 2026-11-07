@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: processlens-portfolio-demo
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: AUTH_SECRET_KEY
+        generateValue: true
+      - key: AUTH_SECURE_COOKIE
+        value: "true"
+      - key: DEV_ADMIN_EMAIL
+        value: developer@processlens.demo
+      - key: DEV_ADMIN_PASSWORD
+        generateValue: true
+      - key: DEMO_CUSTOMER_EMAIL
+        value: demo@processlens.demo
+      - key: DEMO_CUSTOMER_PASSWORD
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://processlens-portfolio-demo.onrender.com
+      - key: USER_STORE_DB_PATH
+        value: /tmp/processlens-auth.db
+      - key: LLM_API_KEY
+        value: ""

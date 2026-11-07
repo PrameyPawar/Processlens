@@ -1,0 +1,851 @@
+case_id,activity,timestamp,resource,channel,return_reason
+RET-0001,Return Requested,2026-01-05 09:06:00,Customer Portal,Marketplace,Wrong Size
+RET-0001,Package Received,2026-01-05 10:06:00,Warehouse A,Web,Wrong Size
+RET-0001,Item Inspected,2026-01-05 15:06:00,Returns Specialist 2,Marketplace,Damaged
+RET-0001,Refund Review,2026-01-05 17:06:00,Refund Queue Alpha,Web,Damaged
+RET-0001,Refund Approved,2026-01-05 19:06:00,Refund Supervisor A,Mobile,Changed Mind
+RET-0001,Payment Reversed,2026-01-05 22:06:00,Payments Service,Marketplace,Wrong Size
+RET-0001,Case Closed,2026-01-06 00:06:00,Returns Platform,Web,Damaged
+RET-0002,Return Requested,2026-01-05 14:49:00,Customer Portal,Web,Changed Mind
+RET-0002,Package Received,2026-01-05 16:49:00,Warehouse A,Web,Changed Mind
+RET-0002,Item Inspected,2026-01-05 21:49:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0002,Refund Review,2026-01-06 01:49:00,Refund Queue Alpha,Marketplace,Wrong Size
+RET-0002,Refund Approved,2026-01-06 03:49:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0002,Payment Reversed,2026-01-06 07:49:00,Payments Service,Marketplace,Damaged
+RET-0002,Case Closed,2026-01-06 09:49:00,Returns Platform,Mobile,Not As Described
+RET-0003,Return Requested,2026-01-05 19:12:00,Mobile App,Mobile,Wrong Size
+RET-0003,Package Received,2026-01-05 20:12:00,Warehouse B,Web,Damaged
+RET-0003,Item Inspected,2026-01-06 01:12:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0003,Refund Review,2026-01-06 04:12:00,Refund Queue Alpha,Marketplace,Not As Described
+RET-0003,Refund Approved,2026-01-06 05:12:00,Refund Supervisor A,Mobile,Wrong Size
+RET-0003,Payment Reversed,2026-01-06 10:12:00,Payments Service,Web,Wrong Size
+RET-0003,Case Closed,2026-01-06 11:42:00,Returns Platform,Web,Wrong Size
+RET-0004,Return Requested,2026-01-06 00:19:00,Customer Portal,Web,Changed Mind
+RET-0004,Package Received,2026-01-06 02:19:00,Warehouse A,Mobile,Wrong Size
+RET-0004,Item Inspected,2026-01-06 06:19:00,Returns Specialist 1,Web,Wrong Size
+RET-0004,Refund Review,2026-01-06 09:19:00,Refund Queue Alpha,Web,Damaged
+RET-0004,Refund Approved,2026-01-06 10:19:00,Refund Supervisor A,Mobile,Damaged
+RET-0004,Payment Reversed,2026-01-06 15:19:00,Payments Service,Mobile,Wrong Size
+RET-0004,Case Closed,2026-01-06 16:49:00,Returns Platform,Web,Damaged
+RET-0005,Return Requested,2026-01-06 05:16:00,Mobile App,Web,Wrong Size
+RET-0005,Package Received,2026-01-06 07:16:00,Warehouse A,Marketplace,Wrong Size
+RET-0005,Item Inspected,2026-01-06 11:16:00,Returns Specialist 1,Web,Changed Mind
+RET-0005,Refund Review,2026-01-06 13:16:00,Refund Queue Alpha,Web,Not As Described
+RET-0005,Refund Approved,2026-01-06 14:16:00,Refund Supervisor B,Web,Changed Mind
+RET-0005,Payment Reversed,2026-01-06 18:16:00,Payments Service,Web,Wrong Size
+RET-0005,Case Closed,2026-01-06 19:16:00,Returns Platform,Marketplace,Changed Mind
+RET-0006,Return Requested,2026-01-06 10:01:00,Mobile App,Marketplace,Damaged
+RET-0006,Package Received,2026-01-06 12:01:00,Warehouse B,Web,Wrong Size
+RET-0006,Item Inspected,2026-01-06 16:01:00,Returns Specialist 2,Marketplace,Damaged
+RET-0006,Refund Review,2026-01-06 19:01:00,Refund Queue Alpha,Mobile,Damaged
+RET-0006,Refund Approved,2026-01-06 20:01:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0006,Payment Reversed,2026-01-07 00:01:00,Payments Service,Marketplace,Damaged
+RET-0006,Case Closed,2026-01-07 01:01:00,Returns Platform,Web,Not As Described
+RET-0007,Return Requested,2026-01-06 15:05:00,Mobile App,Web,Changed Mind
+RET-0007,Package Received,2026-01-06 16:05:00,Warehouse B,Mobile,Not As Described
+RET-0007,Item Inspected,2026-01-06 21:05:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0007,Refund Review,2026-01-06 23:05:00,Refund Queue Beta,Web,Wrong Size
+RET-0007,Refund Approved,2026-01-07 00:05:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0007,Payment Reversed,2026-01-07 03:05:00,Payments Service,Mobile,Damaged
+RET-0007,Case Closed,2026-01-07 04:35:00,Returns Platform,Mobile,Wrong Size
+RET-0008,Return Requested,2026-01-06 20:41:00,Mobile App,Mobile,Wrong Size
+RET-0008,Package Received,2026-01-06 22:41:00,Warehouse B,Web,Not As Described
+RET-0008,Item Inspected,2026-01-07 02:41:00,Returns Specialist 2,Web,Not As Described
+RET-0008,Refund Review,2026-01-07 06:41:00,Refund Queue Alpha,Marketplace,Changed Mind
+RET-0008,Refund Approved,2026-01-07 08:41:00,Refund Supervisor B,Marketplace,Changed Mind
+RET-0008,Payment Reversed,2026-01-07 13:41:00,Payments Service,Marketplace,Wrong Size
+RET-0008,Case Closed,2026-01-07 15:41:00,Returns Platform,Web,Changed Mind
+RET-0009,Return Requested,2026-01-07 01:08:00,Customer Portal,Marketplace,Wrong Size
+RET-0009,Package Received,2026-01-07 03:08:00,Warehouse A,Mobile,Damaged
+RET-0009,Item Inspected,2026-01-07 07:08:00,Returns Specialist 1,Web,Changed Mind
+RET-0009,Refund Review,2026-01-07 11:08:00,Refund Queue Alpha,Marketplace,Not As Described
+RET-0009,Refund Approved,2026-01-07 12:08:00,Refund Supervisor A,Web,Damaged
+RET-0009,Payment Reversed,2026-01-07 16:08:00,Payments Service,Mobile,Wrong Size
+RET-0009,Case Closed,2026-01-07 17:38:00,Returns Platform,Marketplace,Damaged
+RET-0010,Return Requested,2026-01-07 06:05:00,Customer Portal,Mobile,Damaged
+RET-0010,Package Received,2026-01-07 08:05:00,Warehouse B,Mobile,Not As Described
+RET-0010,Item Inspected,2026-01-07 14:05:00,Returns Specialist 2,Marketplace,Not As Described
+RET-0010,Refund Review,2026-01-07 17:05:00,Refund Queue Alpha,Mobile,Changed Mind
+RET-0010,Refund Approved,2026-01-07 18:05:00,Refund Supervisor B,Marketplace,Wrong Size
+RET-0010,Payment Reversed,2026-01-07 22:05:00,Payments Service,Web,Wrong Size
+RET-0010,Case Closed,2026-01-07 23:35:00,Returns Platform,Marketplace,Not As Described
+RET-0011,Return Requested,2026-01-07 11:24:00,Customer Portal,Mobile,Wrong Size
+RET-0011,Package Received,2026-01-07 13:24:00,Warehouse A,Web,Changed Mind
+RET-0011,Item Inspected,2026-01-07 17:24:00,Returns Specialist 2,Web,Not As Described
+RET-0011,Refund Review,2026-01-07 20:24:00,Refund Queue Alpha,Marketplace,Damaged
+RET-0011,Refund Approved,2026-01-07 22:24:00,Refund Supervisor A,Web,Wrong Size
+RET-0011,Payment Reversed,2026-01-08 03:24:00,Payments Service,Marketplace,Damaged
+RET-0011,Case Closed,2026-01-08 05:24:00,Returns Platform,Mobile,Wrong Size
+RET-0012,Return Requested,2026-01-07 16:44:00,Customer Portal,Web,Wrong Size
+RET-0012,Package Received,2026-01-07 18:44:00,Warehouse A,Marketplace,Wrong Size
+RET-0012,Item Inspected,2026-01-08 00:44:00,Returns Specialist 1,Web,Wrong Size
+RET-0012,Refund Review,2026-01-08 02:44:00,Refund Queue Alpha,Marketplace,Wrong Size
+RET-0012,Refund Approved,2026-01-08 03:44:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0012,Payment Reversed,2026-01-08 08:44:00,Payments Service,Marketplace,Damaged
+RET-0012,Case Closed,2026-01-08 10:44:00,Returns Platform,Mobile,Changed Mind
+RET-0013,Return Requested,2026-01-07 21:36:00,Mobile App,Marketplace,Changed Mind
+RET-0013,Package Received,2026-01-07 22:36:00,Warehouse A,Marketplace,Changed Mind
+RET-0013,Item Inspected,2026-01-08 04:36:00,Returns Specialist 1,Mobile,Damaged
+RET-0013,Refund Review,2026-01-08 08:36:00,Refund Queue Alpha,Mobile,Changed Mind
+RET-0013,Refund Approved,2026-01-08 10:36:00,Refund Supervisor B,Web,Changed Mind
+RET-0013,Payment Reversed,2026-01-08 13:36:00,Payments Service,Marketplace,Wrong Size
+RET-0013,Case Closed,2026-01-08 15:06:00,Returns Platform,Web,Not As Described
+RET-0014,Return Requested,2026-01-08 02:26:00,Mobile App,Web,Not As Described
+RET-0014,Package Received,2026-01-08 04:26:00,Warehouse A,Marketplace,Not As Described
+RET-0014,Item Inspected,2026-01-08 10:26:00,Returns Specialist 2,Marketplace,Not As Described
+RET-0014,Refund Review,2026-01-08 14:26:00,Refund Queue Alpha,Marketplace,Not As Described
+RET-0014,Refund Approved,2026-01-08 16:26:00,Refund Supervisor B,Marketplace,Damaged
+RET-0014,Payment Reversed,2026-01-08 21:26:00,Payments Service,Mobile,Not As Described
+RET-0014,Case Closed,2026-01-08 23:26:00,Returns Platform,Web,Not As Described
+RET-0015,Return Requested,2026-01-08 07:22:00,Mobile App,Mobile,Not As Described
+RET-0015,Package Received,2026-01-08 08:22:00,Warehouse B,Web,Not As Described
+RET-0015,Item Inspected,2026-01-08 12:22:00,Returns Specialist 2,Marketplace,Wrong Size
+RET-0015,Refund Review,2026-01-08 15:22:00,Refund Queue Beta,Mobile,Damaged
+RET-0015,Refund Approved,2026-01-08 17:22:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0015,Payment Reversed,2026-01-08 20:22:00,Payments Service,Web,Not As Described
+RET-0015,Case Closed,2026-01-08 21:52:00,Returns Platform,Web,Damaged
+RET-0016,Return Requested,2026-01-08 12:20:00,Mobile App,Web,Changed Mind
+RET-0016,Package Received,2026-01-08 14:20:00,Warehouse B,Marketplace,Changed Mind
+RET-0016,Item Inspected,2026-01-08 20:20:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0016,Refund Review,2026-01-09 00:20:00,Refund Queue Alpha,Web,Wrong Size
+RET-0016,Refund Approved,2026-01-09 01:20:00,Refund Supervisor B,Web,Wrong Size
+RET-0016,Payment Reversed,2026-01-09 06:20:00,Payments Service,Mobile,Not As Described
+RET-0016,Case Closed,2026-01-09 07:20:00,Returns Platform,Web,Damaged
+RET-0017,Return Requested,2026-01-08 17:22:00,Customer Portal,Web,Damaged
+RET-0017,Package Received,2026-01-08 18:22:00,Warehouse B,Marketplace,Not As Described
+RET-0017,Item Inspected,2026-01-08 23:22:00,Returns Specialist 2,Web,Wrong Size
+RET-0017,Refund Review,2026-01-09 01:22:00,Refund Queue Alpha,Mobile,Wrong Size
+RET-0017,Refund Approved,2026-01-09 02:22:00,Refund Supervisor A,Mobile,Wrong Size
+RET-0017,Payment Reversed,2026-01-09 05:22:00,Payments Service,Web,Damaged
+RET-0017,Case Closed,2026-01-09 06:22:00,Returns Platform,Web,Not As Described
+RET-0018,Return Requested,2026-01-08 22:33:00,Customer Portal,Marketplace,Not As Described
+RET-0018,Package Received,2026-01-09 00:33:00,Warehouse B,Web,Damaged
+RET-0018,Item Inspected,2026-01-09 06:33:00,Returns Specialist 2,Web,Changed Mind
+RET-0018,Refund Review,2026-01-09 09:33:00,Refund Queue Alpha,Mobile,Wrong Size
+RET-0018,Refund Approved,2026-01-09 10:33:00,Refund Supervisor B,Marketplace,Changed Mind
+RET-0018,Payment Reversed,2026-01-09 15:33:00,Payments Service,Marketplace,Changed Mind
+RET-0018,Case Closed,2026-01-09 17:03:00,Returns Platform,Mobile,Changed Mind
+RET-0019,Return Requested,2026-01-09 03:23:00,Customer Portal,Mobile,Damaged
+RET-0019,Package Received,2026-01-09 04:23:00,Warehouse A,Mobile,Damaged
+RET-0019,Item Inspected,2026-01-09 10:23:00,Returns Specialist 2,Web,Wrong Size
+RET-0019,Refund Review,2026-01-09 12:23:00,Refund Queue Alpha,Marketplace,Damaged
+RET-0019,Refund Approved,2026-01-09 13:23:00,Refund Supervisor A,Marketplace,Damaged
+RET-0019,Payment Reversed,2026-01-09 16:23:00,Payments Service,Marketplace,Damaged
+RET-0019,Case Closed,2026-01-09 17:53:00,Returns Platform,Mobile,Not As Described
+RET-0020,Return Requested,2026-01-09 08:41:00,Mobile App,Marketplace,Wrong Size
+RET-0020,Package Received,2026-01-09 10:41:00,Warehouse A,Marketplace,Damaged
+RET-0020,Item Inspected,2026-01-09 16:41:00,Returns Specialist 1,Marketplace,Not As Described
+RET-0020,Refund Review,2026-01-09 20:41:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0020,Refund Approved,2026-01-09 22:41:00,Refund Supervisor A,Marketplace,Damaged
+RET-0020,Payment Reversed,2026-01-10 02:41:00,Payments Service,Web,Changed Mind
+RET-0020,Case Closed,2026-01-10 04:11:00,Returns Platform,Mobile,Changed Mind
+RET-0021,Return Requested,2026-01-09 13:05:00,Customer Portal,Marketplace,Changed Mind
+RET-0021,Package Received,2026-01-09 15:05:00,Warehouse A,Marketplace,Damaged
+RET-0021,Item Inspected,2026-01-09 20:05:00,Returns Specialist 2,Web,Changed Mind
+RET-0021,Refund Review,2026-01-10 00:05:00,Refund Queue Beta,Mobile,Wrong Size
+RET-0021,Refund Approved,2026-01-10 02:05:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0021,Payment Reversed,2026-01-10 07:05:00,Payments Service,Web,Wrong Size
+RET-0021,Case Closed,2026-01-10 08:05:00,Returns Platform,Web,Not As Described
+RET-0022,Return Requested,2026-01-09 18:35:00,Customer Portal,Web,Damaged
+RET-0022,Package Received,2026-01-09 19:35:00,Warehouse B,Marketplace,Changed Mind
+RET-0022,Item Inspected,2026-01-10 00:35:00,Returns Specialist 2,Mobile,Damaged
+RET-0022,Refund Review,2026-01-10 02:35:00,Refund Queue Beta,Marketplace,Changed Mind
+RET-0022,Refund Approved,2026-01-10 04:35:00,Refund Supervisor A,Web,Wrong Size
+RET-0022,Payment Reversed,2026-01-10 09:35:00,Payments Service,Web,Not As Described
+RET-0022,Case Closed,2026-01-10 11:05:00,Returns Platform,Web,Wrong Size
+RET-0023,Return Requested,2026-01-09 23:05:00,Mobile App,Marketplace,Changed Mind
+RET-0023,Package Received,2026-01-10 01:05:00,Warehouse A,Mobile,Wrong Size
+RET-0023,Item Inspected,2026-01-10 05:05:00,Returns Specialist 1,Mobile,Damaged
+RET-0023,Refund Review,2026-01-10 08:05:00,Refund Queue Beta,Mobile,Wrong Size
+RET-0023,Refund Approved,2026-01-10 10:05:00,Refund Supervisor A,Marketplace,Wrong Size
+RET-0023,Payment Reversed,2026-01-10 15:05:00,Payments Service,Web,Not As Described
+RET-0023,Case Closed,2026-01-10 16:05:00,Returns Platform,Mobile,Not As Described
+RET-0024,Return Requested,2026-01-10 04:48:00,Customer Portal,Web,Changed Mind
+RET-0024,Package Received,2026-01-10 05:48:00,Warehouse B,Web,Not As Described
+RET-0024,Item Inspected,2026-01-10 09:48:00,Returns Specialist 1,Marketplace,Damaged
+RET-0024,Refund Review,2026-01-10 11:48:00,Refund Queue Beta,Marketplace,Changed Mind
+RET-0024,Refund Approved,2026-01-10 12:48:00,Refund Supervisor A,Marketplace,Wrong Size
+RET-0024,Payment Reversed,2026-01-10 15:48:00,Payments Service,Web,Wrong Size
+RET-0024,Case Closed,2026-01-10 17:18:00,Returns Platform,Mobile,Wrong Size
+RET-0025,Return Requested,2026-01-10 09:33:00,Mobile App,Marketplace,Changed Mind
+RET-0025,Package Received,2026-01-10 10:33:00,Warehouse B,Web,Damaged
+RET-0025,Item Inspected,2026-01-10 14:33:00,Returns Specialist 1,Mobile,Wrong Size
+RET-0025,Refund Review,2026-01-10 16:33:00,Refund Queue Beta,Mobile,Not As Described
+RET-0025,Refund Approved,2026-01-10 17:33:00,Refund Supervisor B,Marketplace,Damaged
+RET-0025,Payment Reversed,2026-01-10 22:33:00,Payments Service,Web,Changed Mind
+RET-0025,Case Closed,2026-01-11 00:03:00,Returns Platform,Web,Damaged
+RET-0026,Return Requested,2026-01-10 14:16:00,Customer Portal,Mobile,Wrong Size
+RET-0026,Package Received,2026-01-10 15:16:00,Warehouse A,Marketplace,Damaged
+RET-0026,Item Inspected,2026-01-10 21:16:00,Returns Specialist 2,Mobile,Not As Described
+RET-0026,Refund Review,2026-01-10 23:16:00,Refund Queue Beta,Mobile,Wrong Size
+RET-0026,Refund Approved,2026-01-11 01:16:00,Refund Supervisor A,Mobile,Not As Described
+RET-0026,Payment Reversed,2026-01-11 05:16:00,Payments Service,Web,Not As Described
+RET-0026,Case Closed,2026-01-11 06:46:00,Returns Platform,Mobile,Not As Described
+RET-0027,Return Requested,2026-01-10 19:46:00,Customer Portal,Marketplace,Damaged
+RET-0027,Package Received,2026-01-10 20:46:00,Warehouse A,Marketplace,Changed Mind
+RET-0027,Item Inspected,2026-01-11 02:46:00,Returns Specialist 1,Marketplace,Damaged
+RET-0027,Refund Review,2026-01-11 05:46:00,Refund Queue Beta,Mobile,Wrong Size
+RET-0027,Refund Approved,2026-01-11 06:46:00,Refund Supervisor B,Mobile,Wrong Size
+RET-0027,Payment Reversed,2026-01-11 10:46:00,Payments Service,Marketplace,Not As Described
+RET-0027,Case Closed,2026-01-11 11:46:00,Returns Platform,Mobile,Changed Mind
+RET-0028,Return Requested,2026-01-11 00:24:00,Customer Portal,Mobile,Not As Described
+RET-0028,Package Received,2026-01-11 02:24:00,Warehouse B,Web,Wrong Size
+RET-0028,Item Inspected,2026-01-11 06:24:00,Returns Specialist 2,Mobile,Not As Described
+RET-0028,Refund Review,2026-01-11 09:24:00,Refund Queue Alpha,Web,Changed Mind
+RET-0028,Refund Approved,2026-01-11 11:24:00,Refund Supervisor B,Web,Damaged
+RET-0028,Payment Reversed,2026-01-11 14:24:00,Payments Service,Marketplace,Not As Described
+RET-0028,Case Closed,2026-01-11 16:24:00,Returns Platform,Mobile,Changed Mind
+RET-0029,Return Requested,2026-01-11 05:03:00,Mobile App,Marketplace,Changed Mind
+RET-0029,Package Received,2026-01-11 07:03:00,Warehouse A,Marketplace,Changed Mind
+RET-0029,Item Inspected,2026-01-11 11:03:00,Returns Specialist 2,Web,Damaged
+RET-0029,Refund Review,2026-01-11 15:03:00,Refund Queue Beta,Mobile,Not As Described
+RET-0029,Refund Approved,2026-01-11 17:03:00,Refund Supervisor A,Marketplace,Changed Mind
+RET-0029,Payment Reversed,2026-01-11 20:03:00,Payments Service,Web,Not As Described
+RET-0029,Case Closed,2026-01-11 21:03:00,Returns Platform,Marketplace,Wrong Size
+RET-0030,Return Requested,2026-01-11 10:11:00,Mobile App,Mobile,Damaged
+RET-0030,Package Received,2026-01-11 11:11:00,Warehouse B,Mobile,Changed Mind
+RET-0030,Item Inspected,2026-01-11 15:11:00,Returns Specialist 1,Marketplace,Not As Described
+RET-0030,Refund Review,2026-01-11 19:11:00,Refund Queue Beta,Web,Damaged
+RET-0030,Refund Approved,2026-01-11 21:11:00,Refund Supervisor B,Mobile,Damaged
+RET-0030,Payment Reversed,2026-01-12 01:11:00,Payments Service,Web,Not As Described
+RET-0030,Case Closed,2026-01-12 02:41:00,Returns Platform,Marketplace,Changed Mind
+RET-0031,Return Requested,2026-01-11 15:35:00,Mobile App,Mobile,Wrong Size
+RET-0031,Package Received,2026-01-11 16:35:00,Warehouse B,Web,Damaged
+RET-0031,Item Inspected,2026-01-11 22:35:00,Returns Specialist 1,Mobile,Damaged
+RET-0031,Refund Review,2026-01-12 00:35:00,Refund Queue Beta,Web,Not As Described
+RET-0031,Refund Approved,2026-01-13 22:35:00,Refund Supervisor B,Web,Wrong Size
+RET-0031,Payment Reversed,2026-01-14 03:35:00,Payments Service,Marketplace,Not As Described
+RET-0031,Case Closed,2026-01-14 05:35:00,Returns Platform,Mobile,Damaged
+RET-0032,Return Requested,2026-01-11 20:40:00,Customer Portal,Web,Changed Mind
+RET-0032,Package Received,2026-01-11 22:40:00,Warehouse A,Mobile,Damaged
+RET-0032,Item Inspected,2026-01-12 02:40:00,Returns Specialist 2,Mobile,Not As Described
+RET-0032,Refund Review,2026-01-12 05:40:00,Refund Queue Alpha,Web,Not As Described
+RET-0032,Refund Approved,2026-01-13 22:40:00,Refund Supervisor A,Web,Not As Described
+RET-0032,Payment Reversed,2026-01-14 01:40:00,Payments Service,Mobile,Not As Described
+RET-0032,Case Closed,2026-01-14 02:40:00,Returns Platform,Web,Wrong Size
+RET-0033,Return Requested,2026-01-12 01:27:00,Mobile App,Web,Damaged
+RET-0033,Package Received,2026-01-12 02:27:00,Warehouse B,Web,Wrong Size
+RET-0033,Item Inspected,2026-01-12 08:27:00,Returns Specialist 1,Web,Wrong Size
+RET-0033,Refund Review,2026-01-12 12:27:00,Refund Queue Beta,Marketplace,Damaged
+RET-0033,Refund Approved,2026-01-14 08:27:00,Refund Supervisor B,Marketplace,Wrong Size
+RET-0033,Payment Reversed,2026-01-14 13:27:00,Payments Service,Web,Wrong Size
+RET-0033,Case Closed,2026-01-14 14:27:00,Returns Platform,Mobile,Changed Mind
+RET-0034,Return Requested,2026-01-12 06:34:00,Mobile App,Mobile,Wrong Size
+RET-0034,Package Received,2026-01-12 08:34:00,Warehouse B,Marketplace,Changed Mind
+RET-0034,Item Inspected,2026-01-12 13:34:00,Returns Specialist 2,Marketplace,Not As Described
+RET-0034,Refund Review,2026-01-12 17:34:00,Refund Queue Beta,Marketplace,Wrong Size
+RET-0034,Refund Approved,2026-01-14 08:34:00,Refund Supervisor B,Marketplace,Changed Mind
+RET-0034,Payment Reversed,2026-01-14 11:34:00,Payments Service,Marketplace,Changed Mind
+RET-0034,Case Closed,2026-01-14 13:34:00,Returns Platform,Mobile,Wrong Size
+RET-0035,Return Requested,2026-01-12 11:44:00,Customer Portal,Marketplace,Damaged
+RET-0035,Package Received,2026-01-12 13:44:00,Warehouse B,Marketplace,Wrong Size
+RET-0035,Item Inspected,2026-01-12 19:44:00,Returns Specialist 2,Web,Not As Described
+RET-0035,Refund Review,2026-01-12 22:44:00,Refund Queue Alpha,Marketplace,Damaged
+RET-0035,Refund Approved,2026-01-14 16:44:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0035,Payment Reversed,2026-01-14 20:44:00,Payments Service,Mobile,Not As Described
+RET-0035,Case Closed,2026-01-14 21:44:00,Returns Platform,Web,Wrong Size
+RET-0036,Return Requested,2026-01-12 16:01:00,Mobile App,Marketplace,Not As Described
+RET-0036,Package Received,2026-01-12 18:01:00,Warehouse A,Web,Changed Mind
+RET-0036,Item Inspected,2026-01-13 00:01:00,Returns Specialist 1,Marketplace,Changed Mind
+RET-0036,Refund Review,2026-01-13 02:01:00,Refund Queue Beta,Mobile,Not As Described
+RET-0036,Refund Approved,2026-01-14 21:01:00,Refund Supervisor B,Mobile,Damaged
+RET-0036,Payment Reversed,2026-01-15 02:01:00,Payments Service,Mobile,Wrong Size
+RET-0036,Case Closed,2026-01-15 03:01:00,Returns Platform,Marketplace,Changed Mind
+RET-0037,Return Requested,2026-01-12 21:27:00,Customer Portal,Mobile,Changed Mind
+RET-0037,Package Received,2026-01-12 23:27:00,Warehouse A,Mobile,Wrong Size
+RET-0037,Item Inspected,2026-01-13 03:27:00,Returns Specialist 2,Marketplace,Damaged
+RET-0037,Refund Review,2026-01-13 06:27:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0037,Refund Approved,2026-01-15 06:27:00,Refund Supervisor A,Marketplace,Wrong Size
+RET-0037,Payment Reversed,2026-01-15 11:27:00,Payments Service,Mobile,Changed Mind
+RET-0037,Case Closed,2026-01-15 12:27:00,Returns Platform,Mobile,Wrong Size
+RET-0038,Return Requested,2026-01-13 02:41:00,Mobile App,Mobile,Not As Described
+RET-0038,Package Received,2026-01-13 03:41:00,Warehouse B,Mobile,Wrong Size
+RET-0038,Item Inspected,2026-01-13 09:41:00,Returns Specialist 2,Marketplace,Damaged
+RET-0038,Refund Review,2026-01-13 11:41:00,Refund Queue Alpha,Marketplace,Wrong Size
+RET-0038,Refund Approved,2026-01-15 01:41:00,Refund Supervisor A,Mobile,Not As Described
+RET-0038,Payment Reversed,2026-01-15 04:41:00,Payments Service,Mobile,Changed Mind
+RET-0038,Case Closed,2026-01-15 06:11:00,Returns Platform,Marketplace,Not As Described
+RET-0039,Return Requested,2026-01-13 07:10:00,Customer Portal,Mobile,Damaged
+RET-0039,Package Received,2026-01-13 08:10:00,Warehouse B,Marketplace,Wrong Size
+RET-0039,Item Inspected,2026-01-13 13:10:00,Returns Specialist 2,Web,Damaged
+RET-0039,Refund Review,2026-01-13 17:10:00,Refund Queue Beta,Marketplace,Changed Mind
+RET-0039,Refund Approved,2026-01-15 15:10:00,Refund Supervisor A,Web,Damaged
+RET-0039,Payment Reversed,2026-01-15 20:10:00,Payments Service,Mobile,Damaged
+RET-0039,Case Closed,2026-01-15 21:10:00,Returns Platform,Marketplace,Wrong Size
+RET-0040,Return Requested,2026-01-13 12:03:00,Mobile App,Marketplace,Changed Mind
+RET-0040,Package Received,2026-01-13 14:03:00,Warehouse B,Web,Wrong Size
+RET-0040,Item Inspected,2026-01-13 19:03:00,Returns Specialist 2,Mobile,Damaged
+RET-0040,Refund Review,2026-01-13 22:03:00,Refund Queue Alpha,Marketplace,Changed Mind
+RET-0040,Refund Approved,2026-01-15 05:03:00,Refund Supervisor A,Marketplace,Damaged
+RET-0040,Payment Reversed,2026-01-15 10:03:00,Payments Service,Mobile,Wrong Size
+RET-0040,Case Closed,2026-01-15 11:03:00,Returns Platform,Mobile,Not As Described
+RET-0041,Return Requested,2026-01-13 17:03:00,Customer Portal,Web,Changed Mind
+RET-0041,Package Received,2026-01-13 19:03:00,Warehouse A,Marketplace,Changed Mind
+RET-0041,Item Inspected,2026-01-14 00:03:00,Returns Specialist 1,Web,Not As Described
+RET-0041,Refund Review,2026-01-14 02:03:00,Refund Queue Alpha,Web,Not As Described
+RET-0041,Refund Approved,2026-01-15 22:03:00,Refund Supervisor B,Web,Wrong Size
+RET-0041,Payment Reversed,2026-01-16 03:03:00,Payments Service,Web,Wrong Size
+RET-0041,Case Closed,2026-01-16 04:03:00,Returns Platform,Mobile,Not As Described
+RET-0042,Return Requested,2026-01-13 22:02:00,Mobile App,Web,Wrong Size
+RET-0042,Package Received,2026-01-13 23:02:00,Warehouse B,Web,Damaged
+RET-0042,Item Inspected,2026-01-14 05:02:00,Returns Specialist 1,Mobile,Changed Mind
+RET-0042,Refund Review,2026-01-14 08:02:00,Refund Queue Alpha,Web,Not As Described
+RET-0042,Refund Approved,2026-01-16 02:02:00,Refund Supervisor A,Web,Not As Described
+RET-0042,Payment Reversed,2026-01-16 05:02:00,Payments Service,Mobile,Not As Described
+RET-0042,Case Closed,2026-01-16 07:02:00,Returns Platform,Web,Not As Described
+RET-0043,Return Requested,2026-01-14 03:37:00,Customer Portal,Marketplace,Damaged
+RET-0043,Package Received,2026-01-14 05:37:00,Warehouse B,Web,Damaged
+RET-0043,Item Inspected,2026-01-14 11:37:00,Returns Specialist 2,Marketplace,Changed Mind
+RET-0043,Refund Review,2026-01-14 13:37:00,Refund Queue Beta,Mobile,Damaged
+RET-0043,Refund Approved,2026-01-15 19:37:00,Refund Supervisor B,Web,Damaged
+RET-0043,Payment Reversed,2026-01-15 22:37:00,Payments Service,Mobile,Not As Described
+RET-0043,Case Closed,2026-01-15 23:37:00,Returns Platform,Marketplace,Not As Described
+RET-0044,Return Requested,2026-01-14 08:08:00,Customer Portal,Marketplace,Wrong Size
+RET-0044,Package Received,2026-01-14 09:08:00,Warehouse B,Mobile,Not As Described
+RET-0044,Item Inspected,2026-01-14 13:08:00,Returns Specialist 2,Marketplace,Wrong Size
+RET-0044,Refund Review,2026-01-14 15:08:00,Refund Queue Beta,Web,Changed Mind
+RET-0044,Refund Approved,2026-01-16 15:08:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0044,Payment Reversed,2026-01-16 19:08:00,Payments Service,Mobile,Damaged
+RET-0044,Case Closed,2026-01-16 21:08:00,Returns Platform,Marketplace,Wrong Size
+RET-0045,Return Requested,2026-01-14 13:20:00,Customer Portal,Marketplace,Wrong Size
+RET-0045,Package Received,2026-01-14 15:20:00,Warehouse B,Web,Changed Mind
+RET-0045,Item Inspected,2026-01-14 19:20:00,Returns Specialist 2,Mobile,Changed Mind
+RET-0045,Refund Review,2026-01-14 23:20:00,Refund Queue Alpha,Web,Damaged
+RET-0045,Refund Approved,2026-01-16 15:20:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0045,Payment Reversed,2026-01-16 20:20:00,Payments Service,Mobile,Not As Described
+RET-0045,Case Closed,2026-01-16 21:50:00,Returns Platform,Marketplace,Changed Mind
+RET-0046,Return Requested,2026-01-14 18:06:00,Customer Portal,Mobile,Changed Mind
+RET-0046,Package Received,2026-01-14 19:06:00,Warehouse A,Web,Damaged
+RET-0046,Item Inspected,2026-01-14 23:06:00,Returns Specialist 2,Web,Changed Mind
+RET-0046,Refund Review,2026-01-15 02:06:00,Refund Queue Beta,Web,Not As Described
+RET-0046,Refund Approved,2026-01-16 23:06:00,Refund Supervisor B,Marketplace,Damaged
+RET-0046,Payment Reversed,2026-01-17 04:06:00,Payments Service,Marketplace,Wrong Size
+RET-0046,Case Closed,2026-01-17 05:36:00,Returns Platform,Web,Not As Described
+RET-0047,Return Requested,2026-01-14 23:04:00,Mobile App,Mobile,Wrong Size
+RET-0047,Package Received,2026-01-15 00:04:00,Warehouse B,Web,Wrong Size
+RET-0047,Item Inspected,2026-01-15 04:04:00,Returns Specialist 1,Mobile,Wrong Size
+RET-0047,Refund Review,2026-01-15 06:04:00,Refund Queue Beta,Mobile,Changed Mind
+RET-0047,Refund Approved,2026-01-16 12:04:00,Refund Supervisor A,Mobile,Not As Described
+RET-0047,Payment Reversed,2026-01-16 15:04:00,Payments Service,Web,Changed Mind
+RET-0047,Case Closed,2026-01-16 16:34:00,Returns Platform,Mobile,Damaged
+RET-0048,Return Requested,2026-01-15 04:42:00,Mobile App,Mobile,Changed Mind
+RET-0048,Package Received,2026-01-15 05:42:00,Warehouse A,Marketplace,Damaged
+RET-0048,Item Inspected,2026-01-15 11:42:00,Returns Specialist 2,Web,Wrong Size
+RET-0048,Refund Review,2026-01-15 13:42:00,Refund Queue Alpha,Web,Wrong Size
+RET-0048,Refund Approved,2026-01-17 12:42:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0048,Payment Reversed,2026-01-17 16:42:00,Payments Service,Mobile,Damaged
+RET-0048,Case Closed,2026-01-17 18:12:00,Returns Platform,Web,Damaged
+RET-0049,Return Requested,2026-01-15 09:44:00,Customer Portal,Web,Damaged
+RET-0049,Package Received,2026-01-15 10:44:00,Warehouse A,Mobile,Changed Mind
+RET-0049,Item Inspected,2026-01-15 14:44:00,Returns Specialist 2,Marketplace,Changed Mind
+RET-0049,Refund Review,2026-01-15 17:44:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0049,Refund Approved,2026-01-17 01:44:00,Refund Supervisor A,Marketplace,Changed Mind
+RET-0049,Payment Reversed,2026-01-17 06:44:00,Payments Service,Web,Damaged
+RET-0049,Case Closed,2026-01-17 08:14:00,Returns Platform,Marketplace,Wrong Size
+RET-0050,Return Requested,2026-01-15 14:48:00,Mobile App,Web,Not As Described
+RET-0050,Package Received,2026-01-15 16:48:00,Warehouse A,Mobile,Changed Mind
+RET-0050,Item Inspected,2026-01-15 21:48:00,Returns Specialist 2,Web,Not As Described
+RET-0050,Refund Review,2026-01-16 00:48:00,Refund Queue Alpha,Web,Changed Mind
+RET-0050,Refund Approved,2026-01-17 22:48:00,Refund Supervisor B,Marketplace,Changed Mind
+RET-0050,Payment Reversed,2026-01-18 01:48:00,Payments Service,Web,Not As Described
+RET-0050,Case Closed,2026-01-18 03:18:00,Returns Platform,Web,Damaged
+RET-0051,Return Requested,2026-01-15 19:03:00,Customer Portal,Mobile,Wrong Size
+RET-0051,Package Received,2026-01-15 21:03:00,Warehouse A,Marketplace,Wrong Size
+RET-0051,Item Inspected,2026-01-16 02:03:00,Returns Specialist 2,Web,Damaged
+RET-0051,Refund Review,2026-01-16 05:03:00,Refund Queue Beta,Web,Changed Mind
+RET-0051,Refund Approved,2026-01-17 16:03:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0051,Payment Reversed,2026-01-17 19:03:00,Payments Service,Marketplace,Not As Described
+RET-0051,Case Closed,2026-01-17 20:33:00,Returns Platform,Marketplace,Not As Described
+RET-0052,Return Requested,2026-01-16 00:42:00,Customer Portal,Web,Not As Described
+RET-0052,Package Received,2026-01-16 01:42:00,Warehouse A,Mobile,Wrong Size
+RET-0052,Item Inspected,2026-01-16 06:42:00,Returns Specialist 2,Web,Not As Described
+RET-0052,Refund Review,2026-01-16 10:42:00,Refund Queue Beta,Web,Wrong Size
+RET-0052,Refund Approved,2026-01-18 02:42:00,Refund Supervisor B,Marketplace,Not As Described
+RET-0052,Payment Reversed,2026-01-18 07:42:00,Payments Service,Mobile,Not As Described
+RET-0052,Case Closed,2026-01-18 08:42:00,Returns Platform,Mobile,Wrong Size
+RET-0053,Return Requested,2026-01-16 05:42:00,Customer Portal,Marketplace,Not As Described
+RET-0053,Package Received,2026-01-16 07:42:00,Warehouse A,Mobile,Not As Described
+RET-0053,Item Inspected,2026-01-16 11:42:00,Returns Specialist 2,Mobile,Wrong Size
+RET-0053,Refund Review,2026-01-16 13:42:00,Refund Queue Beta,Marketplace,Damaged
+RET-0053,Refund Approved,2026-01-17 23:42:00,Refund Supervisor B,Web,Wrong Size
+RET-0053,Payment Reversed,2026-01-18 03:42:00,Payments Service,Web,Not As Described
+RET-0053,Case Closed,2026-01-18 05:12:00,Returns Platform,Marketplace,Changed Mind
+RET-0054,Return Requested,2026-01-16 10:23:00,Mobile App,Marketplace,Changed Mind
+RET-0054,Package Received,2026-01-16 11:23:00,Warehouse A,Web,Not As Described
+RET-0054,Item Inspected,2026-01-16 17:23:00,Returns Specialist 2,Marketplace,Damaged
+RET-0054,Refund Review,2026-01-16 19:23:00,Refund Queue Beta,Mobile,Damaged
+RET-0054,Refund Approved,2026-01-18 11:23:00,Refund Supervisor A,Web,Not As Described
+RET-0054,Payment Reversed,2026-01-18 16:23:00,Payments Service,Marketplace,Not As Described
+RET-0054,Case Closed,2026-01-18 17:53:00,Returns Platform,Marketplace,Wrong Size
+RET-0055,Return Requested,2026-01-16 15:15:00,Mobile App,Web,Wrong Size
+RET-0055,Package Received,2026-01-16 17:15:00,Warehouse A,Web,Changed Mind
+RET-0055,Item Inspected,2026-01-16 22:15:00,Returns Specialist 2,Marketplace,Damaged
+RET-0055,Refund Review,2026-01-17 01:15:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0055,Refund Approved,2026-01-18 12:15:00,Refund Supervisor A,Mobile,Damaged
+RET-0055,Payment Reversed,2026-01-18 17:15:00,Payments Service,Marketplace,Changed Mind
+RET-0055,Case Closed,2026-01-18 18:15:00,Returns Platform,Web,Damaged
+RET-0056,Return Requested,2026-01-16 20:42:00,Mobile App,Web,Damaged
+RET-0056,Package Received,2026-01-16 21:42:00,Warehouse B,Marketplace,Damaged
+RET-0056,Item Inspected,2026-01-17 02:42:00,Returns Specialist 2,Marketplace,Damaged
+RET-0056,Refund Review,2026-01-17 06:42:00,Refund Queue Beta,Web,Not As Described
+RET-0056,Refund Approved,2026-01-19 05:42:00,Refund Supervisor B,Mobile,Damaged
+RET-0056,Payment Reversed,2026-01-19 10:42:00,Payments Service,Marketplace,Wrong Size
+RET-0056,Case Closed,2026-01-19 12:42:00,Returns Platform,Web,Changed Mind
+RET-0057,Return Requested,2026-01-17 01:47:00,Mobile App,Mobile,Not As Described
+RET-0057,Package Received,2026-01-17 02:47:00,Warehouse B,Web,Wrong Size
+RET-0057,Item Inspected,2026-01-17 08:47:00,Returns Specialist 2,Marketplace,Changed Mind
+RET-0057,Refund Review,2026-01-17 11:47:00,Refund Queue Alpha,Web,Changed Mind
+RET-0057,Refund Approved,2026-01-18 23:47:00,Refund Supervisor B,Mobile,Changed Mind
+RET-0057,Payment Reversed,2026-01-19 02:47:00,Payments Service,Web,Changed Mind
+RET-0057,Case Closed,2026-01-19 03:47:00,Returns Platform,Marketplace,Damaged
+RET-0058,Return Requested,2026-01-17 06:20:00,Mobile App,Marketplace,Not As Described
+RET-0058,Package Received,2026-01-17 07:20:00,Warehouse B,Mobile,Damaged
+RET-0058,Item Inspected,2026-01-17 12:20:00,Returns Specialist 1,Marketplace,Changed Mind
+RET-0058,Refund Review,2026-01-17 16:20:00,Refund Queue Beta,Web,Not As Described
+RET-0058,Refund Approved,2026-01-19 11:20:00,Refund Supervisor A,Mobile,Changed Mind
+RET-0058,Payment Reversed,2026-01-19 15:20:00,Payments Service,Marketplace,Damaged
+RET-0058,Case Closed,2026-01-19 17:20:00,Returns Platform,Mobile,Changed Mind
+RET-0059,Return Requested,2026-01-17 11:40:00,Customer Portal,Web,Changed Mind
+RET-0059,Package Received,2026-01-17 13:40:00,Warehouse A,Mobile,Not As Described
+RET-0059,Item Inspected,2026-01-17 17:40:00,Returns Specialist 1,Web,Wrong Size
+RET-0059,Refund Review,2026-01-17 20:40:00,Refund Queue Alpha,Marketplace,Wrong Size
+RET-0059,Refund Approved,2026-01-19 15:40:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0059,Payment Reversed,2026-01-19 18:40:00,Payments Service,Mobile,Changed Mind
+RET-0059,Case Closed,2026-01-19 20:10:00,Returns Platform,Mobile,Wrong Size
+RET-0060,Return Requested,2026-01-17 16:19:00,Customer Portal,Mobile,Wrong Size
+RET-0060,Package Received,2026-01-17 18:19:00,Warehouse B,Mobile,Wrong Size
+RET-0060,Item Inspected,2026-01-18 00:19:00,Returns Specialist 1,Web,Not As Described
+RET-0060,Refund Review,2026-01-18 04:19:00,Refund Queue Alpha,Web,Wrong Size
+RET-0060,Refund Approved,2026-01-19 15:19:00,Refund Supervisor B,Web,Wrong Size
+RET-0060,Payment Reversed,2026-01-19 18:19:00,Payments Service,Marketplace,Changed Mind
+RET-0060,Case Closed,2026-01-19 20:19:00,Returns Platform,Web,Changed Mind
+RET-0061,Return Requested,2026-01-17 21:19:00,Customer Portal,Marketplace,Not As Described
+RET-0061,Package Received,2026-01-17 23:19:00,Warehouse A,Mobile,Wrong Size
+RET-0061,Item Inspected,2026-01-18 04:19:00,Returns Specialist 2,Web,Damaged
+RET-0061,Refund Review,2026-01-18 08:19:00,Refund Queue Alpha,Web,Not As Described
+RET-0061,Refund Approved,2026-01-19 19:19:00,Refund Supervisor A,Mobile,Not As Described
+RET-0061,Payment Reversed,2026-01-19 22:19:00,Payments Service,Web,Wrong Size
+RET-0061,Case Closed,2026-01-20 00:19:00,Returns Platform,Marketplace,Not As Described
+RET-0062,Return Requested,2026-01-18 02:49:00,Mobile App,Web,Not As Described
+RET-0062,Package Received,2026-01-18 04:49:00,Warehouse B,Marketplace,Changed Mind
+RET-0062,Item Inspected,2026-01-18 10:49:00,Returns Specialist 2,Mobile,Changed Mind
+RET-0062,Refund Review,2026-01-18 12:49:00,Refund Queue Beta,Mobile,Damaged
+RET-0062,Refund Approved,2026-01-19 19:49:00,Refund Supervisor A,Web,Not As Described
+RET-0062,Payment Reversed,2026-01-19 22:49:00,Payments Service,Web,Changed Mind
+RET-0062,Case Closed,2026-01-20 00:49:00,Returns Platform,Mobile,Not As Described
+RET-0063,Return Requested,2026-01-18 07:08:00,Mobile App,Web,Changed Mind
+RET-0063,Package Received,2026-01-18 09:08:00,Warehouse B,Mobile,Damaged
+RET-0063,Item Inspected,2026-01-18 15:08:00,Returns Specialist 2,Mobile,Damaged
+RET-0063,Refund Review,2026-01-18 18:08:00,Refund Queue Alpha,Marketplace,Changed Mind
+RET-0063,Refund Approved,2026-01-20 09:08:00,Refund Supervisor B,Web,Damaged
+RET-0063,Payment Reversed,2026-01-20 13:08:00,Payments Service,Marketplace,Wrong Size
+RET-0063,Case Closed,2026-01-20 14:08:00,Returns Platform,Marketplace,Changed Mind
+RET-0064,Return Requested,2026-01-18 12:36:00,Customer Portal,Mobile,Wrong Size
+RET-0064,Package Received,2026-01-18 13:36:00,Warehouse A,Mobile,Not As Described
+RET-0064,Item Inspected,2026-01-18 19:36:00,Returns Specialist 2,Web,Wrong Size
+RET-0064,Refund Review,2026-01-18 23:36:00,Refund Queue Beta,Marketplace,Changed Mind
+RET-0064,Refund Approved,2026-01-20 06:36:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0064,Payment Reversed,2026-01-20 11:36:00,Payments Service,Mobile,Wrong Size
+RET-0064,Case Closed,2026-01-20 13:06:00,Returns Platform,Web,Damaged
+RET-0065,Return Requested,2026-01-18 17:18:00,Customer Portal,Web,Changed Mind
+RET-0065,Package Received,2026-01-18 18:18:00,Warehouse A,Marketplace,Damaged
+RET-0065,Item Inspected,2026-01-18 22:18:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0065,Refund Review,2026-01-19 00:18:00,Refund Queue Alpha,Marketplace,Changed Mind
+RET-0065,Refund Approved,2026-01-20 06:18:00,Refund Supervisor B,Web,Not As Described
+RET-0065,Payment Reversed,2026-01-20 11:18:00,Payments Service,Marketplace,Changed Mind
+RET-0065,Case Closed,2026-01-20 13:18:00,Returns Platform,Web,Changed Mind
+RET-0066,Return Requested,2026-01-18 22:14:00,Mobile App,Mobile,Damaged
+RET-0066,Package Received,2026-01-18 23:14:00,Warehouse B,Marketplace,Wrong Size
+RET-0066,Item Inspected,2026-01-19 04:14:00,Returns Specialist 1,Mobile,Changed Mind
+RET-0066,Refund Review,2026-01-19 07:14:00,Refund Queue Alpha,Mobile,Damaged
+RET-0066,Refund Approved,2026-01-20 19:14:00,Refund Supervisor A,Marketplace,Wrong Size
+RET-0066,Payment Reversed,2026-01-21 00:14:00,Payments Service,Mobile,Changed Mind
+RET-0066,Case Closed,2026-01-21 01:44:00,Returns Platform,Marketplace,Not As Described
+RET-0067,Return Requested,2026-01-19 03:27:00,Mobile App,Mobile,Changed Mind
+RET-0067,Package Received,2026-01-19 05:27:00,Warehouse A,Web,Not As Described
+RET-0067,Item Inspected,2026-01-19 09:27:00,Returns Specialist 2,Web,Wrong Size
+RET-0067,Refund Review,2026-01-19 13:27:00,Refund Queue Beta,Marketplace,Not As Described
+RET-0067,Refund Approved,2026-01-21 13:27:00,Refund Supervisor A,Marketplace,Damaged
+RET-0067,Payment Reversed,2026-01-21 17:27:00,Payments Service,Web,Damaged
+RET-0067,Case Closed,2026-01-21 18:57:00,Returns Platform,Web,Wrong Size
+RET-0068,Return Requested,2026-01-19 08:06:00,Mobile App,Marketplace,Changed Mind
+RET-0068,Package Received,2026-01-19 10:06:00,Warehouse B,Marketplace,Changed Mind
+RET-0068,Item Inspected,2026-01-19 16:06:00,Returns Specialist 2,Mobile,Wrong Size
+RET-0068,Refund Review,2026-01-19 19:06:00,Refund Queue Beta,Mobile,Damaged
+RET-0068,Refund Approved,2026-01-21 09:06:00,Refund Supervisor B,Web,Changed Mind
+RET-0068,Payment Reversed,2026-01-21 13:06:00,Payments Service,Web,Wrong Size
+RET-0068,Case Closed,2026-01-21 14:36:00,Returns Platform,Marketplace,Not As Described
+RET-0069,Return Requested,2026-01-19 13:25:00,Mobile App,Mobile,Not As Described
+RET-0069,Package Received,2026-01-19 14:25:00,Warehouse A,Web,Not As Described
+RET-0069,Item Inspected,2026-01-19 20:25:00,Returns Specialist 2,Marketplace,Changed Mind
+RET-0069,Refund Review,2026-01-19 23:25:00,Refund Queue Beta,Web,Damaged
+RET-0069,Refund Approved,2026-01-21 17:25:00,Refund Supervisor A,Marketplace,Damaged
+RET-0069,Payment Reversed,2026-01-21 21:25:00,Payments Service,Marketplace,Not As Described
+RET-0069,Case Closed,2026-01-21 23:25:00,Returns Platform,Mobile,Not As Described
+RET-0070,Return Requested,2026-01-19 18:32:00,Mobile App,Web,Damaged
+RET-0070,Package Received,2026-01-19 19:32:00,Warehouse A,Mobile,Not As Described
+RET-0070,Item Inspected,2026-01-20 00:32:00,Returns Specialist 2,Mobile,Not As Described
+RET-0070,Refund Review,2026-01-20 04:32:00,Refund Queue Beta,Mobile,Changed Mind
+RET-0070,Refund Approved,2026-01-21 17:32:00,Refund Supervisor B,Mobile,Changed Mind
+RET-0070,Payment Reversed,2026-01-21 22:32:00,Payments Service,Marketplace,Not As Described
+RET-0070,Case Closed,2026-01-22 00:02:00,Returns Platform,Mobile,Wrong Size
+RET-0071,Return Requested,2026-01-19 23:00:00,Customer Portal,Mobile,Damaged
+RET-0071,Package Received,2026-01-20 00:00:00,Warehouse A,Mobile,Damaged
+RET-0071,Item Inspected,2026-01-20 05:00:00,Returns Specialist 2,Marketplace,Changed Mind
+RET-0071,Refund Review,2026-01-20 08:00:00,Refund Queue Beta,Marketplace,Changed Mind
+RET-0071,Refund Approved,2026-01-20 10:00:00,Refund Supervisor A,Mobile,Damaged
+RET-0071,Payment Reversed,2026-01-20 14:00:00,Payments Service,Web,Wrong Size
+RET-0071,Case Closed,2026-01-20 16:00:00,Returns Platform,Marketplace,Wrong Size
+RET-0072,Return Requested,2026-01-20 04:44:00,Mobile App,Mobile,Damaged
+RET-0072,Package Received,2026-01-20 05:44:00,Warehouse A,Web,Wrong Size
+RET-0072,Item Inspected,2026-01-20 09:44:00,Returns Specialist 1,Marketplace,Not As Described
+RET-0072,Refund Review,2026-01-20 11:44:00,Refund Queue Alpha,Web,Damaged
+RET-0072,Refund Approved,2026-01-20 12:44:00,Refund Supervisor A,Mobile,Changed Mind
+RET-0072,Payment Reversed,2026-01-20 17:44:00,Payments Service,Web,Changed Mind
+RET-0072,Case Closed,2026-01-20 18:44:00,Returns Platform,Web,Changed Mind
+RET-0073,Return Requested,2026-01-20 09:49:00,Mobile App,Marketplace,Damaged
+RET-0073,Package Received,2026-01-20 11:49:00,Warehouse A,Marketplace,Changed Mind
+RET-0073,Item Inspected,2026-01-20 17:49:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0073,Refund Review,2026-01-20 21:49:00,Refund Queue Beta,Web,Wrong Size
+RET-0073,Refund Approved,2026-01-20 23:49:00,Refund Supervisor B,Web,Wrong Size
+RET-0073,Payment Reversed,2026-01-21 02:49:00,Payments Service,Marketplace,Damaged
+RET-0073,Case Closed,2026-01-21 03:49:00,Returns Platform,Mobile,Damaged
+RET-0074,Return Requested,2026-01-20 14:36:00,Mobile App,Marketplace,Changed Mind
+RET-0074,Package Received,2026-01-20 15:36:00,Warehouse A,Mobile,Not As Described
+RET-0074,Item Inspected,2026-01-20 21:36:00,Returns Specialist 1,Marketplace,Damaged
+RET-0074,Refund Review,2026-01-21 01:36:00,Refund Queue Beta,Marketplace,Wrong Size
+RET-0074,Refund Approved,2026-01-21 03:36:00,Refund Supervisor A,Web,Not As Described
+RET-0074,Payment Reversed,2026-01-21 07:36:00,Payments Service,Web,Not As Described
+RET-0074,Case Closed,2026-01-21 09:06:00,Returns Platform,Marketplace,Changed Mind
+RET-0075,Return Requested,2026-01-20 19:28:00,Mobile App,Marketplace,Not As Described
+RET-0075,Package Received,2026-01-20 20:28:00,Warehouse B,Marketplace,Wrong Size
+RET-0075,Item Inspected,2026-01-21 02:28:00,Returns Specialist 1,Web,Wrong Size
+RET-0075,Refund Review,2026-01-21 05:28:00,Refund Queue Beta,Web,Wrong Size
+RET-0075,Refund Approved,2026-01-21 07:28:00,Refund Supervisor B,Web,Changed Mind
+RET-0075,Payment Reversed,2026-01-21 12:28:00,Payments Service,Marketplace,Not As Described
+RET-0075,Case Closed,2026-01-21 14:28:00,Returns Platform,Marketplace,Wrong Size
+RET-0076,Return Requested,2026-01-21 00:37:00,Mobile App,Mobile,Not As Described
+RET-0076,Package Received,2026-01-21 02:37:00,Warehouse A,Web,Not As Described
+RET-0076,Item Inspected,2026-01-21 06:37:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0076,Refund Review,2026-01-21 10:37:00,Refund Queue Beta,Web,Damaged
+RET-0076,Refund Approved,2026-01-21 12:37:00,Refund Supervisor A,Mobile,Not As Described
+RET-0076,Payment Reversed,2026-01-21 16:37:00,Payments Service,Mobile,Changed Mind
+RET-0076,Case Closed,2026-01-21 18:07:00,Returns Platform,Marketplace,Changed Mind
+RET-0077,Return Requested,2026-01-21 05:25:00,Customer Portal,Mobile,Not As Described
+RET-0077,Package Received,2026-01-21 07:25:00,Warehouse B,Web,Damaged
+RET-0077,Item Inspected,2026-01-21 13:25:00,Returns Specialist 2,Web,Changed Mind
+RET-0077,Refund Review,2026-01-21 15:25:00,Refund Queue Beta,Mobile,Wrong Size
+RET-0077,Refund Approved,2026-01-21 17:25:00,Refund Supervisor A,Web,Not As Described
+RET-0077,Payment Reversed,2026-01-21 20:25:00,Payments Service,Mobile,Not As Described
+RET-0077,Case Closed,2026-01-21 22:25:00,Returns Platform,Mobile,Wrong Size
+RET-0078,Return Requested,2026-01-21 10:11:00,Mobile App,Web,Changed Mind
+RET-0078,Package Received,2026-01-21 12:11:00,Warehouse B,Marketplace,Changed Mind
+RET-0078,Item Inspected,2026-01-21 16:11:00,Returns Specialist 2,Marketplace,Changed Mind
+RET-0078,Refund Review,2026-01-21 18:11:00,Refund Queue Alpha,Web,Not As Described
+RET-0078,Refund Approved,2026-01-21 20:11:00,Refund Supervisor A,Web,Changed Mind
+RET-0078,Payment Reversed,2026-01-22 00:11:00,Payments Service,Marketplace,Damaged
+RET-0078,Case Closed,2026-01-22 01:11:00,Returns Platform,Web,Changed Mind
+RET-0079,Return Requested,2026-01-21 15:25:00,Mobile App,Mobile,Wrong Size
+RET-0079,Package Received,2026-01-21 17:25:00,Warehouse A,Mobile,Not As Described
+RET-0079,Item Inspected,2026-01-21 21:25:00,Returns Specialist 2,Web,Damaged
+RET-0079,Refund Review,2026-01-21 23:25:00,Refund Queue Alpha,Mobile,Damaged
+RET-0079,Refund Approved,2026-01-22 00:25:00,Refund Supervisor A,Marketplace,Wrong Size
+RET-0079,Payment Reversed,2026-01-22 03:25:00,Payments Service,Mobile,Wrong Size
+RET-0079,Case Closed,2026-01-22 04:55:00,Returns Platform,Web,Changed Mind
+RET-0080,Return Requested,2026-01-21 20:17:00,Customer Portal,Web,Changed Mind
+RET-0080,Package Received,2026-01-21 21:17:00,Warehouse B,Marketplace,Wrong Size
+RET-0080,Item Inspected,2026-01-22 01:17:00,Returns Specialist 2,Web,Wrong Size
+RET-0080,Refund Review,2026-01-22 03:17:00,Refund Queue Alpha,Mobile,Changed Mind
+RET-0080,Refund Approved,2026-01-22 04:17:00,Refund Supervisor A,Web,Not As Described
+RET-0080,Payment Reversed,2026-01-22 07:17:00,Payments Service,Marketplace,Changed Mind
+RET-0080,Case Closed,2026-01-22 08:17:00,Returns Platform,Mobile,Changed Mind
+RET-0081,Return Requested,2026-01-22 01:22:00,Mobile App,Web,Not As Described
+RET-0081,Package Received,2026-01-22 03:22:00,Warehouse B,Web,Damaged
+RET-0081,Item Inspected,2026-01-22 09:22:00,Returns Specialist 2,Mobile,Damaged
+RET-0081,Item Inspected,2026-01-22 12:22:00,Returns Specialist 1,Web,Damaged
+RET-0081,Refund Review,2026-01-22 13:22:00,Refund Queue Alpha,Marketplace,Changed Mind
+RET-0081,Refund Approved,2026-01-22 15:22:00,Refund Supervisor B,Mobile,Wrong Size
+RET-0081,Payment Reversed,2026-01-22 18:22:00,Payments Service,Web,Not As Described
+RET-0081,Case Closed,2026-01-22 20:22:00,Returns Platform,Web,Damaged
+RET-0082,Return Requested,2026-01-22 06:24:00,Customer Portal,Mobile,Damaged
+RET-0082,Package Received,2026-01-22 08:24:00,Warehouse B,Web,Wrong Size
+RET-0082,Item Inspected,2026-01-22 14:24:00,Returns Specialist 1,Mobile,Wrong Size
+RET-0082,Item Inspected,2026-01-22 15:24:00,Returns Specialist 1,Web,Wrong Size
+RET-0082,Refund Review,2026-01-22 16:24:00,Refund Queue Alpha,Web,Wrong Size
+RET-0082,Refund Approved,2026-01-22 17:24:00,Refund Supervisor B,Mobile,Wrong Size
+RET-0082,Payment Reversed,2026-01-22 20:24:00,Payments Service,Web,Changed Mind
+RET-0082,Case Closed,2026-01-22 21:54:00,Returns Platform,Mobile,Wrong Size
+RET-0083,Return Requested,2026-01-22 11:33:00,Mobile App,Mobile,Wrong Size
+RET-0083,Package Received,2026-01-22 12:33:00,Warehouse A,Marketplace,Not As Described
+RET-0083,Item Inspected,2026-01-22 16:33:00,Returns Specialist 2,Marketplace,Damaged
+RET-0083,Item Inspected,2026-01-22 18:33:00,Returns Specialist 1,Marketplace,Damaged
+RET-0083,Refund Review,2026-01-22 19:33:00,Refund Queue Alpha,Marketplace,Not As Described
+RET-0083,Refund Approved,2026-01-22 21:33:00,Refund Supervisor A,Mobile,Changed Mind
+RET-0083,Payment Reversed,2026-01-23 02:33:00,Payments Service,Web,Wrong Size
+RET-0083,Case Closed,2026-01-23 04:03:00,Returns Platform,Web,Wrong Size
+RET-0084,Return Requested,2026-01-22 16:39:00,Mobile App,Marketplace,Changed Mind
+RET-0084,Package Received,2026-01-22 17:39:00,Warehouse A,Mobile,Changed Mind
+RET-0084,Item Inspected,2026-01-22 21:39:00,Returns Specialist 1,Web,Damaged
+RET-0084,Item Inspected,2026-01-23 00:39:00,Returns Specialist 1,Marketplace,Changed Mind
+RET-0084,Refund Review,2026-01-23 01:39:00,Refund Queue Alpha,Web,Damaged
+RET-0084,Refund Approved,2026-01-23 03:39:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0084,Payment Reversed,2026-01-23 07:39:00,Payments Service,Web,Wrong Size
+RET-0084,Case Closed,2026-01-23 09:09:00,Returns Platform,Mobile,Wrong Size
+RET-0085,Return Requested,2026-01-22 21:32:00,Mobile App,Marketplace,Wrong Size
+RET-0085,Package Received,2026-01-22 23:32:00,Warehouse B,Marketplace,Changed Mind
+RET-0085,Item Inspected,2026-01-23 04:32:00,Returns Specialist 2,Web,Changed Mind
+RET-0085,Item Inspected,2026-01-23 06:32:00,Returns Specialist 2,Marketplace,Damaged
+RET-0085,Refund Review,2026-01-23 07:32:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0085,Refund Approved,2026-01-23 09:32:00,Refund Supervisor B,Mobile,Damaged
+RET-0085,Payment Reversed,2026-01-23 12:32:00,Payments Service,Marketplace,Not As Described
+RET-0085,Case Closed,2026-01-23 13:32:00,Returns Platform,Web,Wrong Size
+RET-0086,Return Requested,2026-01-23 02:02:00,Customer Portal,Mobile,Changed Mind
+RET-0086,Package Received,2026-01-23 04:02:00,Warehouse A,Mobile,Damaged
+RET-0086,Item Inspected,2026-01-23 08:02:00,Returns Specialist 1,Marketplace,Damaged
+RET-0086,Item Inspected,2026-01-23 11:02:00,Returns Specialist 2,Marketplace,Not As Described
+RET-0086,Refund Review,2026-01-23 12:02:00,Refund Queue Beta,Web,Changed Mind
+RET-0086,Refund Approved,2026-01-23 13:02:00,Refund Supervisor B,Web,Damaged
+RET-0086,Payment Reversed,2026-01-23 17:02:00,Payments Service,Web,Wrong Size
+RET-0086,Case Closed,2026-01-23 18:02:00,Returns Platform,Mobile,Changed Mind
+RET-0087,Return Requested,2026-01-23 07:13:00,Mobile App,Web,Damaged
+RET-0087,Package Received,2026-01-23 09:13:00,Warehouse B,Mobile,Changed Mind
+RET-0087,Item Inspected,2026-01-23 13:13:00,Returns Specialist 1,Marketplace,Damaged
+RET-0087,Item Inspected,2026-01-23 15:13:00,Returns Specialist 2,Mobile,Changed Mind
+RET-0087,Refund Review,2026-01-23 16:13:00,Refund Queue Alpha,Web,Not As Described
+RET-0087,Refund Approved,2026-01-23 17:13:00,Refund Supervisor B,Web,Wrong Size
+RET-0087,Payment Reversed,2026-01-23 20:13:00,Payments Service,Mobile,Not As Described
+RET-0087,Case Closed,2026-01-23 21:13:00,Returns Platform,Mobile,Wrong Size
+RET-0088,Return Requested,2026-01-23 12:23:00,Customer Portal,Mobile,Damaged
+RET-0088,Package Received,2026-01-23 13:23:00,Warehouse A,Web,Changed Mind
+RET-0088,Item Inspected,2026-01-23 19:23:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0088,Item Inspected,2026-01-23 22:23:00,Returns Specialist 1,Marketplace,Damaged
+RET-0088,Refund Review,2026-01-23 23:23:00,Refund Queue Alpha,Web,Wrong Size
+RET-0088,Refund Approved,2026-01-24 00:23:00,Refund Supervisor A,Marketplace,Wrong Size
+RET-0088,Payment Reversed,2026-01-24 05:23:00,Payments Service,Marketplace,Wrong Size
+RET-0088,Case Closed,2026-01-24 07:23:00,Returns Platform,Mobile,Changed Mind
+RET-0089,Return Requested,2026-01-23 17:30:00,Customer Portal,Marketplace,Changed Mind
+RET-0089,Package Received,2026-01-23 18:30:00,Warehouse A,Mobile,Wrong Size
+RET-0089,Item Inspected,2026-01-23 22:30:00,Returns Specialist 1,Web,Not As Described
+RET-0089,Item Inspected,2026-01-23 23:30:00,Returns Specialist 2,Web,Not As Described
+RET-0089,Refund Review,2026-01-24 00:30:00,Refund Queue Alpha,Marketplace,Damaged
+RET-0089,Refund Approved,2026-01-24 02:30:00,Refund Supervisor B,Mobile,Wrong Size
+RET-0089,Payment Reversed,2026-01-24 07:30:00,Payments Service,Marketplace,Not As Described
+RET-0089,Case Closed,2026-01-24 08:30:00,Returns Platform,Mobile,Damaged
+RET-0090,Return Requested,2026-01-23 22:15:00,Mobile App,Web,Wrong Size
+RET-0090,Package Received,2026-01-23 23:15:00,Warehouse B,Mobile,Damaged
+RET-0090,Item Inspected,2026-01-24 03:15:00,Returns Specialist 2,Marketplace,Damaged
+RET-0090,Item Inspected,2026-01-24 05:15:00,Returns Specialist 2,Mobile,Not As Described
+RET-0090,Refund Review,2026-01-24 06:15:00,Refund Queue Alpha,Marketplace,Damaged
+RET-0090,Refund Approved,2026-01-24 08:15:00,Refund Supervisor A,Mobile,Changed Mind
+RET-0090,Payment Reversed,2026-01-24 13:15:00,Payments Service,Marketplace,Not As Described
+RET-0090,Case Closed,2026-01-24 15:15:00,Returns Platform,Web,Changed Mind
+RET-0091,Return Requested,2026-01-24 03:38:00,Mobile App,Marketplace,Wrong Size
+RET-0091,Package Received,2026-01-24 04:38:00,Warehouse A,Web,Wrong Size
+RET-0091,Item Inspected,2026-01-24 10:38:00,Returns Specialist 2,Mobile,Changed Mind
+RET-0091,Refund Review,2026-01-24 14:38:00,Refund Queue Beta,Mobile,Changed Mind
+RET-0091,Refund Approved,2026-01-24 15:38:00,Refund Supervisor A,Mobile,Changed Mind
+RET-0091,Payment Reversed,2026-01-24 20:38:00,Payments Service,Marketplace,Wrong Size
+RET-0091,Case Closed,2026-01-24 22:08:00,Returns Platform,Web,Wrong Size
+RET-0092,Return Requested,2026-01-24 08:25:00,Customer Portal,Web,Damaged
+RET-0092,Package Received,2026-01-24 09:25:00,Warehouse B,Marketplace,Wrong Size
+RET-0092,Item Inspected,2026-01-24 13:25:00,Returns Specialist 2,Mobile,Wrong Size
+RET-0092,Refund Review,2026-01-24 15:25:00,Refund Queue Beta,Mobile,Not As Described
+RET-0092,Refund Approved,2026-01-24 16:25:00,Refund Supervisor B,Mobile,Wrong Size
+RET-0092,Payment Reversed,2026-01-24 21:25:00,Payments Service,Web,Wrong Size
+RET-0092,Case Closed,2026-01-24 22:25:00,Returns Platform,Web,Damaged
+RET-0093,Return Requested,2026-01-24 13:41:00,Customer Portal,Marketplace,Damaged
+RET-0093,Package Received,2026-01-24 14:41:00,Warehouse A,Web,Changed Mind
+RET-0093,Item Inspected,2026-01-24 18:41:00,Returns Specialist 1,Web,Changed Mind
+RET-0093,Refund Review,2026-01-24 20:41:00,Refund Queue Alpha,Web,Damaged
+RET-0093,Refund Approved,2026-01-24 21:41:00,Refund Supervisor B,Web,Wrong Size
+RET-0093,Payment Reversed,2026-01-25 00:41:00,Payments Service,Web,Wrong Size
+RET-0093,Case Closed,2026-01-25 01:41:00,Returns Platform,Web,Not As Described
+RET-0094,Return Requested,2026-01-24 18:28:00,Customer Portal,Marketplace,Damaged
+RET-0094,Package Received,2026-01-24 19:28:00,Warehouse B,Web,Wrong Size
+RET-0094,Item Inspected,2026-01-25 01:28:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0094,Refund Review,2026-01-25 05:28:00,Refund Queue Beta,Mobile,Wrong Size
+RET-0094,Refund Approved,2026-01-25 07:28:00,Refund Supervisor A,Mobile,Damaged
+RET-0094,Payment Reversed,2026-01-25 10:28:00,Payments Service,Web,Changed Mind
+RET-0094,Case Closed,2026-01-25 11:58:00,Returns Platform,Marketplace,Not As Described
+RET-0095,Return Requested,2026-01-24 23:40:00,Customer Portal,Web,Damaged
+RET-0095,Package Received,2026-01-25 01:40:00,Warehouse A,Mobile,Changed Mind
+RET-0095,Item Inspected,2026-01-25 06:40:00,Returns Specialist 1,Web,Changed Mind
+RET-0095,Refund Review,2026-01-25 08:40:00,Refund Queue Alpha,Mobile,Changed Mind
+RET-0095,Refund Approved,2026-01-25 10:40:00,Refund Supervisor A,Web,Changed Mind
+RET-0095,Payment Reversed,2026-01-25 14:40:00,Payments Service,Mobile,Wrong Size
+RET-0095,Case Closed,2026-01-25 16:40:00,Returns Platform,Marketplace,Changed Mind
+RET-0096,Return Requested,2026-01-25 04:30:00,Customer Portal,Marketplace,Changed Mind
+RET-0096,Package Received,2026-01-25 05:30:00,Warehouse A,Web,Not As Described
+RET-0096,Item Inspected,2026-01-25 11:30:00,Returns Specialist 2,Web,Not As Described
+RET-0096,Refund Review,2026-01-25 13:30:00,Refund Queue Alpha,Marketplace,Wrong Size
+RET-0096,Refund Approved,2026-01-25 14:30:00,Refund Supervisor A,Web,Damaged
+RET-0096,Payment Reversed,2026-01-25 17:30:00,Payments Service,Web,Changed Mind
+RET-0096,Case Closed,2026-01-25 19:30:00,Returns Platform,Marketplace,Changed Mind
+RET-0097,Return Requested,2026-01-25 09:27:00,Customer Portal,Mobile,Not As Described
+RET-0097,Package Received,2026-01-25 10:27:00,Warehouse A,Mobile,Not As Described
+RET-0097,Item Inspected,2026-01-25 16:27:00,Returns Specialist 2,Web,Wrong Size
+RET-0097,Refund Review,2026-01-25 18:27:00,Refund Queue Alpha,Web,Changed Mind
+RET-0097,Refund Approved,2026-01-25 19:27:00,Refund Supervisor B,Web,Damaged
+RET-0097,Payment Reversed,2026-01-25 23:27:00,Payments Service,Marketplace,Damaged
+RET-0097,Case Closed,2026-01-26 00:57:00,Returns Platform,Mobile,Not As Described
+RET-0098,Return Requested,2026-01-25 14:30:00,Customer Portal,Mobile,Wrong Size
+RET-0098,Package Received,2026-01-25 16:30:00,Warehouse B,Web,Changed Mind
+RET-0098,Item Inspected,2026-01-25 21:30:00,Returns Specialist 2,Web,Wrong Size
+RET-0098,Refund Review,2026-01-25 23:30:00,Refund Queue Alpha,Web,Not As Described
+RET-0098,Refund Approved,2026-01-26 00:30:00,Refund Supervisor B,Web,Not As Described
+RET-0098,Payment Reversed,2026-01-26 03:30:00,Payments Service,Marketplace,Damaged
+RET-0098,Case Closed,2026-01-26 05:30:00,Returns Platform,Marketplace,Wrong Size
+RET-0099,Return Requested,2026-01-25 19:30:00,Mobile App,Web,Not As Described
+RET-0099,Package Received,2026-01-25 21:30:00,Warehouse A,Mobile,Wrong Size
+RET-0099,Item Inspected,2026-01-26 02:30:00,Returns Specialist 1,Mobile,Wrong Size
+RET-0099,Refund Review,2026-01-26 06:30:00,Refund Queue Beta,Web,Not As Described
+RET-0099,Refund Approved,2026-01-26 07:30:00,Refund Supervisor B,Mobile,Wrong Size
+RET-0099,Payment Reversed,2026-01-26 11:30:00,Payments Service,Marketplace,Changed Mind
+RET-0099,Case Closed,2026-01-26 12:30:00,Returns Platform,Mobile,Damaged
+RET-0100,Return Requested,2026-01-26 00:36:00,Customer Portal,Web,Not As Described
+RET-0100,Package Received,2026-01-26 02:36:00,Warehouse B,Mobile,Damaged
+RET-0100,Item Inspected,2026-01-26 06:36:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0100,Refund Review,2026-01-26 09:36:00,Refund Queue Beta,Web,Changed Mind
+RET-0100,Refund Approved,2026-01-26 11:36:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0100,Payment Reversed,2026-01-26 15:36:00,Payments Service,Web,Wrong Size
+RET-0100,Case Closed,2026-01-26 17:36:00,Returns Platform,Mobile,Not As Described
+RET-0101,Return Requested,2026-01-26 05:19:00,Mobile App,Web,Changed Mind
+RET-0101,Package Received,2026-01-26 06:19:00,Warehouse B,Marketplace,Wrong Size
+RET-0101,Item Inspected,2026-01-26 10:19:00,Returns Specialist 2,Mobile,Not As Described
+RET-0101,Refund Review,2026-01-26 13:19:00,Refund Queue Alpha,Mobile,Wrong Size
+RET-0101,Refund Approved,2026-01-29 04:19:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0101,Payment Reversed,2026-01-29 08:19:00,Payments Service,Marketplace,Wrong Size
+RET-0101,Case Closed,2026-01-29 09:19:00,Returns Platform,Marketplace,Changed Mind
+RET-0102,Return Requested,2026-01-26 10:19:00,Customer Portal,Mobile,Wrong Size
+RET-0102,Package Received,2026-01-26 12:19:00,Warehouse A,Mobile,Damaged
+RET-0102,Item Inspected,2026-01-26 18:19:00,Returns Specialist 1,Marketplace,Not As Described
+RET-0102,Refund Review,2026-01-26 21:19:00,Refund Queue Beta,Web,Wrong Size
+RET-0102,Refund Approved,2026-01-29 19:19:00,Refund Supervisor A,Marketplace,Not As Described
+RET-0102,Payment Reversed,2026-01-29 23:19:00,Payments Service,Marketplace,Damaged
+RET-0102,Case Closed,2026-01-30 01:19:00,Returns Platform,Marketplace,Changed Mind
+RET-0103,Return Requested,2026-01-26 15:44:00,Customer Portal,Marketplace,Not As Described
+RET-0103,Package Received,2026-01-26 16:44:00,Warehouse B,Web,Not As Described
+RET-0103,Item Inspected,2026-01-26 21:44:00,Returns Specialist 1,Mobile,Changed Mind
+RET-0103,Refund Review,2026-01-27 00:44:00,Refund Queue Beta,Mobile,Damaged
+RET-0103,Refund Approved,2026-01-30 14:44:00,Refund Supervisor A,Web,Not As Described
+RET-0103,Payment Reversed,2026-01-30 18:44:00,Payments Service,Marketplace,Not As Described
+RET-0103,Case Closed,2026-01-30 19:44:00,Returns Platform,Marketplace,Changed Mind
+RET-0104,Return Requested,2026-01-26 20:47:00,Customer Portal,Web,Wrong Size
+RET-0104,Package Received,2026-01-26 22:47:00,Warehouse B,Web,Wrong Size
+RET-0104,Item Inspected,2026-01-27 03:47:00,Returns Specialist 1,Marketplace,Changed Mind
+RET-0104,Refund Review,2026-01-27 07:47:00,Refund Queue Beta,Web,Changed Mind
+RET-0104,Refund Approved,2026-01-30 14:47:00,Refund Supervisor A,Web,Damaged
+RET-0104,Payment Reversed,2026-01-30 18:47:00,Payments Service,Mobile,Not As Described
+RET-0104,Case Closed,2026-01-30 20:17:00,Returns Platform,Marketplace,Changed Mind
+RET-0105,Return Requested,2026-01-27 01:32:00,Customer Portal,Web,Not As Described
+RET-0105,Package Received,2026-01-27 03:32:00,Warehouse B,Web,Changed Mind
+RET-0105,Item Inspected,2026-01-27 07:32:00,Returns Specialist 2,Web,Not As Described
+RET-0105,Refund Review,2026-01-27 10:32:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0105,Refund Approved,2026-01-31 02:32:00,Refund Supervisor B,Web,Damaged
+RET-0105,Payment Reversed,2026-01-31 06:32:00,Payments Service,Mobile,Wrong Size
+RET-0105,Case Closed,2026-01-31 08:02:00,Returns Platform,Web,Not As Described
+RET-0106,Return Requested,2026-01-27 06:42:00,Mobile App,Marketplace,Wrong Size
+RET-0106,Package Received,2026-01-27 07:42:00,Warehouse A,Marketplace,Changed Mind
+RET-0106,Item Inspected,2026-01-27 11:42:00,Returns Specialist 2,Mobile,Damaged
+RET-0106,Refund Review,2026-01-27 13:42:00,Refund Queue Alpha,Mobile,Changed Mind
+RET-0106,Refund Approved,2026-01-31 11:42:00,Refund Supervisor B,Mobile,Wrong Size
+RET-0106,Payment Reversed,2026-01-31 14:42:00,Payments Service,Mobile,Not As Described
+RET-0106,Case Closed,2026-01-31 16:12:00,Returns Platform,Mobile,Damaged
+RET-0107,Return Requested,2026-01-27 11:17:00,Mobile App,Mobile,Not As Described
+RET-0107,Package Received,2026-01-27 12:17:00,Warehouse A,Web,Damaged
+RET-0107,Item Inspected,2026-01-27 16:17:00,Returns Specialist 1,Mobile,Wrong Size
+RET-0107,Refund Review,2026-01-27 18:17:00,Refund Queue Alpha,Web,Damaged
+RET-0107,Refund Approved,2026-01-31 13:17:00,Refund Supervisor B,Marketplace,Changed Mind
+RET-0107,Payment Reversed,2026-01-31 17:17:00,Payments Service,Web,Damaged
+RET-0107,Case Closed,2026-01-31 18:47:00,Returns Platform,Marketplace,Changed Mind
+RET-0108,Return Requested,2026-01-27 16:24:00,Customer Portal,Mobile,Wrong Size
+RET-0108,Package Received,2026-01-27 18:24:00,Warehouse A,Mobile,Changed Mind
+RET-0108,Item Inspected,2026-01-28 00:24:00,Returns Specialist 2,Web,Changed Mind
+RET-0108,Refund Review,2026-01-28 03:24:00,Refund Queue Alpha,Marketplace,Wrong Size
+RET-0108,Refund Approved,2026-01-31 10:24:00,Refund Supervisor B,Marketplace,Wrong Size
+RET-0108,Payment Reversed,2026-01-31 13:24:00,Payments Service,Web,Not As Described
+RET-0108,Case Closed,2026-01-31 15:24:00,Returns Platform,Web,Wrong Size
+RET-0109,Return Requested,2026-01-27 21:06:00,Mobile App,Web,Damaged
+RET-0109,Package Received,2026-01-27 22:06:00,Warehouse A,Mobile,Wrong Size
+RET-0109,Item Inspected,2026-01-28 04:06:00,Returns Specialist 1,Marketplace,Changed Mind
+RET-0109,Refund Review,2026-01-28 08:06:00,Refund Queue Beta,Marketplace,Wrong Size
+RET-0109,Refund Approved,2026-01-31 06:06:00,Refund Supervisor B,Marketplace,Wrong Size
+RET-0109,Payment Reversed,2026-01-31 11:06:00,Payments Service,Web,Not As Described
+RET-0109,Case Closed,2026-01-31 12:36:00,Returns Platform,Marketplace,Damaged
+RET-0110,Return Requested,2026-01-28 02:27:00,Customer Portal,Marketplace,Wrong Size
+RET-0110,Package Received,2026-01-28 04:27:00,Warehouse B,Mobile,Damaged
+RET-0110,Item Inspected,2026-01-28 08:27:00,Returns Specialist 1,Web,Not As Described
+RET-0110,Refund Review,2026-01-28 11:27:00,Refund Queue Alpha,Mobile,Wrong Size
+RET-0110,Refund Approved,2026-01-31 14:27:00,Refund Supervisor B,Mobile,Changed Mind
+RET-0110,Payment Reversed,2026-01-31 18:27:00,Payments Service,Mobile,Damaged
+RET-0110,Case Closed,2026-01-31 19:57:00,Returns Platform,Web,Changed Mind
+RET-0111,Return Requested,2026-01-28 07:11:00,Customer Portal,Web,Changed Mind
+RET-0111,Package Received,2026-01-28 09:11:00,Warehouse A,Web,Not As Described
+RET-0111,Item Inspected,2026-01-28 15:11:00,Returns Specialist 2,Web,Damaged
+RET-0111,Refund Review,2026-01-28 19:11:00,Refund Queue Alpha,Web,Wrong Size
+RET-0111,Refund Approved,2026-01-28 20:11:00,Refund Supervisor B,Marketplace,Changed Mind
+RET-0111,Payment Reversed,2026-01-29 01:11:00,Payments Service,Marketplace,Wrong Size
+RET-0111,Case Closed,2026-01-29 02:11:00,Returns Platform,Mobile,Wrong Size
+RET-0112,Return Requested,2026-01-28 12:04:00,Customer Portal,Web,Damaged
+RET-0112,Package Received,2026-01-28 14:04:00,Warehouse B,Mobile,Changed Mind
+RET-0112,Item Inspected,2026-01-28 18:04:00,Returns Specialist 2,Web,Wrong Size
+RET-0112,Refund Review,2026-01-28 22:04:00,Refund Queue Alpha,Marketplace,Wrong Size
+RET-0112,Refund Approved,2026-01-29 00:04:00,Refund Supervisor B,Web,Wrong Size
+RET-0112,Payment Reversed,2026-01-29 05:04:00,Payments Service,Web,Wrong Size
+RET-0112,Case Closed,2026-01-29 06:34:00,Returns Platform,Marketplace,Changed Mind
+RET-0113,Return Requested,2026-01-28 17:25:00,Mobile App,Marketplace,Changed Mind
+RET-0113,Package Received,2026-01-28 19:25:00,Warehouse B,Web,Wrong Size
+RET-0113,Item Inspected,2026-01-28 23:25:00,Returns Specialist 1,Web,Damaged
+RET-0113,Refund Review,2026-01-29 03:25:00,Refund Queue Beta,Mobile,Not As Described
+RET-0113,Refund Approved,2026-01-29 05:25:00,Refund Supervisor A,Mobile,Not As Described
+RET-0113,Payment Reversed,2026-01-29 08:25:00,Payments Service,Web,Changed Mind
+RET-0113,Case Closed,2026-01-29 09:25:00,Returns Platform,Mobile,Not As Described
+RET-0114,Return Requested,2026-01-28 22:17:00,Mobile App,Mobile,Damaged
+RET-0114,Package Received,2026-01-29 00:17:00,Warehouse B,Mobile,Changed Mind
+RET-0114,Item Inspected,2026-01-29 04:17:00,Returns Specialist 2,Web,Wrong Size
+RET-0114,Refund Review,2026-01-29 07:17:00,Refund Queue Alpha,Web,Not As Described
+RET-0114,Refund Approved,2026-01-29 09:17:00,Refund Supervisor A,Marketplace,Wrong Size
+RET-0114,Payment Reversed,2026-01-29 12:17:00,Payments Service,Web,Damaged
+RET-0114,Case Closed,2026-01-29 13:17:00,Returns Platform,Mobile,Wrong Size
+RET-0115,Return Requested,2026-01-29 03:26:00,Mobile App,Marketplace,Damaged
+RET-0115,Package Received,2026-01-29 05:26:00,Warehouse B,Web,Not As Described
+RET-0115,Item Inspected,2026-01-29 11:26:00,Returns Specialist 2,Marketplace,Wrong Size
+RET-0115,Refund Review,2026-01-29 15:26:00,Refund Queue Beta,Web,Changed Mind
+RET-0115,Refund Approved,2026-01-29 17:26:00,Refund Supervisor A,Mobile,Wrong Size
+RET-0115,Payment Reversed,2026-01-29 21:26:00,Payments Service,Mobile,Wrong Size
+RET-0115,Case Closed,2026-01-29 22:56:00,Returns Platform,Mobile,Changed Mind
+RET-0116,Return Requested,2026-01-29 08:27:00,Mobile App,Marketplace,Changed Mind
+RET-0116,Package Received,2026-01-29 10:27:00,Warehouse A,Mobile,Wrong Size
+RET-0116,Item Inspected,2026-01-29 16:27:00,Returns Specialist 1,Web,Damaged
+RET-0116,Refund Review,2026-01-29 18:27:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0116,Refund Approved,2026-01-29 19:27:00,Refund Supervisor A,Mobile,Not As Described
+RET-0116,Payment Reversed,2026-01-29 22:27:00,Payments Service,Marketplace,Not As Described
+RET-0116,Case Closed,2026-01-29 23:27:00,Returns Platform,Web,Changed Mind
+RET-0117,Return Requested,2026-01-29 13:22:00,Customer Portal,Marketplace,Not As Described
+RET-0117,Package Received,2026-01-29 14:22:00,Warehouse A,Marketplace,Damaged
+RET-0117,Item Inspected,2026-01-29 20:22:00,Returns Specialist 2,Mobile,Damaged
+RET-0117,Refund Review,2026-01-29 23:22:00,Refund Queue Alpha,Mobile,Not As Described
+RET-0117,Refund Approved,2026-01-30 01:22:00,Refund Supervisor A,Marketplace,Changed Mind
+RET-0117,Payment Reversed,2026-01-30 04:22:00,Payments Service,Mobile,Changed Mind
+RET-0117,Case Closed,2026-01-30 06:22:00,Returns Platform,Mobile,Wrong Size
+RET-0118,Return Requested,2026-01-29 18:35:00,Mobile App,Marketplace,Wrong Size
+RET-0118,Package Received,2026-01-29 20:35:00,Warehouse A,Web,Damaged
+RET-0118,Item Inspected,2026-01-30 00:35:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0118,Refund Review,2026-01-30 04:35:00,Refund Queue Alpha,Web,Not As Described
+RET-0118,Refund Approved,2026-01-30 06:35:00,Refund Supervisor B,Web,Changed Mind
+RET-0118,Payment Reversed,2026-01-30 09:35:00,Payments Service,Mobile,Damaged
+RET-0118,Case Closed,2026-01-30 11:35:00,Returns Platform,Web,Damaged
+RET-0119,Return Requested,2026-01-29 23:47:00,Mobile App,Mobile,Changed Mind
+RET-0119,Package Received,2026-01-30 00:47:00,Warehouse B,Mobile,Not As Described
+RET-0119,Item Inspected,2026-01-30 05:47:00,Returns Specialist 1,Web,Damaged
+RET-0119,Refund Review,2026-01-30 07:47:00,Refund Queue Beta,Mobile,Changed Mind
+RET-0119,Refund Approved,2026-01-30 09:47:00,Refund Supervisor A,Web,Changed Mind
+RET-0119,Payment Reversed,2026-01-30 12:47:00,Payments Service,Mobile,Changed Mind
+RET-0119,Case Closed,2026-01-30 13:47:00,Returns Platform,Web,Damaged
+RET-0120,Return Requested,2026-01-30 04:03:00,Customer Portal,Mobile,Changed Mind
+RET-0120,Package Received,2026-01-30 06:03:00,Warehouse B,Marketplace,Damaged
+RET-0120,Item Inspected,2026-01-30 10:03:00,Returns Specialist 1,Marketplace,Wrong Size
+RET-0120,Refund Review,2026-01-30 14:03:00,Refund Queue Alpha,Mobile,Changed Mind
+RET-0120,Refund Approved,2026-01-30 16:03:00,Refund Supervisor A,Mobile,Changed Mind
+RET-0120,Payment Reversed,2026-01-30 21:03:00,Payments Service,Mobile,Damaged
+RET-0120,Case Closed,2026-01-30 23:03:00,Returns Platform,Mobile,Wrong Size

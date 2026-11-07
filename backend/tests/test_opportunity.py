@@ -538,6 +538,9 @@ def test_integration_messy_dataset():
     for p in path_opps:
         assert p.variant_case_percentage is not None
         assert "rare" in p.title.lower() or "variant" in p.title.lower()
+        facts = " ".join(p.observed_facts)
+        assert "less than 2.00%" in facts
+        assert "threshold <= 0" not in facts
 
 
 # ---------------------------------------------------------------------------

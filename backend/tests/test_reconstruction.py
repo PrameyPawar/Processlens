@@ -102,6 +102,21 @@ def test_equal_timestamps_deterministic_tie_breaking():
     assert trace.activity_sequence == ["FirstUploaded", "SecondUploaded"]
     assert trace.events[0].row_index < trace.events[1].row_index
 
+def test_extra_csv_cells_exclude_the_row_and_mark_case_incomplete():
+    csv_data = (
+        "case_id,activity,timestamp\n"
+        "C1,Start,2026-01-01 10:00:00,unexpected\n"
+        "C1,End,2026-01-01 11:00:00\n"
+    )
+    result = reconstruct_process_from_csv(csv_data.encode("utf-8"), "malformed.csv")
+    case = result.cases[0]
+    assert result.total_source_rows == 2
+    assert result.eligible_event_count == 1
+    assert result.complete_cases_count == 0
+    assert case.is_complete is False
+    assert case.excluded_events[0].issue_type == "MALFORMED_ROW"
+    assert case.excluded_events[0].raw_values["__extra_columns__"] == ["unexpected"]
+
 def test_structured_exclusions_and_incomplete_cases():
     csv_data = (
         "case_id,activity,timestamp,resource\n"
@@ -170,9 +185,43 @@ def test_duplicate_events_preserved_and_flagged():
     trace = res.cases[0]
     assert len(trace.events) == 2
     assert trace.events[0].is_duplicate is False
-    assert trace.events[1].is_duplicate is True
+    assert trace.events[1].is_duplicate is False
+    assert trace.events[1].is_potential_duplicate is True
     # Sequence retains repeated activity
     assert trace.activity_sequence == ["Order Received", "Order Received"]
+
+def test_distinct_source_event_ids_preserve_same_timestamp_events():
+    csv_data = (
+        "source_event_id,case_id,activity,timestamp\n"
+        "evt-1,C1,Inspect,2026-01-01 10:00:00\n"
+        "evt-2,C1,Inspect,2026-01-01 10:00:00\n"
+    )
+    result = reconstruct_process_from_csv(csv_data.encode("utf-8"), "same_timestamp_distinct_ids.csv")
+    events = result.cases[0].events
+    assert [event.source_event_id for event in events] == ["evt-1", "evt-2"]
+    assert all(not event.is_duplicate for event in events)
+    assert all(not event.is_potential_duplicate for event in events)
+
+def test_repeated_source_event_id_is_flagged_and_preserved():
+    csv_data = (
+        "eventID,case_id,activity,timestamp\n"
+        "evt-1,C1,Inspect,2026-01-01 10:00:00\n"
+        "evt-1,C1,Inspect,2026-01-01 10:00:00\n"
+    )
+    result = reconstruct_process_from_csv(csv_data.encode("utf-8"), "repeated_source_id.csv")
+    events = result.cases[0].events
+    assert len(events) == 2
+    assert [event.is_duplicate for event in events] == [False, True]
+    assert result.cases[0].is_complete
+
+def test_duplicate_event_ids_are_scoped_to_case():
+    csv_data = (
+        "event_id,case_id,activity,timestamp\n"
+        "evt-1,C1,Start,2026-01-01 10:00:00\n"
+        "evt-1,C2,Start,2026-01-01 10:00:00\n"
+    )
+    result = reconstruct_process_from_csv(csv_data.encode("utf-8"), "case_scoped_ids.csv")
+    assert all(not event.is_duplicate for case in result.cases for event in case.events)
 
 def test_empty_input_and_no_cases():
     csv_data = "case_id,activity,timestamp\n"
@@ -300,5 +349,5 @@ def test_reconstruct_exceeds_max_file_size(client):
     large_payload = b"case_id,activity,timestamp\n" + b"x" * (settings.MAX_FILE_SIZE_BYTES + 1)
     files = {"file": ("large.csv", large_payload, "text/csv")}
     response = client.post("/api/v1/process/reconstruct", files=files)
-    assert response.status_code == 400
+    assert response.status_code == 413
     assert "File size exceeds maximum allowed limit" in response.json()["detail"]

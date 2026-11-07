@@ -703,3 +703,23 @@ To protect operational integrity and executive decision support:
 - 113/113 Phase 10 tests passing across all four explanation test suites.
 - 316 total backend tests passing with 0 regressions.
 - Strict fallback guarantees verified across all error and defect modes.
+
+
+## Decision Record 019: Event Identity and Rare-Variant Threshold Reporting
+* **Date:** 2026-10-30
+* **Status:** Implemented; regression coverage added
+
+### Context
+Review of the BPI Challenge 2019 sample showed rows sharing case, activity, and timestamp values while carrying distinct source event IDs. Treating the tuple as a duplicate incorrectly excluded valid events. Review also found that the rare-variant detector used a 2% frequency threshold while the generated explanation displayed a missing case-count threshold as `<= 0 cases`.
+
+### Decision
+- Confirm repeated events only when a source event ID repeats within a case. Preserve distinct IDs even when activity and timestamp match.
+- When matching operational tuples include rows without source IDs, retain them and emit a warning that identity is ambiguous.
+- Report the same 2% frequency threshold used by the rare-variant detector.
+- Carry source event IDs into reconstructed events and evidence row anchors when present.
+
+### Verification evidence
+The supplied `processlens_sample_5000_cases.csv` was rerun through the updated local validator: 34,336 rows, 34,336 valid, 0 invalid, 0 confirmed repeated IDs, and 0 ambiguous duplicate matches. This verifies the ingestion classification for that file; it does not establish the correctness of downstream business interpretations.
+
+### Limits
+The identity rule relies on source IDs being meaningful and stable within a case. Without IDs, matching case/activity/timestamp is only a possible collision; ProcessLens cannot infer whether events are duplicates. The BPI sample has no independent case-level labels for validating predicted bottlenecks or recommendations. This correction does not validate business meaning, causality, or recommendations.

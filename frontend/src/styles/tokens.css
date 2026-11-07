@@ -1,0 +1,195 @@
+/**
+ * ProcessLens Design System Tokens
+ * Original ProcessLens Color Scheme (commit 1e5bf26) + Accessible Dual Theme
+ * 4px-Based Spacing Scale & Semantic Visual Hierarchy
+ */
+
+:root,
+[data-theme="dark"] {
+  /* Original ProcessLens Enterprise Dark Palette (commit 1e5bf26) */
+  --bg-dark: #0f172a;
+  --bg-app: #0f172a;
+  --bg-main: #0f172a;
+  --background: #0f172a;
+
+  --bg-card: #1e293b;
+  --surface: #1e293b;
+  --surface-main: #1e293b;
+  --surface-elevated: #1e293b;
+  --surface-raised: #334155;
+  --surface-secondary: #334155;
+  --surface-sunken: #0b1120;
+  --surface-hover: #334155;
+  --bg-card-hover: #334155;
+  --bg-card-glass: rgba(30, 41, 59, 0.7);
+
+  --border-color: #334155;
+  --border-base: #334155;
+  --border-subtle: rgba(51, 65, 85, 0.6);
+  --border-default: #334155;
+  --border-strong: #475569;
+  --border-glow: #38bdf8;
+  --focus-ring: rgba(56, 189, 248, 0.5);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+
+  /* Semantic Action & Brand */
+  --brand-cyan: #38bdf8;
+  --accent-cyan: #38bdf8;
+  --brand-primary: #38bdf8;
+  --action-primary: #38bdf8;
+  --brand-blue: #0ea5e9;
+  --brand-hover: #0284c7;
+
+  /* Semantic Feedback & Epistemic Status (Original Accents) */
+  --accent-emerald: #34d399;
+  --status-verified: #34d399;
+  --status-success: #34d399;
+  --status-verified-bg: rgba(52, 211, 153, 0.12);
+  --status-verified-border: rgba(52, 211, 153, 0.35);
+
+  --accent-amber: #fbbf24;
+  --status-warning: #fbbf24;
+  --status-warning-bg: rgba(251, 191, 36, 0.12);
+  --status-warning-border: rgba(251, 191, 36, 0.35);
+
+  --accent-rose: #f87171;
+  --status-error: #f87171;
+  --status-critical: #f87171;
+  --status-danger: #f87171;
+  --status-error-bg: rgba(248, 113, 113, 0.12);
+  --status-error-border: rgba(248, 113, 113, 0.35);
+
+  --accent-purple: #c084fc;
+  --chart-accent: #c084fc;
+  --chart-accent-bg: rgba(192, 132, 252, 0.12);
+  --chart-accent-border: rgba(192, 132, 252, 0.35);
+  --accent-indigo: #818cf8;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 4px 12px -2px rgba(0, 0, 0, 0.45), 0 2px 4px -2px rgba(0, 0, 0, 0.35);
+  --shadow-dropdown: 0 10px 25px -5px rgba(0, 0, 0, 0.65), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --shadow-modal: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+
+  /* Chart Tokens */
+  --chart-track: #0f172a;
+  --chart-tooltip-bg: #1e293b;
+  --chart-tooltip-text: #f8fafc;
+  --chart-tooltip-border: #334155;
+}
+
+[data-theme="light"] {
+  /* Clean Light Theme with Original ProcessLens Contrast & Accents */
+  --bg-dark: #f8fafc;
+  --bg-app: #f8fafc;
+  --bg-main: #f8fafc;
+  --background: #f8fafc;
+
+  --bg-card: #ffffff;
+  --surface: #ffffff;
+  --surface-main: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-raised: #f1f5f9;
+  --surface-secondary: #f1f5f9;
+  --surface-sunken: #e2e8f0;
+  --surface-hover: #e2e8f0;
+  --bg-card-hover: #e2e8f0;
+  --bg-card-glass: rgba(255, 255, 255, 0.85);
+
+  --border-color: #e2e8f0;
+  --border-base: #e2e8f0;
+  --border-subtle: rgba(226, 232, 240, 0.85);
+  --border-default: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --border-glow: #0284c7;
+  --focus-ring: rgba(2, 132, 199, 0.4);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  --brand-cyan: #0284c7;
+  --accent-cyan: #0284c7;
+  --brand-primary: #0284c7;
+  --action-primary: #0284c7;
+  --brand-blue: #0369a1;
+  --brand-hover: #075985;
+
+  --accent-emerald: #0d9488;
+  --status-verified: #0d9488;
+  --status-success: #0d9488;
+  --status-verified-bg: #f0fdfa;
+  --status-verified-border: #99f6e4;
+
+  --accent-amber: #b45309;
+  --status-warning: #b45309;
+  --status-warning-bg: #fffbeb;
+  --status-warning-border: #fde68a;
+
+  --accent-rose: #dc2626;
+  --status-error: #dc2626;
+  --status-critical: #dc2626;
+  --status-danger: #dc2626;
+  --status-error-bg: #fef2f2;
+  --status-error-border: #fecaca;
+
+  --accent-purple: #7c3aed;
+  --chart-accent: #7c3aed;
+  --chart-accent-bg: #f5f3ff;
+  --chart-accent-border: #ddd6fe;
+  --accent-indigo: #4f46e5;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 2px 8px -1px rgba(0, 0, 0, 0.07), 0 1px 3px -1px rgba(0, 0, 0, 0.05);
+  --shadow-dropdown: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  --chart-track: #e2e8f0;
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-text: #0f172a;
+  --chart-tooltip-border: #cbd5e1;
+}
+
+:root {
+  /* 4px-Based Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Typography Stack & Sizing (Original ProcessLens fonts) */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Consolas, monospace;
+
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+
+  /* Border Radii (Original ProcessLens values) */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-full: 9999px;
+
+  /* Layout Container Maximum Width */
+  --max-content-width: 1240px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}

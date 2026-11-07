@@ -93,6 +93,7 @@ def extract_exemplars_for_opportunity(
                 activity=e_src.activity,
                 timestamp_raw=e_src.timestamp_raw,
                 resource=e_src.resource,
+                source_event_id=e_src.source_event_id,
                 role_in_evidence="TRANSITION_SOURCE",
             )
             tgt_anchor = EventRowAnchor(
@@ -102,6 +103,7 @@ def extract_exemplars_for_opportunity(
                 activity=e_tgt.activity,
                 timestamp_raw=e_tgt.timestamp_raw,
                 resource=e_tgt.resource,
+                source_event_id=e_tgt.source_event_id,
                 role_in_evidence="TRANSITION_TARGET",
             )
             summary = (
@@ -153,6 +155,7 @@ def extract_exemplars_for_opportunity(
                     activity=e.activity,
                     timestamp_raw=e.timestamp_raw,
                     resource=e.resource,
+                    source_event_id=e.source_event_id,
                     role_in_evidence="REPEATED_ACTIVITY",
                 )
                 for e in distinct_events
@@ -215,6 +218,7 @@ def extract_exemplars_for_opportunity(
                         activity=e_start.activity,
                         timestamp_raw=e_start.timestamp_raw,
                         resource=e_start.resource,
+                        source_event_id=e_start.source_event_id,
                         role_in_evidence="TRACE_START",
                     )
                 )
@@ -227,6 +231,7 @@ def extract_exemplars_for_opportunity(
                             activity=e_end.activity,
                             timestamp_raw=e_end.timestamp_raw,
                             resource=e_end.resource,
+                            source_event_id=e_end.source_event_id,
                             role_in_evidence="TRACE_END",
                         )
                     )
@@ -279,6 +284,7 @@ def extract_exemplars_for_opportunity(
                         activity=e_start.activity,
                         timestamp_raw=e_start.timestamp_raw,
                         resource=e_start.resource,
+                        source_event_id=e_start.source_event_id,
                         role_in_evidence="TRACE_START",
                     )
                 )
@@ -291,6 +297,7 @@ def extract_exemplars_for_opportunity(
                             activity=e_end.activity,
                             timestamp_raw=e_end.timestamp_raw,
                             resource=e_end.resource,
+                            source_event_id=e_end.source_event_id,
                             role_in_evidence="TRACE_END",
                         )
                     )

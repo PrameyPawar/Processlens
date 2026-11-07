@@ -520,7 +520,7 @@ def test_group9_3_upload_exceeds_10mb_limit(client: TestClient):
         "/api/v1/prioritisation/rank",
         files={"file": ("large.csv", large_payload, "text/csv")},
     )
-    assert res.status_code == 400
+    assert res.status_code == 413
     assert "File size exceeds maximum allowed limit" in res.json()["detail"]
 
 

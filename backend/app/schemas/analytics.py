@@ -4,6 +4,7 @@ Pydantic schemas for deterministic Process Analytics (Phase 3).
 
 from typing import List
 from pydantic import BaseModel, Field
+from app.schemas.reconstruction import ProcessVariant
 
 class DurationStats(BaseModel):
     mean_seconds: float = Field(..., description="Arithmetic mean duration in seconds")
@@ -32,7 +33,8 @@ class ActivityRework(BaseModel):
     rework_case_count: int = Field(..., description="Count of complete cases with distinct-timestamp recurrences")
     rework_case_percentage: float = Field(..., description="Percentage of complete cases with distinct-timestamp recurrences")
     rework_occurrences: int = Field(..., description="Total distinct-timestamp repetitions beyond initial execution")
-    duplicate_events_count: int = Field(..., description="Total identical-timestamp duplicate events recorded in complete cases (evaluates complete cases only)")
+    duplicate_events_count: int = Field(..., description="Confirmed repeated source event IDs in complete cases")
+    potential_duplicate_events_count: int = Field(0, description="Same activity/timestamp tuples without source IDs; identity is uncertain")
 
 class ActivityTransition(BaseModel):
     source_activity: str = Field(..., description="Preceding activity")
@@ -52,3 +54,4 @@ class ProcessAnalyticsResult(BaseModel):
     activity_frequency: List[ActivityFrequency] = Field(..., description="Activity occurrences and coverage across complete cases")
     rework: List[ActivityRework] = Field(..., description="Repeated-activity indicators across complete cases")
     transitions: List[ActivityTransition] = Field(..., description="Direct step-to-step transition durations across complete cases")
+    variants: List[ProcessVariant] = Field(default_factory=list, description="List of process variants derived from complete cases")

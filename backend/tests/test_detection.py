@@ -501,7 +501,7 @@ def test_api_endpoint_problems_detect():
         "/api/v1/problems/detect",
         files={"file": ("large.csv", large_payload, "text/csv")}
     )
-    assert resp_large.status_code == 400
+    assert resp_large.status_code == 413
     assert "File size exceeds maximum allowed limit" in resp_large.json()["detail"]
 
 
@@ -561,6 +561,7 @@ def test_integration_four_development_datasets():
             assert len(rare_findings) == 1
             assert rare_findings[0].category == FindingCategory.PATH_VARIATION
             assert rare_findings[0].metrics["rare_variant_count"] == expected_rare_variants
+            assert rare_findings[0].metrics["rare_variant_frequency_threshold_percentage"] == 2.0
         else:
             assert len(rare_findings) == 0
 

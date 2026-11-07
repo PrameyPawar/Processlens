@@ -19,8 +19,10 @@ class ReconstructedEvent(BaseModel):
     timestamp_raw: str = Field(..., description="Raw timestamp string from source file")
     timestamp_parsed: datetime = Field(..., description="Parsed datetime object")
     resource: Optional[str] = Field(None, description="Resource or user executing the event")
+    source_event_id: Optional[str] = Field(None, description="Source-system event identifier when supplied")
     attributes: Dict[str, Any] = Field(default_factory=dict, description="Additional contextual attributes")
-    is_duplicate: bool = Field(False, description="Flagged if identical case_id, activity, and timestamp occurred earlier")
+    is_duplicate: bool = Field(False, description="Confirmed duplicate when the same source event ID repeats within a case")
+    is_potential_duplicate: bool = Field(False, description="Same case, activity, and timestamp repeats but source event ID is absent, so identity is uncertain")
 
 class CaseTrace(BaseModel):
     case_id: str = Field(..., description="Unique case identifier")

@@ -305,6 +305,7 @@ def detect_process_problems(
                         ),
                         "recurrence_occurrences": r.rework_occurrences,
                         "duplicate_events_count": r.duplicate_events_count,
+                        "potential_duplicate_events_count": r.potential_duplicate_events_count,
                         # Backward-compatibility aliases
                         "rework_case_count": r.rework_case_count,
                         "rework_case_percentage": round(
@@ -320,7 +321,7 @@ def detect_process_problems(
                     limitations=[
                         "Repeated activities indicate re-execution patterns, which may represent intended operational rework, iterative review, or standard multi-step procedures.",
                         "Prevalent recurrence is an observation of process behavior, not independent proof of operational waste or process failure.",
-                        f"Identical-timestamp duplicate records ({r.duplicate_events_count}) are excluded from recurrence counts.",
+                        f"Confirmed repeated source IDs ({r.duplicate_events_count}) and possible identity collisions ({r.potential_duplicate_events_count}) are tracked separately; ambiguous rows are not removed from analytics.",
                     ],
                 )
             )
@@ -427,6 +428,7 @@ def detect_process_problems(
                 evidence_strength=strength,
                 metrics={
                     "rare_variant_count": len(rare_variants),
+                    "rare_variant_frequency_threshold_percentage": 2.0,
                     "total_variant_count": len(reconstruction.variants),
                     "rare_case_count": rare_case_count,
                     "rare_case_percentage": round(rare_case_pct, 2),

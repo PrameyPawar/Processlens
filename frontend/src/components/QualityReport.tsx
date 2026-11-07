@@ -133,7 +133,7 @@ export const QualityReport: React.FC<QualityReportProps> = ({ report, onReset })
           {report.issues.length === 0 ? (
             <div style={{ padding: '2rem', textAlign: 'center', background: 'rgba(52, 211, 153, 0.05)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(52, 211, 153, 0.2)' }}>
               <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✅</div>
-              <h3 style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>100% Data Quality Verification Passed</h3>
+              <h3 style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>All Reported Validation Checks Passed</h3>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '0.25rem' }}>
                 No missing required fields, unparseable timestamps, or duplicate events detected.
               </p>

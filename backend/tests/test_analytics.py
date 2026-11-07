@@ -131,12 +131,12 @@ def test_duplicate_events_vs_genuine_temporal_rework():
     # C1: Inspect at 10:00 and Inspect at 10:00 (identical timestamp -> duplicate, NOT rework)
     # C2: Inspect at 10:00, Fix at 11:00, Inspect at 12:00 (distinct timestamps -> genuine temporal repetition)
     csv_data = (
-        "case_id,activity,timestamp\n"
-        "C1,Inspect,2026-01-01 10:00:00\n"
-        "C1,Inspect,2026-01-01 10:00:00\n"
-        "C2,Inspect,2026-01-02 10:00:00\n"
-        "C2,Fix,2026-01-02 11:00:00\n"
-        "C2,Inspect,2026-01-02 12:00:00\n"
+        "source_event_id,case_id,activity,timestamp\n"
+        "evt-1,C1,Inspect,2026-01-01 10:00:00\n"
+        "evt-1,C1,Inspect,2026-01-01 10:00:00\n"
+        "evt-2,C2,Inspect,2026-01-02 10:00:00\n"
+        "evt-3,C2,Fix,2026-01-02 11:00:00\n"
+        "evt-4,C2,Inspect,2026-01-02 12:00:00\n"
     )
     reconstruction = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
     analytics = calculate_process_analytics(reconstruction)
@@ -144,7 +144,7 @@ def test_duplicate_events_vs_genuine_temporal_rework():
     rework_map = {r.activity: r for r in analytics.rework}
     inspect_rework = rework_map["Inspect"]
 
-    # In C1: 2 events with same timestamp -> duplicate_events_count = 1, but distinct timestamps = 1 -> no rework
+    # In C1: repeated source event ID confirms a duplicate; distinct timestamps = 1 -> no rework
     # In C2: 2 events with distinct timestamps (10:00, 12:00) -> rework_case_count = 1, rework_occurrences = 1
     # Total for Inspect:
     # rework_case_count = 1 (only C2)
@@ -155,6 +155,7 @@ def test_duplicate_events_vs_genuine_temporal_rework():
     assert inspect_rework.rework_case_percentage == 50.0
     assert inspect_rework.rework_occurrences == 1
     assert inspect_rework.duplicate_events_count == 1
+    assert inspect_rework.potential_duplicate_events_count == 0
 
     # Total occurrences of Inspect in frequency: 2 in C1 + 2 in C2 = 4
     freq_map = {f.activity: f for f in analytics.activity_frequency}
@@ -298,13 +299,13 @@ def test_transitions_exclude_duplicate_events_and_preserve_equal_timestamps():
     # Case C2: Start at 10:00, ParallelStep at 10:00, End at 11:00
     # Distinct co-temporal activities MUST produce a 0.0s transition (Start -> ParallelStep)
     csv_data = (
-        "case_id,activity,timestamp\n"
-        "C1,Order Received,2026-01-01 10:00:00\n"
-        "C1,Order Received,2026-01-01 10:00:00\n"
-        "C1,Dispatch,2026-01-01 11:00:00\n"
-        "C2,Start,2026-01-02 10:00:00\n"
-        "C2,ParallelStep,2026-01-02 10:00:00\n"
-        "C2,End,2026-01-02 11:00:00\n"
+        "source_event_id,case_id,activity,timestamp\n"
+        "evt-1,C1,Order Received,2026-01-01 10:00:00\n"
+        "evt-1,C1,Order Received,2026-01-01 10:00:00\n"
+        "evt-2,C1,Dispatch,2026-01-01 11:00:00\n"
+        "evt-3,C2,Start,2026-01-02 10:00:00\n"
+        "evt-4,C2,ParallelStep,2026-01-02 10:00:00\n"
+        "evt-5,C2,End,2026-01-02 11:00:00\n"
     )
     rec = reconstruct_process_from_csv(csv_data.encode("utf-8"), "test.csv")
     ana = calculate_process_analytics(rec)
@@ -326,6 +327,20 @@ def test_transitions_exclude_duplicate_events_and_preserve_equal_timestamps():
     # 4. Subsequent transition in C2 preserved
     assert ("ParallelStep", "End") in trans_pairs
     assert trans_pairs[("ParallelStep", "End")].duration_stats.mean_seconds == 3600.0
+
+def test_transitions_keep_co_temporal_events_with_distinct_source_ids():
+    csv_data = (
+        "source_event_id,case_id,activity,timestamp\n"
+        "evt-1,C1,Inspect,2026-01-01 10:00:00\n"
+        "evt-2,C1,Inspect,2026-01-01 10:00:00\n"
+        "evt-3,C1,Dispatch,2026-01-01 11:00:00\n"
+    )
+    reconstruction = reconstruct_process_from_csv(csv_data.encode("utf-8"), "distinct_ids.csv")
+    analytics = calculate_process_analytics(reconstruction)
+    transitions = {(t.source_activity, t.target_activity): t for t in analytics.transitions}
+    assert transitions[("Inspect", "Inspect")].transition_count == 1
+    assert transitions[("Inspect", "Inspect")].duration_stats.mean_seconds == 0.0
+    assert transitions[("Inspect", "Dispatch")].transition_count == 1
 
 def test_transitions_preserve_genuine_repeated_activity_loops():
     # Case C1: Inspect at 10:00, Fix at 11:00, Inspect at 12:00 (loop back at distinct timestamp)
@@ -383,5 +398,5 @@ def test_analytics_exceeds_max_file_size(client):
     large_payload = b"case_id,activity,timestamp\n" + b"x" * (settings.MAX_FILE_SIZE_BYTES + 1)
     files = {"file": ("large.csv", large_payload, "text/csv")}
     response = client.post("/api/v1/analytics/process", files=files)
-    assert response.status_code == 400
+    assert response.status_code == 413
     assert "File size exceeds maximum allowed limit" in response.json()["detail"]

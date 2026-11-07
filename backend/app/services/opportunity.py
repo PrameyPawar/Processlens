@@ -204,6 +204,7 @@ def detect_improvement_opportunities(
                 )
             )
             dup_count = int(finding.metrics.get("duplicate_events_count", 0))
+            possible_dup_count = int(finding.metrics.get("potential_duplicate_events_count", 0))
 
             score, tier, breakdown = calculate_opportunity_score(
                 OpportunityArchetype.RECURRENCE_REDUCTION,
@@ -232,7 +233,7 @@ def detect_improvement_opportunities(
                 recurrence_case_percentage=r_pct,
                 observed_facts=[
                     f"Activity '{activity}' repeated at distinct timestamps in {r_count} complete cases ({r_pct:.2f}%).",
-                    f"Observed {r_occ} additional distinct executions beyond the initial execution (excluding {dup_count} identical-timestamp duplicates).",
+                    f"Observed {r_occ} additional distinct-timestamp executions; {dup_count} confirmed repeated source IDs and {possible_dup_count} possible identity collisions were tracked separately.",
                 ],
                 investigation_hypotheses=[
                     f"Investigate whether re-executions of '{activity}' are caused by upstream data defects, missing information, or normal multi-pass procedures.",
@@ -324,7 +325,9 @@ def detect_improvement_opportunities(
             rare_pct = float(finding.metrics.get("rare_case_percentage", 0.0))
             rare_vars = int(finding.metrics.get("rare_variant_count", 0))
             total_vars = int(finding.metrics.get("total_variant_count", finding.metrics.get("total_variants_count", 0)))
-            thresh_cases = int(finding.metrics.get("rare_threshold_cases", 0))
+            rare_threshold_pct = float(
+                finding.metrics.get("rare_variant_frequency_threshold_percentage", 2.0)
+            )
 
             if rare_cases > 0:
                 score, tier, breakdown = calculate_opportunity_score(
@@ -353,7 +356,7 @@ def detect_improvement_opportunities(
                     occurrence_count=rare_vars,
                     variant_case_percentage=rare_pct,
                     observed_facts=[
-                        f"{rare_cases} complete cases ({rare_pct:.2f}%) executed across {rare_vars} rare variants (threshold <= {thresh_cases} cases).",
+                    f"{rare_cases} complete cases ({rare_pct:.2f}%) executed across {rare_vars} variants, each occurring in less than {rare_threshold_pct:.2f}% of complete cases.",
                         f"Dataset exhibits {total_vars} distinct variants across complete cases.",
                     ],
                     investigation_hypotheses=[

@@ -696,7 +696,7 @@ class TestExplanationEndpointAPI:
             f"{settings.API_V1_STR}/explanation/generate",
             files={"file": ("oversized.csv", oversized_content, "text/csv")},
         )
-        assert response.status_code == 400
+        assert response.status_code == 413
         assert "exceeds maximum allowed limit" in response.json()["detail"]
 
     def test_client_cannot_pass_fake_dossier_or_tamper_server_state(self, client, sample_clean_path):

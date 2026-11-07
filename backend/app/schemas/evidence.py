@@ -50,6 +50,7 @@ class EventRowAnchor(BaseModel):
     activity: Optional[str] = Field(None, description="Activity name")
     timestamp_raw: Optional[str] = Field(None, description="Original raw timestamp from source record")
     resource: Optional[str] = Field(None, description="Resource or user recorded on event")
+    source_event_id: Optional[str] = Field(None, description="Source-system event identifier when supplied")
     role_in_evidence: str = Field(..., description="Role in evidence (e.g. 'TRANSITION_SOURCE', 'TRANSITION_TARGET', 'REPEATED_ACTIVITY', 'TRACE_START', 'TRACE_END', 'EXCLUDED_DATA_ROW')")
 
 

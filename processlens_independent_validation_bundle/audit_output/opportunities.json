@@ -1,0 +1,114 @@
+{
+  "filename": "processlens_independent_returns_holdout.csv",
+  "summary": {
+    "evaluated_cases_count": 120,
+    "total_opportunities_count": 2,
+    "tier_1_count": 1,
+    "tier_2_count": 0,
+    "tier_3_count": 0,
+    "tier_4_count": 1,
+    "reconciliation_passed": true
+  },
+  "opportunities": [
+    {
+      "id": "opp_delay_refund_review_refund_approved",
+      "title": "Compress Elapsed Duration on Refund Review to Refund Approved",
+      "archetype": "DELAY_COMPRESSION",
+      "intervention_category": "UNDETERMINED_INVESTIGATION",
+      "target_entity": "Refund Review -> Refund Approved",
+      "source_finding_ids": [
+        "finding_transition_refund_review_refund_approved"
+      ],
+      "evidence_strength": "HIGH",
+      "affected_case_count": 120,
+      "affected_case_percentage": 100.0,
+      "occurrence_count": 120,
+      "cumulative_time_seconds": 8931600.0,
+      "duration_share_percentage": 57.98,
+      "recurrence_case_percentage": null,
+      "outlier_case_percentage": null,
+      "variant_case_percentage": null,
+      "observed_facts": [
+        "Transition 'Refund Review' -> 'Refund Approved' executed 120 times across 120 complete cases (100.00%).",
+        "Accounts for 57.98% of cumulative complete-case cycle time with mean elapsed milestone duration of 74430.00s."
+      ],
+      "investigation_hypotheses": [
+        "Determine whether elapsed duration between 'Refund Review' and 'Refund Approved' reflects active working time, queueing delays, or external dependencies.",
+        "Assess whether prerequisites for 'Refund Approved' can be initiated earlier or completed asynchronously."
+      ],
+      "candidate_actions": [
+        "Investigate whether elapsed duration between 'Refund Review' and 'Refund Approved' reflects active working time, queueing delay, physical processing, or external dependencies.",
+        "Evaluate candidate intervention levers (e.g. handoff streamlining, schedule coordination, or system integration if manual data re-entry is confirmed)."
+      ],
+      "candidate_interventions": [
+        "Investigate whether elapsed duration between 'Refund Review' and 'Refund Approved' reflects active working time, queueing delay, physical processing, or external dependencies.",
+        "Evaluate candidate intervention levers (e.g. handoff streamlining, schedule coordination, or system integration if manual data re-entry is confirmed)."
+      ],
+      "rationale": "High elapsed duration concentration (57.98% of cumulative complete-case cycle time) identifies an operational pattern prioritised for investigation to evaluate potential cycle-time compression.",
+      "limitations": [
+        "Milestone timestamps reflect chronological elapsed time between events and do not separate active labor from queueing, idle time, or physical processing.",
+        "High duration concentration is an operational observation; it does not establish that the transition is unnecessary, avoidable, or suitable for automation without workflow review.",
+        "Implementation and automation readiness are evaluated separately and are not determined from event logs alone."
+      ],
+      "operational_priority_score": 100.0,
+      "priority_tier": "TIER_1_HIGH",
+      "score_breakdown": {
+        "coverage_score": 50.0,
+        "concentration_score": 50.0,
+        "raw_score": 100.0,
+        "evidence_weight": 1.0,
+        "final_score": 100.0
+      }
+    },
+    {
+      "id": "opp_recurrence_item_inspected",
+      "title": "Reduce Repetitions and Loopbacks on Item Inspected",
+      "archetype": "RECURRENCE_REDUCTION",
+      "intervention_category": "UNDETERMINED_INVESTIGATION",
+      "target_entity": "Item Inspected",
+      "source_finding_ids": [
+        "finding_recurrence_item_inspected"
+      ],
+      "evidence_strength": "MODERATE",
+      "affected_case_count": 10,
+      "affected_case_percentage": 8.33,
+      "occurrence_count": 10,
+      "cumulative_time_seconds": null,
+      "duration_share_percentage": null,
+      "recurrence_case_percentage": 8.33,
+      "outlier_case_percentage": null,
+      "variant_case_percentage": null,
+      "observed_facts": [
+        "Activity 'Item Inspected' repeated at distinct timestamps in 10 complete cases (8.33%).",
+        "Observed 10 additional distinct executions beyond the initial execution (excluding 0 identical-timestamp duplicates)."
+      ],
+      "investigation_hypotheses": [
+        "Investigate whether re-executions of 'Item Inspected' are caused by upstream data defects, missing information, or normal multi-pass procedures.",
+        "Examine whether cases requiring repeated 'Item Inspected' experience extended overall cycle times."
+      ],
+      "candidate_actions": [
+        "Investigate root causes of repeated executions for 'Item Inspected' with process owners (e.g. specification changes, missing intake data, or intentional review iterations).",
+        "Evaluate candidate interventions such as upstream intake validation checklists, standardized templates, or quality review gating."
+      ],
+      "candidate_interventions": [
+        "Investigate root causes of repeated executions for 'Item Inspected' with process owners (e.g. specification changes, missing intake data, or intentional review iterations).",
+        "Evaluate candidate interventions such as upstream intake validation checklists, standardized templates, or quality review gating."
+      ],
+      "rationale": "Prevalent activity recurrence (8.33% of cases affected) prioritises this pattern for investigation to examine first-pass yield and recurring operational effort.",
+      "limitations": [
+        "Repeated activities represent observed operational patterns; they do not distinguish intentional iterative reviews from operational failure without domain context.",
+        "Identical-timestamp duplicate records are excluded from recurrence counts.",
+        "Implementation and automation readiness are evaluated separately and are not determined from event logs alone."
+      ],
+      "operational_priority_score": 9.38,
+      "priority_tier": "TIER_4_EXPLORATORY",
+      "score_breakdown": {
+        "coverage_score": 4.17,
+        "concentration_score": 8.33,
+        "raw_score": 12.5,
+        "evidence_weight": 0.75,
+        "final_score": 9.38
+      }
+    }
+  ]
+}
